@@ -1,0 +1,180 @@
+[
+  {
+    "model": "gemini-2.5-flash",
+    "ok": false,
+    "text": "",
+    "latency_s": 0.67,
+    "error": "HTTP 404: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs",
+    "usage": {},
+    "task": "decompose"
+  },
+  {
+    "model": "gemini-2.5-flash",
+    "ok": false,
+    "text": "",
+    "latency_s": 0.52,
+    "error": "HTTP 404: {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.5-flash is no longer available to new users. Please update your code to use models/gemini-3.8-flash for the latest features and improvements. We recommend you to use the Interactions API (https://ai.google.dev/gemini-api/docs",
+    "usage": {},
+    "task": "risk_152fz"
+  },
+  {
+    "model": "gemini-3.8-flash",
+    "ok": false,
+    "text": "",
+    "latency_s": 10.28,
+    "error": "HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+    "usage": {},
+    "task": "decompose"
+  },
+  {
+    "model": "gemini-3.8-flash",
+    "ok": true,
+    "text": "Данный пункт **грубо противоречит** требованиям Федерального закона № 152-ФЗ «О персональных данных» и делает согласие субъекта юридически ничтожным.\n\n---\n\n### 1. Риски\n\n* **Признание согласия недействительным:** согласие перестает отвечать базовым критериям закона, что приравнивает обработку к неправомерной (обработке без согласия).\n* **Административная ответственность (ст. 13.11 КоАП РФ):**\n  * **ч. 2 ст. 13.11:** Обработка ПДн без согласия в письменной форме (когда оно обязательно) либо обработка с нарушением установленных требований к составу сведений в согласии — штраф для юрлиц **от 300 000 до 700 000 руб.** (при повторном — **до 1 500 000 руб.**).\n  * **ч. 1 ст. 13.11:** Неправомерная обработка, несовместимая с целями сбора — штраф для юрлиц **от 60 000 до 100 000 руб.**\n* **Предписания Роскомнадзора:** требование прекратить обработку, уничтожить данные, а при проверке сайта — риск блокировки ресурса.\n\n---\n\n### 2. Нарушенные нормы 152-ФЗ\n\n1. **ч. 1 ст. 9 152-ФЗ:** Согласие должно быть **конкретным, предметным, информированным, сознательным и однозначным**. Фразы «без ограничения срока» и «любым третьим лицам по своему усмотрению» полностью лишают согласие признаков конкретности и предметности.\n2. **ч. 7 ст. 5 152-ФЗ:** Хранение персональных данных должно осуществляться **не дольше, чем этого требуют цели их обработки**, если срок не установлен законом или договором. Бессрочная обработка законом запрещена.\n3. **ч. 3 ст. 6 152-ФЗ:** Оператор вправе поручить обработку третьему лицу только с согласия субъекта, при этом в согласии/договоре должны быть определены **перечень действий с ПДн, цели передачи и требования к защите**. «По своему усмотрению» передавать данные нельзя.\n4. **п. 8 ч. 4 ст. 9 152-ФЗ:** Согласие в обязательном порядке должно содержать **срок, в течение которого действует согласие**, а также способ его отзыва.\n\n---\n\n### 3. Исправленная формулировка\n\nВместо одного абстрактного пункта формулировку необходимо разделить на срок обработки и условия передачи третьим лицам, привязав их к конкретным целям.\n\n> **Вариант для Согласия / Политики обработки ПДн:**\n>\n> «3.1. Оператор осуществляет обработку персональных данных Субъекта **в течение срока, необходимого для достижения целей обработки**, указанных в настоящем Согласии [либо: *в течение срока действия договора и X лет после его прекращения / до момента отзыва согласия Субъектом*], если иной срок не предусмотрен действующим законодательством РФ.\n> \n> 3.2. Оператор вправе передавать персональные данные (или поручать их обработку) третьим лицам **исключительно в целях выполнения [указать конкретную цель, например: доставки заказов / обеспечения работы сервиса]** следующим категориям лиц: [указать категории, например: *курьерским службам, операторам связи, провайдерам хостинга* / либо дать ссылку на закрытый перечень таких лиц]. Третьи лица обязуются соблюдать конфиденциальность и обеспечивать безопасность персональных данных в соответствии со ст. 6 и ст. 19 Федерального закона № 152-ФЗ.»",
+    "latency_s": 41.28,
+    "error": "",
+    "usage": {
+      "promptTokenCount": 78,
+      "candidatesTokenCount": 903,
+      "totalTokenCount": 2158,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 78
+        }
+      ],
+      "thoughtsTokenCount": 1177,
+      "serviceTier": "standard"
+    },
+    "task": "risk_152fz"
+  },
+  {
+    "model": "gemini-3.5-flash-lite",
+    "ok": true,
+    "text": "```json\n[\n  {\n    \"name\": \"Предмет\",\n    \"summary\": \"Исполнитель оказывает услуги по разработке программного обеспечения.\"\n  },\n  {\n    \"name\": \"Цена\",\n    \"summary\": \"Стоимость услуг составляет 100 000 рублей, оплата производится в течение 30 дней.\"\n  },\n  {\n    \"name\": \"Сроки\",\n    \"summary\": \"Срок выполнения услуг составляет 3 месяца.\"\n  },\n  {\n    \"name\": \"Ответственность\",\n    \"summary\": \"За просрочку исполнения обязательств предусмотрена неустойка в размере 0,1% в день.\"\n  },\n  {\n    \"name\": \"Споры\",\n    \"summary\": \"Все споры подлежат рассмотрению в Арбитражном суде города Москвы.\"\n  },\n  {\n    \"name\": \"Конфиденциальность\",\n    \"summary\": \"Стороны принимают на себя обязательства не разглашать конфиденциальную информацию.\"\n  }\n]\n```",
+    "latency_s": 1.31,
+    "error": "",
+    "usage": {
+      "promptTokenCount": 128,
+      "candidatesTokenCount": 242,
+      "totalTokenCount": 370,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 128
+        }
+      ],
+      "serviceTier": "standard"
+    },
+    "task": "decompose"
+  },
+  {
+    "model": "gemini-3.5-flash-lite",
+    "ok": true,
+    "text": "Оцениваем предложенный пункт на соответствие требованиям Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» (далее — ФЗ-152).\n\n### 1. Оценка и риск\nДанный пункт является **грубым нарушением** сразу нескольких базовых принципов обработки персональных данных, установленных ФЗ-152:\n*   **Принцип законности и справедливости** (ч. 1 и 2 ст. 5): обработка без ограничений и передача «любым третьим лицам по усмотрению» не имеют под собой правового основания и заранее определенной законной цели.\n*   **Принцип ограничения сроков** (п. 7 ст. 5): хранение персональных данных «без ограничения срока» прямо противоречит закону. Данные должны уничтожаться по достижении целей обработки.\n\n**Риск:** \n*   Привлечение к административной ответственности по ст. 13.11 КоАП РФ (нарушение законодательства РФ в области персональных данных), что влечет наложение крупных штрафов на юридических лиц (до 500 тыс. рублей при повторных нарушениях).\n*   Признание такого согласия ничтожным в судебном порядке, так как оно является «бессрочным генеральным» и не отвечает требованиям конкретности и информированности.\n\n### 2. Нормы права (ссылки)\n*   **Ч. 7 ст. 5 ФЗ-152:** «Обработка персональных данных должна ограничиваться достижением конкретных, заранее определенных и законных целей. Не допускается обработка персональных данных, несовместимая с целями сбора персональных данных».\n*   **Ч. 4 ст. 5 ФЗ-152:** «Хранение персональных данных должно осуществляться в форме, позволяющей определить субъекта персональных данных, дольше, чем этого требуют цели обработки персональных данных, если срок хранения персональных данных не установлен федеральным законом, договором...».\n*   **Ч. 1 ст. 6 и ст. 9 ФЗ-152:** Передача третьим лицам возможна только при наличии согласия субъекта (с указанием конкретных третьих лиц или категорий) либо при наличии иных законных оснований (например, исполнение договора). Бесконтрольная передача «любым лицам по усмотрению» незаконна.\n\n---\n\n### 3. Предложенная исправленная формулировка\n\nПункт нужно переписать с привязкой к конкретным целям, срокам и условиям передачи. \n\n**Вариант исправленной формулировки:**\n> «3.1. Оператор осуществляет обработку персональных данных Субъекта в течение срока [указать конкретный срок, например: действия заключенного между сторонами Договора / достижения целей обработки данных], после чего персональные данные подлежат уничтожению либо обезличиванию, если их хранение не требуется в соответствии с законодательством РФ.\n> \n> Передача персональных данных третьим лицам допускается исключительно в целях [указать цели, например: исполнения обязательств по договору], с соблюдением требований конфиденциальности и только следующим категориям третьих лиц: [перечислить категории третьих лиц, например: банкам-партнерам, курьерским службам] либо в случаях, прямо предусмотренных законодательством Российской Федерации».",
+    "latency_s": 3.28,
+    "error": "",
+    "usage": {
+      "promptTokenCount": 78,
+      "candidatesTokenCount": 755,
+      "totalTokenCount": 833,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 78
+        }
+      ],
+      "serviceTier": "standard"
+    },
+    "task": "risk_152fz"
+  },
+  {
+    "model": "gemini-3.1-pro-preview",
+    "ok": false,
+    "text": "",
+    "latency_s": 4.72,
+    "error": "HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+    "usage": {},
+    "task": "decompose"
+  },
+  {
+    "model": "gemini-3.1-pro-preview",
+    "ok": false,
+    "text": "",
+    "latency_s": 4.64,
+    "error": "HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+    "usage": {},
+    "task": "risk_152fz"
+  },
+  {
+    "model": "gemma-4-31b-it",
+    "ok": false,
+    "text": "",
+    "latency_s": 64.27,
+    "error": "TimeoutError: The read operation timed out",
+    "usage": {},
+    "task": "decompose"
+  },
+  {
+    "model": "gemma-4-31b-it",
+    "ok": true,
+    "text": "\n*   *Clause 3.1:* \"The Operator is entitled to process the Subject's personal data without time limitation and transfer it to any third parties at its discretion.\"\n*   *Goal:* Evaluate for compliance with Federal Law No. 152-FZ \"On Personal Data\" (Russia).\n*   *Requirements:* Identify the risk, cite the specific legal norm, and propose a corrected wording.\n\n    *   *\"without time limitation\"* $\\rightarrow$ Red flag. Data should be processed for a specific purpose and deleted once that purpose is achieved or the period expires.\n    *   *\"transfer them to any third parties\"* $\\rightarrow$ Red flag. Consent must be specific. Blanket consent to \"any\" third party is usually invalid.\n    *   *\"at its discretion\"* $\\rightarrow$ Red flag. Processing must be lawful, fair, and for specific purposes. Arbitrary discretion is not permitted.\n\n    *   *Purpose Limitation:* Art. 5, Part 2 (Processing must be limited to the purpose of processing).\n    *   *Duration/Storage:* Art. 5, Part 4 (Data must be deleted/anonymized once the purpose is achieved or the period expires).\n    *   *Consent Requirements:* Art. 9, Part 1 (Consent must be specific, informed, conscious, and unambiguous).\n    *   *Third-Party Transfer:* Art. 6, Part 1 (Lawfulness of processing) and Art. 9 (Specific consent for transfer to third parties).\n\n    *   **Risk 1: Indefinite processing period.**\n        *   *Norm:* Art. 5, Part 4.\n        *   *Issue:* Violates the principle that data should be kept only as long as necessary.\n\n    *   **Risk 2: Unrestricted transfer to third parties.**\n        *   *Norm:* Art. 9, Part 1.\n        *   *Issue:* Consent is not \"specific\" or \"informed.\" The Subject doesn't know who gets their data.\n\n    *   **Risk 3: Arbitrariness (\"at its discretion\").**\n        *   *Norm:* Art. 5, Part 2.\n        *   *Issue:* Processing must be tied to specific goals, not the whim of the Operator.\n\n    *   *What's needed?*\n        *   Specific purposes.\n        *   Defined period (or link to the purpose).\n        *   Defined list of third parties or categories of third parties (though a list is safer).\n        *   Legal basis for the transfer.\n\n    *   *Drafting the correction:* \"The Operator processes data for [Purpose X] for [Period Y] and may transfer it to [List of Partners/Third Parties] specifically for [Purpose Z] with the Subject's consent.\"Данный пункт в текущей редакции **категорически не соответствует** требованиям ФЗ-152 «О персональных данных» и является грубым нарушением законодательства РФ.\n\nНиже представлен детальный разбор.\n\n### 1. Анализ рисков\n\n**Риск №1: Бессрочная обработка данных**\nФормулировка «без ограничения срока» прямо противоречит принципу целевого сбора данных. Персональные данные не могут храниться вечно; они должны быть уничтожены по достижении целей обработки или в случае отзыва согласия.\n*   **Последствие:** Штрафы от Роскомнадзора, предписание об уничтожении данных.\n\n**Риск №2: Неопределенный круг третьих лиц**\nФормулировка «любым третьим лицам» делает согласие неконкретным. Согласно закону, субъект должен четко понимать, кому именно передаются его данные. «Любое лицо» — это отсутствие информированности субъекта.\n*   **Последствие:** Признание согласия недействительным. Любая передача данных по такому пункту будет считаться незаконной обработкой.\n\n**Риск №3: Произвольный характер обработки**\nФраза «по своему усмотрению» исключает законность и прозрачность обработки. Обработка должна осуществляться строго для достижения конкретных, заранее определенных и законных целей.\n*   **Последствие:** Обвинение в злоупотреблении правом, риск судебных исков от субъектов данных.\n\n---\n\n### 2. Ссылки на нормы ФЗ-152\n\n1.  **Статья 5, ч. 2:** «Обработка персональных данных должна осуществляться с соблюдением принципа **целесообразности и соразмерности**...» (обработка «по усмотрению» этому противоречит).\n2.  **Статья 5, ч. 4:** «Хранение персональных данных осуществляется **не дольше, чем того требуют цели обработки** персональных данных». (запрещает «бессрочную» обработку).\n3.  **Статья 9, ч. 1:** Согласие на обработку персональных данных должно быть **«конкретным, информированным, сознательным, однозначным»**. Формулировки «любым лицам» и «по усмотрению» делают согласие неконкретным и неинформированным.\n\n---\n\n### 3. Исправленная формулировка\n\nПоскольку одна универсальная фраза не заменит полноценную Политику конфиденциальности, я предлагаю вариант, который переносит конкретику в соответствующие приложения или разделы документа.\n\n**Вариант (корректный и безопасный):**\n\n> «3.1. Оператор осуществляет обработку персональных данных Субъекта в целях, определенных в [ссылка на раздел/Политику обработки данных], в течение срока, необходимого для достижения этих целей, либо до момента отзыва Субъектом своего согласия. Передача персональных данных третьим лицам осуществляется Оператором исключительно для достижения указанных целей и только тем лицам, перечень которых определен в [Приложении № или разделе таком-то] к настоящему Соглашению/Политике».\n\n**Что изменилось и почему это работает:**\n1.  **Срок:** Теперь он привязан к **целям** или **отзыву согласия** (соответствие ст. 5 ч. 4).\n2.  **Третьи лица:** Вместо «любых» мы ссылаемся на **конкретный перечень** (соответствие ст. 9 ч. 1).\n3.  **Усмотрение:** Вместо «по своему усмотрению» мы указываем, что передача идет **для достижения конкретных целей** (соответствие ст. 5 ч. 2).\n\n**Рекомендация:** Обязательно создайте отдельный список партнеров (третьих лиц), которым передаются данные (например: «Служба доставки ООО \"Логистик\", платежный агрегатор ООО \"Платеж\"»), иначе пункт останется уязвимым.",
+    "latency_s": 55.16,
+    "error": "",
+    "usage": {
+      "promptTokenCount": 78,
+      "candidatesTokenCount": 915,
+      "totalTokenCount": 1596,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 78
+        }
+      ],
+      "thoughtsTokenCount": 603,
+      "serviceTier": "standard"
+    },
+    "task": "risk_152fz"
+  },
+  {
+    "model": "gemma-4-26b-a4b-it",
+    "ok": true,
+    "text": "\n*   Input text: «Исполнитель оказывает услуги по разработке ПО. Цена 100 000 руб., оплата в течение 30 дней. Срок 3 месяца. За просрочку неустойка 0,1% в день. Споры решаются в Арбитражном суде г. Москвы. Стороны обязуются не разглашать конфиденциальную информацию.»\n    *   Task: Split the contract into specific semantic blocks: *предмет* (subject), *цена* (price), *сроки* (terms/deadlines), *ответственность* (liability), *споры* (disputes), *конфиденциальность* (confidentiality).\n    *   Output format: JSON list of objects with fields `name` and `summary`.\n\n    *   *Segment 1:* «Исполнитель оказывает услуги по разработке ПО.» -> **Предмет** (Subject). Summary: Разработка ПО.\n    *   *Segment 2:* «Цена 100 000 руб., оплата в течение 30 дней.» -> **Цена** (Price). Summary: 100 000 руб., оплата в течение 30 дней.\n    *   *Segment 3:* «Срок 3 месяца.» -> **Сроки** (Terms). Summary: 3 месяца.\n    *   *Segment 4:* «За просрочку неустойка 0,1% в день.» -> **Ответственность** (Liability). Summary: Неустойка 0,1% в день за просрочку.\n    *   *Segment 5:* «Споры решаются в Арбитражном суде г. Москвы.» -> **Споры** (Disputes). Summary: Решение споров в Арбитражном суде г. Москвы.\n    *   *Segment 6:* «Стороны обязуются не разглашать конфиденциальную информацию.» -> **Конфиденциальность** (Confidentiality). Summary: Обязательство не разглашать конфиденциальную информацию.\n\n    ```json\n    [\n      {\n        \"name\": \"предмет\",\n        \"summary\": \"Исполнитель оказывает услуги по разработке ПО.\"\n      },\n      {\n        \"name\": \"цена\",\n        \"summary\": \"100 000 руб., оплата в течение 30 дней.\"\n      },\n      {\n        \"name\": \"сроки\",\n        \"summary\": \"3 месяца.\"\n      },\n      {\n        \"name\": \"ответственность\",\n        \"summary\": \"За просрочку предусмотрена неустойка 0,1% в день.\"\n      },\n      {\n        \"name\": \"споры\",\n        \"summary\": \"Споры решаются в Арбитражном суде г. Москвы.\"\n      },\n      {\n        \"name\": \"конфиденциальность\",\n        \"summary\": \"Стороны обязуются не разглашать конфиденциальную информацию.\"\n      }\n    ]\n    ```\n\n    *   Did I include all required blocks? Yes.\n    *   Is the format JSON? Yes.\n    *   Are the fields `name` and `summary` present? Yes.\n    *   Is the summary accurate? Yes.```json\n[\n  {\n    \"name\": \"предмет\",\n    \"summary\": \"Исполнитель оказывает услуги по разработке ПО.\"\n  },\n  {\n    \"name\": \"цена\",\n    \"summary\": \"100 000 руб., оплата в течение 30 дней.\"\n  },\n  {\n    \"name\": \"сроки\",\n    \"summary\": \"3 месяца.\"\n  },\n  {\n    \"name\": \"ответственность\",\n    \"summary\": \"За просрочку предусмотрена неустойка в размере 0,1% в день.\"\n  },\n  {\n    \"name\": \"споры\",\n    \"summary\": \"Разрешение споров в Арбитражном суде г. Москвы.\"\n  },\n  {\n    \"name\": \"конфиденциальность\",\n    \"summary\": \"Обязательство сторон не разглашать конфиденциальную информацию.\"\n  }\n]\n```",
+    "latency_s": 21.17,
+    "error": "",
+    "usage": {
+      "promptTokenCount": 128,
+      "candidatesTokenCount": 218,
+      "totalTokenCount": 1077,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 128
+        }
+      ],
+      "thoughtsTokenCount": 731,
+      "serviceTier": "standard"
+    },
+    "task": "decompose"
+  },
+  {
+    "model": "gemma-4-26b-a4b-it",
+    "ok": true,
+    "text": "\n*   *Original Clause:* \"3.1. Оператор вправе обрабатывать персональные данные Субъекта без ограничения срока и передавать их любым третьим лицам по своему усмотрению.\" (3.1. The Operator has the right to process the Subject's personal data without limitation of time and transfer them to any third parties at its own discretion.)\n*   *Goal:* Evaluate against Federal Law No. 152 \"On Personal Data\" (FZ-152), identify risks, cite specific norms, and propose a corrected version.\n\n    *   *Segment A:* \"...обрабатывать персональные данные Субъекта без ограничения срока...\" (...process personal data without limitation of time...)\n        *   *Issue:* FZ-152 requires that data be stored only as long as necessary for the purposes of processing. \"Without limitation\" contradicts the principle of purpose limitation and storage limitation.\n    *   *Segment B:* \"...передавать их любым третьим лицам...\" (...transfer them to any third parties...)\n        *   *Issue:* Transfers must be for specific purposes defined in the consent/policy. \"Any third parties\" is too broad and lacks specificity regarding the purpose or the categories of recipients.\n    *   *Segment C:* \"...по своему усмотрению.\" (...at its own discretion.)\n        *   *Issue:* This implies an arbitrary right that bypasses the necessity principle. Processing/transfer must be based on legal grounds and specific purposes, not just \"because the operator wants to.\"\n\n    *   *Article 5, Part 1:* Principles of processing. Data must be processed for specific, predetermined, and legitimate purposes.\n    *   *Article 5, Part 2:* Data must be kept no longer than necessary to achieve the purposes of processing.\n    *   *Article 9:* Consent requirements. Consent must be specific, informed, conscious, and unambiguous. A \"blanket\" consent for \"any third parties\" and \"forever\" is legally invalid (void) because it's not specific.\n    *   *Article 6:* Grounds for processing. Processing must be based on consent or other legal grounds.\n\n    *   *Risk 1: Invalid Consent.* Since the clause is too broad, any consent signed based on this clause will be considered invalid by Roskomnadzor. This leads to administrative fines (Art. 13.11 of the Administrative Code).\n    *   *Risk 2: Violation of Storage Principles.* Keeping data forever violates the principle of \"purpose limitation.\"\n    *   *Risk 3: Unauthorized Transfer.* Transferring to \"any third party\" without defining the purpose or the category violates the requirement for transparency and purpose-driven processing.\n\n    *   *Instead of \"without limitation\":* Use \"for the period required to achieve the purposes of processing or as required by law.\"\n    *   *Instead of \"any third parties at discretion\":* Use \"to third parties for the purpose of [executing the contract/providing services/etc.] and specify the categories of these parties (or refer to a list/policy).\"\n\n    *   Structure: Evaluation -> Risks -> Legal Basis -> Corrected Versions.\n\n    *(Self-Correction during drafting)*: I should provide two versions of the fix: one \"safe/standard\" and one \"strictly compliant\" (where they list the actual third parties).\n\n    *   *Summary:* The clause is highly problematic and likely illegal.\n    *   *Risk 1 (Storage):* Violates the \"storage limitation\" principle.\n    *   *Risk 2 (Transfer):* Violates \"purpose limitation\" and \"specificity\" of consent.\n    *   *Risk 3 (Legal status):* The consent is \"non-specific\" (blanket consent), making it void.\n    *   *Norms:* Art. 5 (Principles), Art. 9 (Consent).\n    *   *Correction:* Focus on purpose and necessity.Данный пункт является **критически несоответствующим** требованиям Федерального закона № 152-ФЗ «О персональных данных». В текущем виде он делает согласие на обработку персональных данных ничтожным (недействительным), что влечет за собой административную ответственность.\n\nНиже приведен подробный разбор.\n\n### 1. Оценка рисков\n\n**Риск №1: Нарушение принципа соразмерности и целевого ограничения (Срок хранения)**\nФормулировка «без ограничения срока» нарушает принцип, согласно которому данные должны храниться не дольше, чем того требуют цели их обработки. Регулятор (Роскомнадзор) при проверке признает это необоснованным удержанием данных.\n\n**Риск №2: Нарушение принципа конкретики и определенности (Передача третьим лицам)**\nФраза «передавать любым третьим лицам по своему усмотрению» — это так называемое «размытое согласие» (blanket consent). Согласно закону, субъект должен точно понимать, кому и зачем передаются его данные. Нельзя получить согласие «на всё сразу и кому угодно».\n\n**Риск №3: Недействительность согласия**\nПоскольку пункт сформулирован слишком широко и неопределенно, любое согласие, подписанное на основании этого пункта, будет признано **ненадлежащим**. Это означает, что юридически вы не получили разрешения на обработку, и любая проверка приведет к штрафам по ст. 13.11 КоАП РФ.\n\n---\n\n### 2. Ссылки на нормы закона\n\n*   **Статья 5, ч. 2 ФЗ-152:** «Хранение персональных данных должно осуществляться в течение срока, необходимого для достижения целей обработки персональных данных, если иной срок хранения не предусмотрен законом». (Ваш пункт прямо противоречит этой норме).\n*   **Статья 5, ч. 1 ФЗ-152:** «Обработка персональных данных должна ограничиваться достижением конкретных, заранее определенных и законных целей обработки...». (Передача «любым лицам по усмотрению» не имеет конкретной цели).\n*   **Статья 9, ч. 1 ФЗ-152:** Согласие должно быть **«конкретным, информированным и сознательным»**. Формулировка «любым третьим лицам» не является конкретной.\n\n---\n\n### 3. Предложенные исправленные формулировки\n\nИсправлять пункт нужно в зависимости от того, зачем вам на самом деле нужна передача данных.\n\n#### Вариант А: Если вы передаете данные партнерам для оказания услуг (самый частый случай)\n> «3.1. Оператор осуществляет обработку персональных данных Субъекта в течение срока, необходимого для достижения целей, указанных в настоящем документе, а также в течение сроков, установленных применимым законодательством РФ. Оператор вправе передавать персональные данные третьим лицам (в том числе контрагентам Оператора) исключительно в целях [указать цель, например: исполнения договора с Субъектом / обеспечения логистики / осуществления рекламных кампаний] и только при условии обеспечения конфиденциальности и безопасности данных».\n\n#### Вариант Б: Если список третьих лиц большой (ссылка на перечень)\n> «3.1. Срок обработки персональных данных ограничен сроком достижения целей обработки или сроком, установленным законодательством РФ. Оператор вправе передавать персональные данные третьим лицам, перечень которых [содержится в Политике конфиденциальности / Приложении №1], исключительно для целей [указать цель]».\n\n### Рекомендация для бизнеса:\nНикогда не используйте слова **«любым»**, **«любым образом»**, **«без ограничения»** и **«по своему усмотрению»** в документах по персональным данным. Это «красные флаги» для Роскомнадзора. Все действия должны быть ограничены: **Целью, Сроком и Конкретным списком (или категориями) лиц.**",
+    "latency_s": 37.94,
+    "error": "",
+    "usage": {
+      "promptTokenCount": 78,
+      "candidatesTokenCount": 909,
+      "totalTokenCount": 1830,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 78
+        }
+      ],
+      "thoughtsTokenCount": 843,
+      "serviceTier": "standard"
+    },
+    "task": "risk_152fz"
+  }
+]

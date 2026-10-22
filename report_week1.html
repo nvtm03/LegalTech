@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Этап 1 · Модульный конструктор договоров: исследование рынка, доступ к моделям, данные и первая фича</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--black:#050504;--ink:#16140F;--text:#2B2924;--muted:#6E6A60;--line:#E4E0D6;--paper:#fff;--soft:#F6F4EF;--bg:#EDEAE3;
+--amber:#E2A12B;--amber-deep:#B67A0E;--amber-wash:#FCF3E1;--amber-text:#7A5208;--teal:#1F8A7A;--teal-wash:#E6F4F1;--teal-text:#155F54;--slate:#3D4B63;--slate-wash:#EBEEF4;--red:#B3261E;--red-wash:#FBEAE8;--red-text:#8C1D17;
+--display:"Bricolage Grotesque","Segoe UI",Helvetica,Arial,sans-serif;--sans:"Instrument Sans","Segoe UI",Helvetica,Arial,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;background:var(--bg);color:var(--text);font:400 15.5px/1.6 var(--sans);overflow-wrap:break-word}
+h1,h2,h3,h4{font-family:var(--display);color:var(--ink);margin:0;letter-spacing:-.015em}
+h2{font-size:clamp(22px,3vw,30px);line-height:1.1;font-weight:800}
+h3{font-size:18px;line-height:1.25;font-weight:700;margin:18px 0 6px}
+h4{font-size:15px;font-weight:700;margin-bottom:4px}
+p{margin:0 0 10px}a{color:var(--amber-text)}ul,ol{margin:0 0 10px;padding-left:20px}li{margin-bottom:4px}
+code,.mono{font-family:var(--mono);font-size:.88em}
+code{background:var(--soft);padding:1px 6px;border-radius:5px}
+.muted{color:var(--muted)}.small{font-size:13px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+.hero{background:var(--black);color:#EDE9DF;padding:44px 0 36px}
+.hero .wrap{display:flex;flex-direction:column;gap:18px}
+.hero h1{color:#fff;font-size:clamp(28px,5vw,46px);line-height:1.04;font-weight:800;letter-spacing:-.03em;max-width:940px}
+.hero .sub{font-size:16.5px;color:#D6D1C4;max-width:860px;margin:0}
+.hero .meta{display:flex;gap:10px;flex-wrap:wrap;font-size:13px;color:#C9C3B5}
+.hero .meta span{border:1px solid #3a372e;border-radius:999px;padding:3px 12px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--amber)}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--amber)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:6px}
+.stat{border-top:3px solid var(--amber);padding-top:10px}
+.stat b{display:block;font:800 clamp(28px,4vw,40px)/1 var(--display);color:#fff;letter-spacing:-.03em}
+.stat span{font-size:13.5px;color:#D0CABC}
+.topnav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topnav .wrap{display:flex;gap:6px;align-items:center;overflow-x:auto;padding-top:8px;padding-bottom:8px;scrollbar-width:thin}
+.topnav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:13px;font-weight:600;padding:5px 11px;border-radius:999px}
+.topnav a:hover{color:var(--ink)}.topnav a[aria-current=true]{background:var(--ink);color:#fff}
+.topnav .sp{flex:1}
+.btn{font:600 13px var(--sans);border:1px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:5px 13px;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--ink);color:#fff}
+button:focus-visible,a:focus-visible,input:focus-visible,th:focus-visible,summary:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+main{padding:22px 0 50px}
+section.sec{background:var(--paper);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;padding:22px 24px 24px}
+.stag{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--amber-text);margin-bottom:5px}
+.stag::before{content:"";width:22px;height:2px;background:var(--amber)}
+section.sec>header{margin-bottom:14px}
+.take{background:var(--amber-wash);border-left:3px solid var(--amber);border-radius:0 10px 10px 0;padding:10px 14px;margin:0 0 16px;font-size:15px}
+.take b{color:#6b4a07}
+.lab{display:inline-block;font:700 11px var(--mono);letter-spacing:.04em;text-transform:uppercase;border-radius:5px;padding:1px 7px;margin-right:6px;vertical-align:1px}
+.lab.fact{background:var(--teal-wash);color:var(--teal-text)}.lab.interp{background:var(--slate-wash);color:var(--slate)}.lab.hyp{background:var(--amber-wash);color:var(--amber-text)}
+.grid{display:grid;gap:14px}.grid>*{min-width:0}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+.card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:#fff}
+.card .bar{height:3px;width:34px;background:var(--amber);border-radius:2px;margin-bottom:8px}
+.panel{background:var(--soft);border-radius:12px;padding:16px}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:2px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);white-space:nowrap}
+.chip.a{background:var(--amber-wash);border-color:#F1D9A6;color:var(--amber-text)}.chip.s{background:var(--slate-wash);border-color:#CBD3E2;color:var(--slate)}.chip.t{background:var(--teal-wash);border-color:#BFE3DC;color:var(--teal-text)}.chip.r{background:var(--red-wash);border-color:#F0C5C1;color:var(--red-text)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;white-space:nowrap}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.badge.ok{background:var(--teal-wash);color:var(--teal-text)}.badge.part{background:var(--amber-wash);color:var(--amber-text)}.badge.fail{background:var(--red-wash);color:var(--red-text)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;align-items:center}
+.fbtn{font:600 12.5px var(--sans);border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 12px;cursor:pointer;color:var(--text)}
+.fbtn[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+[role=tablist]{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+[role=tab]{font:600 13px var(--sans);border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;color:var(--text)}
+[role=tab][aria-selected=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tscroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-bottom:10px}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px;min-width:720px}
+table.t caption{text-align:left;font-weight:700;color:var(--ink);padding:10px 12px;caption-side:top}
+table.t th{text-align:left;background:var(--soft);font-weight:700;color:var(--ink);padding:9px 12px;border-bottom:2px solid var(--ink);white-space:nowrap}
+table.t th.sortable{cursor:pointer;user-select:none}table.t th.sortable:hover{background:#EFEBE2}
+table.t td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.t tr:last-child td{border-bottom:0}
+table.t td.num{font-family:var(--mono);white-space:nowrap}
+.flow{display:flex;gap:0;margin:8px 0 14px;flex-wrap:wrap}
+.flow div{flex:1 1 130px;font-size:12.5px;line-height:1.3;padding:9px 12px 9px 22px;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%,12px 50%);margin-right:-4px}
+.flow div:first-child{padding-left:12px;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%)}
+.flow .m{background:var(--amber-wash);color:#5E3F05}.flow .c{background:var(--slate-wash);color:#27324A}.flow .i{background:#EEECE6;color:var(--ink)}.flow .h{background:var(--teal-wash);color:#0F4D44}
+.flow b{display:block;font-size:12px}
+.codewrap{background:var(--black);border-radius:10px;overflow:hidden;margin:8px 0 14px}
+.codehead{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;background:#14130f;color:#B5AFA2;font:500 12px var(--mono)}
+.codehead .copy{font:600 11.5px var(--sans);background:transparent;border:1px solid #4a463b;color:#E0DBCE;border-radius:999px;padding:2px 10px;cursor:pointer}
+.codehead .copy:hover{background:#2a2720}
+pre.code{margin:0;padding:12px 14px;overflow:auto;color:#E8E4DB;font:400 12.5px/1.6 var(--mono);tab-size:4}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.lg{display:inline-flex;align-items:center;gap:6px;font:600 12.5px var(--sans);background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+.lg i{width:10px;height:10px;border-radius:2px;display:inline-block}
+svg{max-width:100%;height:auto;display:block}svg text{font-family:var(--sans)}
+svg .gl{stroke:var(--line);stroke-width:1}svg .ax{font-size:11px;fill:var(--muted)}svg .val{font-size:11px;fill:var(--ink);font-weight:700}
+figure{margin:0 0 14px}figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+.todo{list-style:none;padding:0}.todo li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+.todo input{margin-top:5px;accent-color:var(--amber-deep)}.todo input:checked+span{text-decoration:line-through;color:var(--muted)}
+details.more{margin:8px 0 12px}details.more>summary{cursor:pointer;font-weight:700;color:var(--ink)}
+footer.foot{padding:26px 0 40px;color:var(--muted);font-size:13px}
+@media (max-width:820px){.g2,.g3,.stats{grid-template-columns:1fr}.hero{padding:30px 0 24px}section.sec{padding:16px}.flow div{clip-path:none;margin:0 4px 4px 0;border-radius:6px;padding:8px 10px}}
+@media print{body{background:#fff}.topnav,.btn,.filters,[role=tablist]{display:none}.hero{background:#fff;color:#000}.hero h1,.stat b{color:#000}.hero .sub,.stat span,.hero .meta{color:#333}section.sec,figure,table,.codewrap{break-inside:avoid}section.sec{border-color:#bbb}details.more>*{display:block}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Еженедельный отчёт · Этап 1 · Неделя 1 · Исследовательский и экспериментальный формат</div>
+    <h1>Модульный конструктор договоров: анализ рынка, доступ к моделям, корпус данных и первая фича</h1>
+    <p class="sub">TL;DR. Цель недели: изучить проблему и рынок юридических ИИ-решений, спроектировать архитектуру системы, подключить Google AI Studio и выбрать первую фичу. Сделано: проведён мета-анализ 5 подходов на рынке (ручной процесс, Spellbook, Harvey, Контур.Фокус, Law2You); реализован единый слой вызова LLM и протестированы 6 моделей Gemini и Gemma (6 из 12 запросов успешны); подготовлен стартовый набор из 5 русскоязычных стресс-примеров по ФЗ-152 и ГК РФ (<code>results/sample_contracts_ru.json</code>). Выяснено: модели расходятся в нормах КоАП РФ (проверка по тексту ст. 13.11 КоАП подтвердила правоту <code>gemini-3.8-flash</code>: штраф 300–700 тыс. руб.), поэтому редактированию необходим RAG. Дальше: интервью с юристом-лидером, загрузка ФЗ-152 в индекс и реализация пайплайна декомпозиции.</p>
+    <div class="meta"><span>Студент: Новиков Тимофей Витальевич</span><span>Проект: Модульный конструктор договоров · блочное редактирование с ИИ и стресс-тестированием рисков</span><span>Индустриальный трек: тендерные контракты</span><span>Этап 1 · Неделя 1</span></div>
+    <div class="stats">
+      <div class="stat"><b>5</b><span>решений на рынке разобрано со схемами процесса (РФ и мир)</span></div>
+      <div class="stat"><b>6 из 12</b><span>запросов к 6 моделям Gemini и Gemma успешны (слой <code>llm_layer.py</code>)</span></div>
+      <div class="stat"><b>5</b><span>эталонных стресс-примеров по ФЗ-152 и ГК РФ в <code>sample_contracts_ru.json</code></span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="topnav" aria-label="Разделы отчёта"><div class="wrap">
+  <a href="#summary">Итоги</a><a href="#env">Окружение и модели</a><a href="#bench">Замеры</a><a href="#problem">Проблема и метрики</a><a href="#market">Рынок</a><a href="#arch">Архитектура</a><a href="#feature">Первая фича</a><a href="#data">Данные и RAG</a><a href="#failed">Неудачи</a><a href="#next">Дальше</a><a href="#refs">Источники</a>
+  <span class="sp"></span><button class="btn" id="printBtn" type="button">Печать / PDF</button>
+</div></nav>
+
+<main class="wrap">
+
+<section class="sec" id="summary">
+  <header><div class="stag">Итоги недели</div><h2>Что пробовали и что получилось</h2></header>
+  <p class="take"><b>Вывод:</b> все 7 блоков первого этапа проработаны. Настроено окружение и единый слой вызова LLM, получены первые экспериментальные замеры на юридических задачах, проведён разбор конкурентов, сформирован тестовый микро-корпус с заложенными рисками и спроектирована первая фича (модульная декомпозиция).</p>
+  <div class="filters" role="group" aria-label="Фильтр по статусу">
+    <button class="fbtn" type="button" data-f="all" aria-pressed="true">Все</button>
+    <button class="fbtn" type="button" data-f="ok" aria-pressed="false">Сработало</button>
+    <button class="fbtn" type="button" data-f="part" aria-pressed="false">Частично</button>
+    <button class="fbtn" type="button" data-f="fail" aria-pressed="false">Не сработало</button>
+    <span class="small muted">Заголовки столбцов сортируются по клику</span>
+  </div>
+  <div id="sumTable"></div>
+  <p class="take" style="margin-top:12px"><b>Вердикт.</b> Комбинируем модели по ролям: быстрая <code>gemini-3.5-flash-lite</code> (1,31 с) отвечает за структурную JSON-декомпозицию, а <code>gemini-3.8-flash</code> в связке с RAG по тексту ФЗ-152 и ГК РФ — за глубокий анализ рисков и генерацию безопасных формулировок. Первой фичей реализуем пайплайн модульной декомпозиции договора.</p>
+</section>
+
+<section class="sec" id="env">
+  <header><div class="stag">Окружение · блок 4 и раздел 10</div><h2>Как подключены модели и для каких задач они используются</h2></header>
+  <p class="take"><b>Вывод:</b> доступ к Google AI Studio настроен и проверен реальными запросами. Вызов моделей изолирован в едином слое <code>llm_layer.py</code>, где переключение модели выполняется одной настройкой в конфигурации без изменения бизнес-логики.</p>
+  <h3>Как подключились и проверили работоспособность</h3>
+  <ul>
+    <li><span class="lab fact">Факт</span>Ключ создан в Google AI Studio и вынесен в локальный файл <code>.env</code> (переменная <code>GEMINI_API_KEY</code>). Файл <code>.env</code> добавлен в <code>.gitignore</code>, в коде и отчёте секреты отсутствуют (в проекте хранится шаблон <code>.env.example</code>).</li>
+    <li><span class="lab fact">Факт</span>Реализован модуль <code>llm_layer.py</code>: имя модели считывается из <code>LLM_MODEL</code> или параметра вызова, встроены автоматические повторы при транзиентных кодах <code>429 / 500 / 503</code> с экспоненциальной паузой, явная проверка системных SSL-сертификатов macOS и возврат структурированного словаря с полями <code>ok</code>, <code>latency_s</code>, <code>usage</code> и <code>error</code>.</li>
+    <li><span class="lab fact">Факт</span>Контрольная проверка соединения и структура репозитория: подготовлен каркас проекта для GitHub (<code>.gitignore</code>, <code>.env.example</code>, <code>llm_layer.py</code>, <code>run_models_test.py</code>, <code>results/</code>); тестовый запрос к <code>gemini-3.5-flash-lite</code> успешно вернул ответ за 1,18 с, а работа единого слоя <code>llm_layer.py</code> и новых моделей из AI Studio дополнительно верифицирована на базовых промптах отборочного проекта программы. Полный лог из 12 вызовов сохранён в <code>results/models_test.json</code>.</li>
+  </ul>
+  <div class="flow" aria-label="Путь запроса">
+    <div class="i"><b>1 · Запрос</b>вызов <code>generate(prompt)</code></div>
+    <div class="c"><b>2 · Конфигурация</b><code>LLM_MODEL</code> и ключ из <code>.env</code></div>
+    <div class="m"><b>3 · Вызов API</b>Google AI Studio (REST v1beta)</div>
+    <div class="c"><b>4 · Ретраи</b>429 / 500 / 503, пауза 2 с и 4 с</div>
+    <div class="h"><b>5 · Результат</b><code>ok</code>, текст, время, токены</div>
+  </div>
+  <h3>Какие лимиты и ограничения увидели на практике</h3>
+  <ul>
+    <li><span class="lab fact">Факт</span><code>gemini-2.5-flash</code>: возвращает <code>HTTP 404</code> («модель больше недоступна новым пользователям»), API рекомендует переход на актуальную <code>gemini-3.8-flash</code>.</li>
+    <li><span class="lab fact">Факт</span><code>gemini-3.1-pro-preview</code>: возвращает <code>HTTP 429 (RESOURCE_EXHAUSTED)</code> на обоих последовательных вызовах. В нашем скрипте <code>run_models_test.py</code> запросы идут строго последовательно в одном потоке, поэтому причина не в параллельном превышении RPM, а в политике Free Tier Google AI Studio: для флагманских Pro-preview моделей бесплатная квота нулевая либо требует привязки платёжного аккаунта (Tier 1).</li>
+    <li><span class="lab fact">Факт</span><code>gemini-3.8-flash</code>: на первом запросе вернула <code>HTTP 503 (UNAVAILABLE — high demand)</code>, а на втором ответила за 41,28 с. Модель <code>gemma-4-31b-it</code> на первой задаче завершилась ошибкой <code>TimeoutError: The read operation timed out</code> (64,27 с).</li>
+    <li><span class="lab interp">Интерпретация</span>Бесплатный уровень AI Studio подвержен пикам нагрузки и жёстким квотам на тяжелые модели. Архитектура конструктора обязана опираться на каскадный выбор модели (fallback с <code>gemini-3.8-flash</code> на <code>gemini-3.5-flash-lite</code>), таймауты и кэширование результатов анализа блоков в БД.</li>
+  </ul>
+  <h3>Комбинация подходов: какая модель за какую задачу отвечает</h3>
+  <div id="roleTable"></div>
+  <p class="small muted"><span class="lab interp">Интерпретация</span>Мы используем комбинированный подход в рамках единого API AI Studio: быстрая лёгкая модель обрабатывает массовые структурные операции (парсинг, классификация блоков), а старшая модель вызывается точечно для юридической оценки рисков и переписывания уязвимых пунктов с опорой на RAG. Локальный запуск на GPU (Colab / Kaggle) на первом этапе не потребовался, так как модели семейства Gemma 4 доступны напрямую через облачный эндпоинт AI Studio.</p>
+  <div class="codewrap"><div class="codehead"><span>results/models_test.json · лог тестирования моделей</span><button type="button" class="copy">Копировать</button></div>
+<pre class="code">gemini-2.5-flash           decompose   ok=False 0.67s  HTTP 404 (недоступна новым ключам)
+gemini-2.5-flash           risk_152fz  ok=False 0.52s  HTTP 404 (недоступна новым ключам)
+gemini-3.8-flash           decompose   ok=False 10.28s HTTP 503 (высокий спрос на сервере)
+gemini-3.8-flash           risk_152fz  ok=True  41.28s 2158 токенов (подробный разбор ст. 13.11 КоАП и ФЗ-152)
+gemini-3.5-flash-lite      decompose   ok=True  1.31s  370 токенов  (валидный JSON из 6 блоков договора)
+gemini-3.5-flash-lite      risk_152fz  ok=True  3.28s  833 токена   (быстрый разбор, но неточность в сумме штрафа)
+gemini-3.1-pro-preview     decompose   ok=False 4.72s  HTTP 429 (квота Free Tier для Pro-preview равна 0)
+gemini-3.1-pro-preview     risk_152fz  ok=False 4.64s  HTTP 429 (квота Free Tier для Pro-preview равна 0)
+gemma-4-31b-it             decompose   ok=False 64.27s TimeoutError: The read operation timed out (>60 с)
+gemma-4-31b-it             risk_152fz  ok=True  55.16s 1596 токенов (развёрнутый ответ со второй попытки)
+gemma-4-26b-a4b-it         decompose   ok=True  21.17s 1077 токенов (рассуждения на англ., дублирование JSON и склейка маркера Yes.```json)
+gemma-4-26b-a4b-it         risk_152fz  ok=True  37.94s 1830 токенов (корректный разбор рисков)</pre></div>
+</section>
+
+<section class="sec" id="bench">
+  <header><div class="stag">Эксперимент</div><h2>Замеры: две юридические задачи на шести моделях</h2></header>
+  <p class="take"><b>Вывод:</b> <code>gemini-3.5-flash-lite</code> быстрее остальных в 16–40 раз (1,31–3,28 с) и безошибочно выдаёт строгий JSON, но допускает неточности в размерах штрафов КоАП РФ. Старшая <code>gemini-3.8-flash</code> точно цитирует нормы и штрафы, но требует запаса по времени и обработки ошибок 503.</p>
+  <p><b>Задача 1 (<code>decompose</code>):</b> разбить договор на смысловые блоки (предмет, цена, сроки, ответственность, споры, конфиденциальность) и вернуть JSON-список объектов с полями <code>name</code> и <code>summary</code>. <b>Задача 2 (<code>risk_152fz</code>):</b> оценить уязвимый пункт «Оператор вправе обрабатывать персональные данные Субъекта без ограничения срока и передавать их любым третьим лицам по своему усмотрению» на соответствие ФЗ-152, сослаться на норму и предложить безопасную редакцию.</p>
+  <figure id="chartFig"></figure>
+  <h3>Подробности по всем 12 запросам</h3>
+  <div id="benTable"></div>
+  <h3>Ключевые наблюдения и проверка по тексту закона</h3>
+  <div class="grid g3">
+    <div class="card"><div class="bar"></div><h4>Сверка штрафов по ст. 13.11 КоАП РФ</h4><p class="small"><span class="lab fact">Факт</span>В задаче <code>risk_152fz</code> модель <code>gemini-3.8-flash</code> указала штраф для юрлиц по ч. 2 ст. 13.11 КоАП РФ <b>от 300 000 до 700 000 руб.</b> (и до 1,5 млн руб. при повторном нарушении), тогда как <code>gemini-3.5-flash-lite</code> написала про «до 500 тыс. рублей при повторных нарушениях».</p><p class="small" style="margin:0"><span class="lab fact">Проверка</span>Сверка с текстом ст. 13.11 КоАП РФ (КонсультантПлюс) подтвердила, что <b>права <code>gemini-3.8-flash</code></b>: по ч. 2 ст. 13.11 КоАП РФ обработка ПДн без письменного согласия либо с нарушением требований к составу сведений влечёт штраф на юрлиц именно от 300 000 до 700 000 руб. Это доказывает необходимость RAG по актуальным редакциям законов.</p></div>
+    <div class="card"><div class="bar"></div><h4>Gemma 26B загрязняет JSON рассуждениями</h4><p class="small"><span class="lab fact">Факт</span>Модель <code>gemma-4-26b-a4b-it</code> в задаче декомпозиции вывела англоязычные рассуждения (chain-of-thought), внутри которых продублировала массив JSON дважды и склеила финальный маркер с текстом без переноса строки (<code>Yes.```json</code>). Из-за этого прямой парсинг <code>json.loads()</code> или жадная регулярка <code>r'\[.*\]'</code> падают с ошибкой.</p><p class="small" style="margin:0"><span class="lab interp">Интерпретация</span>Без принудительной схемы ответа (Structured Outputs / JSON Schema) и очистки markdown-блоков использовать открытые модели на шаге декомпозиции нельзя.</p></div>
+    <div class="card"><div class="bar"></div><h4>Flash-Lite идеальна для парсинга</h4><p class="small"><span class="lab fact">Факт</span>Модель <code>gemini-3.5-flash-lite</code> вернула чистый валидный JSON из всех 6 смысловых блоков за 1,31 с, потратив всего 370 токенов.</p><p class="small" style="margin:0"><span class="lab interp">Интерпретация</span>Это делает её основным кандидатом для первой фичи (декомпозиция текста договора на блоки и построение графа связей).</p></div>
+  </div>
+  <p class="small muted" style="margin-top:12px"><span class="lab fact">Ограничения</span>Эксперимент проведён в один прогон на каждую пару «модель — задача» (n = 1, всего 12 вызовов) на коротком контрольном тексте. Нагрузка на облачный API в момент замеров варьировалась. На неделе 2 замеры будут повторены на выборке из 5 договоров (многократные прогоны с фиксацией медианы времени и доли валидных JSON).</p>
+</section>
+
+<section class="sec" id="problem">
+  <header><div class="stag">Проблема и метрики · блок 1</div><h2>Индустриальная проблема и метрики оценки решения</h2></header>
+  <p class="take"><b>Вывод:</b> в малом и среднем бизнесе (и при подготовке тендерных контрактов) договоры собираются копированием старых шаблонов без проверки связей между разделами и актуальных норм права. ИИ-конструктор на уровне смысловых блоков решает проблему за счёт модульной декомпозиции, привязки к статьям закона через RAG и стресс-тестирования конфликтных сценариев.</p>
+  <div class="grid g2" style="margin-bottom:14px">
+    <div class="card"><div class="bar"></div><h4>Почему текущий процесс сложен и уязвим</h4><p class="small" style="margin:0"><span class="lab fact">Факт</span>По данным отраслевых исследований (в т.ч. Контур.Фокус), до 40% рабочего времени специалистов, работающих с контрактами, уходит на первичную вычитку договоров контрагентов. При ручном редактировании правка в одном разделе (например, сроках оплаты) часто не согласуется с разделом ответственности и порядком расторжения, а устаревшие формулировки по ПДн несут прямые риски штрафов по ст. 13.11 КоАП РФ.</p></div>
+    <div class="card"><div class="bar"></div><h4>Что даёт ИИ и модульный подход</h4><p class="small" style="margin:0"><span class="lab interp">Интерпретация</span>Вместо генерации «сплошного текста» (где LLM склонна выдумывать нормы или терять условия) система декомпозирует контракт на типизированные блоки, проверяет логические связи между ними, подтягивает точные нормы из базы RAG и прогоняет каждый блок через симуляцию спора («Заказчик задержал оплату», «Утечка ПДн», «Односторонний отказ»).</p></div>
+  </div>
+  <div id="metricTable"></div>
+  <p class="small muted"><span class="lab fact">План валидации</span>Первичные формулировки метрик и пороговых KPI составлены по техническому заданию проекта. Экспертное интервью с юристом-лидером проекта для валидации метрик и замера базовой линии («до внедрения») запланировано в плане работ Недели 2.</p>
+</section>
+
+<section class="sec" id="market">
+  <header><div class="stag">Рынок · блок 2</div><h2>Анализ и сравнение существующих решений на мировом и российском рынках</h2></header>
+  <p class="take"><b>Вывод:</b> существующие ИИ-решения делятся на закрытые Enterprise-платформы для крупнейших юрфирм (Harvey), плагины рецензирования внутри MS Word (Spellbook) и сервисы потоковой проверки рисков перед подписанием (Контур.Фокус, Law2You). Ни одно из доступных МСБ решений на рынке РФ не объединяет <b>блочный конструктор договоров</b> с <b>визуализацией межблочных связей</b> и <b>пошаговым стресс-тестированием конфликтных сценариев</b>.</p>
+  <h3>Схемы процесса работы существующих решений</h3>
+  <div role="tablist" id="mktTabs" aria-label="Схемы работы решений на рынке">
+    <button type="button" role="tab" aria-selected="true">1 · Ручной процесс (шаблоны)</button>
+    <button type="button" role="tab" aria-selected="false">2 · Spellbook (Word Add-In)</button>
+    <button type="button" role="tab" aria-selected="false">3 · Harvey AI (Enterprise)</button>
+    <button type="button" role="tab" aria-selected="false">4 · Контур.Фокус / Law2You (РФ)</button>
+    <button type="button" role="tab" aria-selected="false">5 · Наш конструктор (УТП)</button>
+  </div>
+  <div class="panel" id="mktFlowPanel" aria-live="polite"></div>
+  <h3>Сравнение решений по функциям и эффективности</h3>
+  <div id="marketTable"></div>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card"><div class="bar"></div><h4>Что работает эффективно у конкурентов</h4><p class="small" style="margin:0"><span class="lab fact">Факт</span>У <b>Spellbook</b> отлично работает концепция Playbooks (проверка документа по списку корпоративных правил) и подсветка redline-правок. У российских <b>Контур.Фокус</b> и <b>Law2You</b> востребована быстрая категоризация рисков (высокий / средний / низкий) с генерацией протокола разногласий за 3–5 минут.</p></div>
+    <div class="card"><div class="bar"></div><h4>Что не работает и в чём наше УТП</h4><p class="small" style="margin:0"><span class="lab interp">Интерпретация</span>Зарубежные лидеры (Spellbook, Harvey) не адаптированы под ГК РФ и ФЗ-152, а Harvey недоступен малому и среднему бизнесу. Российские чекеры проверяют уже готовый текст постфактум как плоский документ. <b>Наше УТП:</b> модульная сборка и редактирование на уровне смысловых блоков с графом зависимостей между ними и активным <b>стресс-тестированием</b> («что будет, если контрагент нарушит условие X»).</p></div>
+  </div>
+</section>
+
+<section class="sec" id="arch">
+  <header><div class="stag">Архитектура · блок 3</div><h2>Видение целого решения и архитектура модулей</h2></header>
+  <p class="take"><b>Вывод:</b> система строится как полноценное веб-приложение (Vue + FastAPI) из 6 независимых модулей с единым слоем вызова LLM. Согласно архитектурным принципам платформы, на этапе MVP используется асинхронная БД SQLite (с жёсткими колонками метаданных и JSON-колонкой блоков) с готовностью к миграции на PostgreSQL в промышленном контуре, а для RAG по нормативным актам — векторный индекс Pinecone.</p>
+  <div class="flow" aria-label="Схема процесса">
+    <div class="i"><b>1 · Вход</b>загрузка DOCX/PDF или описание сделки</div>
+    <div class="m"><b>2 · Декомпозиция</b>разбиение на блоки и граф связей</div>
+    <div class="c"><b>3 · Редактирование</b>ИИ-подсказки + нормы из RAG</div>
+    <div class="m"><b>4 · Стресс-тест</b>моделирование конфликтов сторон</div>
+    <div class="c"><b>5 · Валидация</b>проверка полноты и непротиворечивости</div>
+    <div class="h"><b>6 · Выгрузка</b>сборка DOCX / PDF и версионирование</div>
+  </div>
+  <div id="modTable"></div>
+  <h3>Схема компонентов и потоков данных</h3>
+  <figure>
+    <svg viewBox="0 0 720 158" role="img" aria-label="Схема компонентов: фронтенд Vue, бэкенд FastAPI, слой LLM, модели AI Studio, база данных SQLite/PostgreSQL и векторное хранилище Pinecone для RAG">
+      <defs><marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#6E6A60"/></marker></defs>
+      <rect x="6" y="46" width="114" height="52" rx="9" fill="#fff" stroke="#E4E0D6" stroke-width="1.4"/><text x="63" y="68" text-anchor="middle" font-size="12.5" font-weight="700" fill="#16140F">Фронтенд Vue</text><text x="63" y="84" text-anchor="middle" font-size="10.5" fill="#6E6A60">блочный редактор, граф</text>
+      <path d="M120 72H146" stroke="#6E6A60" stroke-width="1.6" marker-end="url(#ar)"/>
+      <rect x="148" y="46" width="134" height="52" rx="9" fill="#FCF3E1" stroke="#E2A12B" stroke-width="1.6"/><text x="215" y="68" text-anchor="middle" font-size="12.5" font-weight="700" fill="#5E3F05">Бэкенд FastAPI</text><text x="215" y="84" text-anchor="middle" font-size="10.5" fill="#5E3F05">REST API, воркеры DOCX</text>
+      <path d="M282 72H308" stroke="#6E6A60" stroke-width="1.6" marker-end="url(#ar)"/>
+      <rect x="310" y="46" width="132" height="52" rx="9" fill="#E6F4F1" stroke="#1F8A7A" stroke-width="1.8"/><text x="376" y="68" text-anchor="middle" font-size="12.5" font-weight="700" fill="#155F54">Слой LLM (готов)</text><text x="376" y="84" text-anchor="middle" font-size="10.5" fill="#155F54">llm_layer.py · ретраи</text>
+      <path d="M442 72H470" stroke="#6E6A60" stroke-width="1.6" marker-end="url(#ar)"/>
+      <rect x="472" y="46" width="242" height="52" rx="9" fill="#EBEEF4" stroke="#CBD3E2" stroke-width="1.4"/><text x="593" y="68" text-anchor="middle" font-size="12.5" font-weight="700" fill="#27324A">Google AI Studio API</text><text x="593" y="84" text-anchor="middle" font-size="10.5" fill="#27324A">Flash-Lite (парсинг) + Flash (риски)</text>
+      <path d="M215 98V120" stroke="#6E6A60" stroke-width="1.6" marker-end="url(#ar)"/>
+      <rect x="76" y="122" width="276" height="28" rx="8" fill="#F6F4EF" stroke="#E4E0D6"/><text x="214" y="140" text-anchor="middle" font-size="11" fill="#2B2924">SQLite (MVP, async) → PostgreSQL (prod) + файлы</text>
+      <path d="M376 98V120" stroke="#6E6A60" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#ar)"/>
+      <rect x="368" y="122" width="346" height="28" rx="8" fill="#F6F4EF" stroke="#E4E0D6"/><text x="541" y="140" text-anchor="middle" font-size="11" fill="#2B2924">Pinecone (векторный RAG): ФЗ-152, ГК РФ, библиотека блоков</text>
+    </svg>
+    <figcaption>Рис. 1. Архитектура системы. Зелёным выделен уже реализованный на неделе 1 слой <code>llm_layer.py</code>. Тяжёлый парсинг DOCX/PDF выносится из async-обработчиков FastAPI в пул потоков.</figcaption>
+  </figure>
+</section>
+
+<section class="sec" id="feature">
+  <header><div class="stag">Старт разработки · блок 7</div><h2>Детальное описание первой фичи: модульная декомпозиция и граф связей</h2></header>
+  <p class="take"><b>Вывод:</b> первой фичей выбрана автоматическая декомпозиция текста договора на типовые смысловые блоки с извлечением логических связей между ними. Это фундамент всей системы: без выделения блоков невозможны ни блочное редактирование, ни привязка норм права, ни стресс-тестирование.</p>
+  <div class="grid g2" style="align-items:start">
+    <div class="panel"><h4>Наше видение фичи</h4><p style="margin:0">Пользователь загружает документ (ПДн, Terms of Use или договор оказания услуг) либо вставляет текст. Система очищает структуру, делит текст на смысловые модули (Предмет, Цели и объём ПДн, Сроки хранения, Передача третьим лицам, Цена и расчёты, Ответственность, Споры), определяет пропущенные обязательные блоки и строит матрицу зависимостей (например: «Срок оплаты» ↔ «Неустойка за просрочку»).</p></div>
+    <div class="panel"><h4>Почему начинаем именно с неё</h4><ul style="margin:0"><li><b>Зависимость по данным:</b> все остальные модули принимают на вход JSON-структуру блока.</li><li><b>Быстрая проверяемость:</b> точность разбиения (Precision / Recall по границам и типам блоков) легко замерить на размеченном корпусе.</li><li><b>Подтверждённая техническая реализуемость:</b> в нашем тесте <code>gemini-3.5-flash-lite</code> выполнила базовую декомпозицию за 1,31 с.</li></ul></div>
+  </div>
+  <h3>Архитектура первой фичи: шаги, входы/выходы и роль модели</h3>
+  <figure>
+    <svg viewBox="0 0 720 118" role="img" aria-label="Архитектура первой фичи: парсер документа, сегментация пунктов, вызов LLM gemini-3.5-flash-lite, валидатор Pydantic JSON Schema и построитель графа связей">
+      <defs><marker id="ar2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="#6E6A60"/></marker></defs>
+      <rect x="6" y="24" width="118" height="64" rx="8" fill="#fff" stroke="#E4E0D6"/><text x="65" y="48" text-anchor="middle" font-size="11.5" font-weight="700" fill="#16140F">1. Вход (DOCX/TXT)</text><text x="65" y="64" text-anchor="middle" font-size="10" fill="#6E6A60">python-docx</text><text x="65" y="78" text-anchor="middle" font-size="9.5" fill="#6E6A60">детерминированный код</text>
+      <path d="M124 56H146" stroke="#6E6A60" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <rect x="148" y="24" width="124" height="64" rx="8" fill="#F6F4EF" stroke="#E4E0D6"/><text x="210" y="48" text-anchor="middle" font-size="11.5" font-weight="700" fill="#16140F">2. Сегментация</text><text x="210" y="64" text-anchor="middle" font-size="10" fill="#6E6A60">разбивка по абзацам</text><text x="210" y="78" text-anchor="middle" font-size="9.5" fill="#6E6A60">и номерам пунктов</text>
+      <path d="M272 56H294" stroke="#6E6A60" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <rect x="296" y="24" width="142" height="64" rx="8" fill="#FCF3E1" stroke="#E2A12B" stroke-width="1.8"/><text x="367" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5E3F05">3. Вызов LLM</text><text x="367" y="62" text-anchor="middle" font-size="10" fill="#5E3F05">gemini-3.5-flash-lite</text><text x="367" y="77" text-anchor="middle" font-size="9.5" fill="#5E3F05">классификация + связи</text>
+      <path d="M438 56H460" stroke="#6E6A60" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <rect x="462" y="24" width="124" height="64" rx="8" fill="#E6F4F1" stroke="#1F8A7A" stroke-width="1.5"/><text x="524" y="48" text-anchor="middle" font-size="11.5" font-weight="700" fill="#155F54">4. Валидатор</text><text x="524" y="64" text-anchor="middle" font-size="10" fill="#155F54">Pydantic JSON Schema</text><text x="524" y="78" text-anchor="middle" font-size="9.5" fill="#155F54">ретрай при сбое</text>
+      <path d="M586 56H608" stroke="#6E6A60" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <rect x="610" y="24" width="104" height="64" rx="8" fill="#fff" stroke="#E4E0D6"/><text x="662" y="48" text-anchor="middle" font-size="11.5" font-weight="700" fill="#16140F">5. Выход JSON</text><text x="662" y="64" text-anchor="middle" font-size="10" fill="#6E6A60">блоки + рёбра</text><text x="662" y="78" text-anchor="middle" font-size="9.5" fill="#6E6A60">в SQLite и UI</text>
+    </svg>
+    <figcaption>Рис. 2. Пайплайн первой фичи. Модель отвечает только за семантическую разметку и поиск связей (шаг 3); чтение файла, нумерация абзацев и строгая проверка схемы (Pydantic) выполняются детерминированным кодом.</figcaption>
+  </figure>
+  <ul>
+    <li><b>Вход:</b> файл <code>.docx</code> или сырой текст договора + выбранная категория документа (ПДн / Terms of Use / Услуги).</li>
+    <li><b>Выход:</b> валидированный JSON, содержащий массив <code>blocks[]</code> (<code>id</code>, <code>block_type</code>, <code>clause_numbers</code>, <code>text</code>, <code>summary</code>), список отсутствующих обязательных блоков <code>missing_blocks[]</code> и массив логических связей <code>edges[]</code> (<code>source_id</code>, <code>target_id</code>, <code>relation</code>).</li>
+  </ul>
+</section>
+
+<section class="sec" id="data">
+  <header><div class="stag">Данные и знания · блоки 5 и 6</div><h2>Датасеты, реалистичная симуляция и хранилище для RAG</h2></header>
+  <p class="take"><b>Вывод:</b> международные корпуса CUAD и LegalBench используем как методологический эталон таксономии блоков, а для обучения и валидации на праве РФ формируем собственный русскоязычный корпус открытых политик/оферт и синтетический стресс-датасет с заложенными нарушениями ФЗ-152 и ГК РФ (первые 5 примеров уже сгенерированы в <code>results/sample_contracts_ru.json</code>).</p>
+  <h3>Подбор датасетов и методика симуляции (блок 5)</h3>
+  <ul>
+    <li><span class="lab fact">Факт</span><b>Анализ открытых корпусов (CUAD и LegalBench):</b> корпус <b>CUAD</b> (Contract Understanding Atticus Dataset, 510 коммерческих контрактов, 13 000+ аннотаций по 41 категории) и бенчмарк <b>LegalBench</b> (162 задачи юридического рассуждения) составлены на английском языке и опираются на прецедентное право США. Напрямую проверять на них соответствие ФЗ-152 и ГК РФ нельзя, однако мы заимствуем из CUAD методику разметки спанов текста и структуру категорий (Ответственность, Сроки, Прекращение договора, Конфиденциальность).</li>
+    <li><span class="lab fact">Факт</span><b>Русскоязычный корпус и реалистичная симуляция:</b> для покрытия реальных классов задач в РФ (согласия на обработку ПДн, политики конфиденциальности, пользовательские соглашения, договоры услуг) принята двухконтурная методика: (1) сбор открытых эталонных оферт и политик крупных российских экосистем (Яндекс, VK, Сбер) и типовых форм из КонсультантПлюс; (2) контролируемая инъекция типичных юридических ошибок (на основе судебной практики и проверок Роскомнадзора по ст. 13.11 КоАП РФ) для измерения метрики <i>Recall по рискам</i>.</li>
+    <li><span class="lab fact">Факт</span><b>Сгенерированные примеры для согласования:</b> нами подготовлен и сохранён в проекте файл <code>results/sample_contracts_ru.json</code> (5 размеченных кейсов с уязвимыми формулировками, привязкой к статьям ФЗ-152 / ГК РФ / КоАП РФ и эталонным безопасным исправлением):</li>
+  </ul>
+  <div id="simTable"></div>
+  <h3>Типы документов и формирование хранилища для RAG (блок 6)</h3>
+  <p><span class="lab fact">Обоснование RAG</span>Наш эксперимент на неделе 1 наглядно показал: без внешнего источника знаний более лёгкая модель (<code>gemini-3.5-flash-lite</code>) ошибается в размерах штрафов и частях ст. 13.11 КоАП РФ. RAG необходим, чтобы подавать в промпт точный, актуальный текст статей закона и проверенные юридические шаблоны, исключая галлюцинации ссылок.</p>
+  <div id="ragTable"></div>
+  <p class="small muted"><span class="lab interp">Архитектура хранилища</span>Документы нарезаются не по фиксированному числу символов, а <b>структурно — по статьям и частям статей НПА</b> (с сохранением метаданных: <code>law_code</code>, <code>article</code>, <code>part</code>, <code>edition_date</code>). Эмбеддинги индексируются в векторную БД <b>Pinecone</b>; при анализе блока договора выполняется гибридный поиск (по категории блока + семантической близости текста пункта).</p>
+</section>
+
+<section class="sec" id="failed">
+  <header><div class="stag">Тупики</div><h2>Что не получилось и почему</h2></header>
+  <div class="grid g3">
+    <div class="card"><div class="bar" style="background:var(--red)"></div><h4>Pro-модель на Free Tier (HTTP 429)</h4><p class="small"><span class="lab fact">Факт</span><code>gemini-3.1-pro-preview</code> вернула <code>HTTP 429</code> на обоих последовательных вызовах: в бесплатном тарифе AI Studio квота на Pro-preview не выделяется.</p><p class="small" style="margin:0"><b>Вывод:</b> используем связку <code>gemini-3.8-flash</code> + <code>gemini-3.5-flash-lite</code>.</p></div>
+    <div class="card"><div class="bar" style="background:var(--red)"></div><h4>Устаревший идентификатор 2.5-flash</h4><p class="small"><span class="lab fact">Факт</span>Модель <code>gemini-2.5-flash</code> вернула <code>HTTP 404</code> — закрыта для новых ключей в пользу линейки 3.x.</p><p class="small" style="margin:0"><b>Вывод:</b> список моделей запрашивается динамически через эндпоинт <code>/v1beta/models</code>.</p></div>
+    <div class="card"><div class="bar" style="background:var(--red)"></div><h4>Загрязнение JSON у Gemma 4 26B</h4><p class="small"><span class="lab fact">Факт</span>В задаче декомпозиции <code>gemma-4-26b-a4b-it</code> потратила 21,17 с, вывела англоязычные рассуждения с дублированием двух блоков JSON и склейкой маркера (<code>Yes.```json</code>), ломающей прямой парсинг, а <code>gemma-4-31b-it</code> упала по таймауту 60 с.</p><p class="small" style="margin:0"><b>Вывод:</b> открытые модели не ставим на синхронный парсинг без валидации схемы.</p></div>
+    <div class="card"><div class="bar" style="background:var(--red)"></div><h4>Галлюцинация штрафа без RAG</h4><p class="small"><span class="lab fact">Факт</span>Быстрая <code>gemini-3.5-flash-lite</code> назвала штраф «до 500 тыс. руб.» вместо реальных 300–700 тыс. руб. по ч. 2 ст. 13.11 КоАП РФ.</p><p class="small" style="margin:0"><b>Вывод:</b> ссылки на нормы и санкции обязательно заземлять через RAG по тексту НПА.</p></div>
+    <div class="card"><div class="bar" style="background:var(--red)"></div><h4>Нестабильность 3.8-flash под нагрузкой</h4><p class="small"><span class="lab fact">Факт</span>На первом запросе <code>gemini-3.8-flash</code> вернула <code>HTTP 503 (high demand)</code>, а успешный запрос занял 41,28 с.</p><p class="small" style="margin:0"><b>Вывод:</b> в <code>llm_layer.py</code> встроены ретраи и предусмотрен fallback на младшую модель.</p></div>
+    <div class="card"><div class="bar" style="background:var(--red)"></div><h4>Сертификаты SSL в Python на macOS</h4><p class="small"><span class="lab fact">Факт</span>Первый запуск скрипта завершился ошибкой <code>CERTIFICATE_VERIFY_FAILED</code> в стандартном Python 3.10 на macOS.</p><p class="small" style="margin:0"><b>Вывод:</b> исправлено явно через загрузку системного пула <code>/etc/ssl/cert.pem</code> в <code>ssl.create_default_context</code>.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="next">
+  <header><div class="stag">План</div><h2>Следующие шаги на неделю 2</h2></header>
+  <ul class="todo" id="todo"></ul>
+  <p class="small muted">Отметки чек-листа интерактивны в рамках сессии просмотра (состояние не сохраняется из-за песочницы iframe).</p>
+  <h3>Риски следующего этапа и меры снижения</h3>
+  <ul class="small">
+    <li><b>Колебания задержки облачного API:</b> при 503/таймаутах на <code>gemini-3.8-flash</code> автоматически переключать запрос на <code>gemini-3.5-flash-lite</code> и кэшировать ответы по хэшу текста блока в SQLite.</li>
+    <li><b>Расхождения в юридической трактовке:</b> согласовать подготовленные 5 стресс-примеров из <code>results/sample_contracts_ru.json</code> на интервью с юристом-лидером проекта до масштабирования датасета.</li>
+  </ul>
+</section>
+
+<section class="sec" id="refs">
+  <header><div class="stag">Источники</div><h2>Использованные материалы и источники</h2></header>
+  <ul class="small">
+    <li>Федеральный закон от 27.07.2006 № 152-ФЗ «О персональных данных» и ст. 13.11 КоАП РФ (КонсультантПлюс: <code>consultant.ru/document/cons_doc_LAW_61801/</code>, <code>consultant.ru/document/cons_doc_LAW_34661/</code>).</li>
+    <li>Hendrycks D. et al. <i>CUAD: An Expert-Annotated NLP Dataset for Legal Contract Review</i> (Atticus Project, <code>atticusprojectai.org/cuad/</code>, 510 контрактов, 41 категория).</li>
+    <li>Guha N. et al. <i>LegalBench: A Collaboratively Built Benchmark for Measuring Legal Reasoning in Large Language Models</i> (Stanford Hazy Research, <code>hazyresearch.stanford.edu/legalbench/</code>).</li>
+    <li>Официальные материалы анализируемых решений: Spellbook (<code>spellbook.legal</code> — Word Add-In, Playbooks, Associate), Harvey AI (<code>harvey.ai</code> — Enterprise Legal Platform), Контур.Фокус «ИИ-анализ договоров» (<code>kontur.ru</code>), Law2You (<code>law2you.ru</code>).</li>
+    <li>Документация Google AI for Developers: Gemini API Models &amp; Rate Limits (<code>ai.google.dev/gemini-api/docs/rate-limits</code>) и собственные экспериментальные замеры в файле <code>results/models_test.json</code>.</li>
+  </ul>
+</section>
+</main>
+
+<footer class="foot"><div class="wrap">Как воспроизвести: клонировать подготовленный репозиторий проекта (<code>llm_layer.py</code>, <code>run_models_test.py</code>, <code>.env.example</code>, <code>results/</code>), указать ключ в <code>.env</code> (<code>GEMINI_API_KEY</code>) и запустить <code>python3 run_models_test.py</code>; результаты вызовов сохраняются в <code>results/models_test.json</code>, эталонные стресс-примеры — в <code>results/sample_contracts_ru.json</code>. Дата формирования отчёта: 22 октября 2026 г. · Performance Engineering (ANTEI) × ИТМО</div></footer>
+
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* сортируемая таблица */
+function table(host,o){let rows=o.rows.slice(),sk=o.sort&&o.sort.key,dir=1;
+  const draw=()=>{const d=rows.slice();
+    if(sk){const c=o.cols.find(c=>c.key===sk);const v=r=>c.sortVal?c.sortVal(r):r[sk];d.sort((a,b)=>{const x=v(a),y=v(b);return(x>y?1:x<y?-1:0)*dir})}
+    host.innerHTML=`<div class="tscroll" tabindex="0" role="region" aria-label="${esc(o.caption)}"><table class="t"><caption>${esc(o.caption)}</caption><thead><tr>${o.cols.map(c=>`<th scope="col"${c.sortable?` class="sortable" data-k="${c.key}" tabindex="0" aria-sort="${sk===c.key?(dir>0?'ascending':'descending'):'none'}"`:''}>${c.label}${sk===c.key?(dir>0?' ▲':' ▼'):''}</th>`).join('')}</tr></thead><tbody>${
+      d.map(r=>`<tr>${o.cols.map(c=>`<td${c.cls?` class="${c.cls}"`:''}>${c.render?c.render(r):esc(r[c.key]??'')}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${o.cols.length}" class="muted">Ничего не найдено</td></tr>`}</tbody></table></div>`;
+    $$('th.sortable',host).forEach(th=>{const go=()=>{const k=th.dataset.k;if(sk===k)dir=-dir;else{sk=k;dir=1}draw();const n=$(`th[data-k="${k}"]`,host);n&&n.focus()};
+      th.onclick=go;th.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}})};
+  draw();return{setRows:r=>{rows=r.slice();draw()}}}
+
+const ST={ok:['ok','Сработало',0],part:['part','Частично',1],fail:['fail','Не сработало',2]};
+const badge=s=>`<span class="badge ${ST[s][0]}">${ST[s][1]}</span>`;
+
+/* ---------- данные замеров: results/models_test.json ---------- */
+const RUNS=[
+ {m:'gemini-2.5-flash',t:'decompose',ok:0,s:0.67,tok:null,err:'HTTP 404: модель закрыта для новых ключей'},
+ {m:'gemini-2.5-flash',t:'risk_152fz',ok:0,s:0.52,tok:null,err:'HTTP 404: модель закрыта для новых ключей'},
+ {m:'gemini-3.8-flash',t:'decompose',ok:0,s:10.28,tok:null,err:'HTTP 503: высокий спрос (2 попытки)'},
+ {m:'gemini-3.8-flash',t:'risk_152fz',ok:1,s:41.28,tok:2158,len:3005,note:'точный разбор ч. 2 ст. 13.11 КоАП (300–700 тыс. руб.)'},
+ {m:'gemini-3.5-flash-lite',t:'decompose',ok:1,s:1.31,tok:370,len:747,note:'валидный JSON, 6 смысловых блоков'},
+ {m:'gemini-3.5-flash-lite',t:'risk_152fz',ok:1,s:3.28,tok:833,len:2882,note:'быстрый ответ, но смешение частей ст. 13.11 КоАП'},
+ {m:'gemini-3.1-pro-preview',t:'decompose',ok:0,s:4.72,tok:null,err:'HTTP 429: квота Free Tier для Pro-preview равна 0'},
+ {m:'gemini-3.1-pro-preview',t:'risk_152fz',ok:0,s:4.64,tok:null,err:'HTTP 429: квота Free Tier для Pro-preview равна 0'},
+ {m:'gemma-4-31b-it',t:'decompose',ok:0,s:64.27,tok:null,err:'TimeoutError: The read operation timed out (>60 с)'},
+ {m:'gemma-4-31b-it',t:'risk_152fz',ok:1,s:55.16,tok:1596,len:5625,note:'успешно со второй попытки (первая — таймаут)'},
+ {m:'gemma-4-26b-a4b-it',t:'decompose',ok:1,s:21.17,tok:1077,len:2838,note:'сбой прямого парсинга: рассуждения на англ. и два блока JSON (Yes.```json)'},
+ {m:'gemma-4-26b-a4b-it',t:'risk_152fz',ok:1,s:37.94,tok:1830,len:7060,note:'корректный разбор рисков ФЗ-152'}];
+const TN={decompose:'декомпозиция',risk_152fz:'оценка по ФЗ-152'};
+
+/* ---------- сводная таблица ---------- */
+const SUM=[
+ {a:'gemini-3.5-flash-lite',d:'Проверили на 2 задачах: декомпозиция договора в JSON и оценка риска по ФЗ-152',r:'2 из 2 успешны (1,31 с и 3,28 с); чистый JSON из 6 блоков (370 токенов), но ошибка в сумме штрафа КоАП',c:'Основная модель для быстрой декомпозиции; для норм права нужен RAG',s:'ok'},
+ {a:'gemini-3.8-flash',d:'Проверили на тех же 2 юридических задачах через единый слой llm_layer.py',r:'1 из 2 успешен: глубокий разбор ФЗ-152 и точный штраф 300–700 тыс. руб. (41,28 с); на декомпозиции — HTTP 503',c:'Основная модель для анализа рисков и стресс-тестов (с ретраями и fallback)',s:'part'},
+ {a:'gemma-4-26b-a4b-it',d:'Запустили обе задачи через API AI Studio',r:'2 из 2 ответили (21,17 с и 37,94 с), но в декомпозиции ответ загрязнён рассуждениями с дублированием JSON',c:'Подходит как резервный генератор текста, но ломает прямой парсинг JSON без очистки',s:'part'},
+ {a:'gemma-4-31b-it',d:'Запустили обе задачи через API AI Studio',r:'1 из 2 успешен (55,16 с на ФЗ-152); на декомпозиции — TimeoutError (>60 с, итого 64,27 с)',c:'Высокая задержка; не ставим на синхронный критический путь',s:'part'},
+ {a:'gemini-3.1-pro-preview',d:'Последовательный вызов обеих задач на бесплатном ключе AI Studio',r:'0 из 2: HTTP 429 (RESOURCE_EXHAUSTED) за 4,72 с и 4,64 с',c:'На Free Tier квота для Pro-preview не выделяется; работаем на линейке Flash 3.x',s:'fail'},
+ {a:'gemini-2.5-flash',d:'Проверка доступности модели предыдущего поколения',r:'0 из 2: HTTP 404 (модель закрыта для новых пользователей)',c:'Заменена в конфигурации по умолчанию на gemini-3.8-flash',s:'fail'},
+ {a:'Блок 1 · Проблема и метрики',d:'Изучили отраслевые боли (до 40% времени на вычитку) и сформировали 4 целевые метрики проекта',r:'Определены формулы расчёта и целевые ориентиры по всем 4 метрикам; валидация с юристом — на неделе 2',c:'Система метрик готова к замеру базовой линии на тестовом корпусе',s:'ok'},
+ {a:'Блок 2 · Анализ рынка',d:'Сравнили 5 решений (ручной процесс, Spellbook, Harvey, Контур.Фокус, Law2You) и построили схемы их процессов',r:'Выявлены сильные стороны (Playbooks, быстрый скоринг) и пустая ниша на рынке РФ',c:'Сформулировано УТП: модульный конструктор со связями блоков и стресс-тестом споров',s:'ok'},
+ {a:'Блок 3 и 7 · Архитектура и 1-я фича',d:'Спроектировали 6 модулей системы, стек БД (SQLite MVP → PostgreSQL + Pinecone) и пайплайн декомпозиции',r:'Реализован рабочий слой llm_layer.py, описана схема первой фичи с Pydantic-валидацией',c:'Архитектура позволяет менять модель одной переменной LLM_MODEL',s:'ok'},
+ {a:'Блок 5 и 6 · Датасеты и RAG',d:'Проанализировали CUAD/LegalBench, разработали методику симуляции и создали 5 стресс-примеров по ФЗ-152/ГК РФ',r:'Сформирован файл results/sample_contracts_ru.json (5 кейсов с уязвимостями и нормами) и схема RAG в Pinecone',c:'Экспериментально доказана необходимость RAG (устранение расхождений по ст. 13.11 КоАП)',s:'ok'}];
+const sum=table($('#sumTable'),{caption:'Что пробовали и что получилось (сводка Этапа 1)',sort:null,cols:[
+ {key:'a',label:'Подход / блок',sortable:true,render:r=>`<b>${esc(r.a)}</b>`},{key:'d',label:'Что делали',render:r=>esc(r.d)},{key:'r',label:'Результат (с цифрами)',render:r=>esc(r.r)},{key:'c',label:'Вывод',render:r=>esc(r.c)},
+ {key:'s',label:'Статус',sortable:true,sortVal:r=>ST[r.s][2],render:r=>badge(r.s)}],rows:SUM});
+$$('.fbtn').forEach(b=>b.onclick=()=>{$$('.fbtn').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));sum.setRows(SUM.filter(r=>b.dataset.f==='all'||r.s===b.dataset.f))});
+
+/* ---------- роли моделей ---------- */
+table($('#roleTable'),{caption:'Распределение моделей по задачам (комбинированный подход в AI Studio)',cols:[
+ {key:'m',label:'Модель (точное имя в API)',render:r=>`<code>${esc(r.m)}</code>`},{key:'k',label:'Класс и роль',render:r=>esc(r.k)},{key:'u',label:'Для каких задач используем в проекте',render:r=>esc(r.u)},{key:'w',label:'Обоснование по результатам тестов',render:r=>esc(r.w)}],rows:[
+ {m:'gemini-3.5-flash-lite',k:'Быстрая лёгкая модель (основная для структуры)',u:'Массовые структурные шаги: декомпозиция договора на JSON-блоки, выделение связей, первичная классификация пунктов',w:'Минимальная задержка (1,31 с), экономный расход (370 токенов), строгое соблюдение JSON-формата'},
+ {m:'gemini-3.8-flash',k:'Старшая модель (основная для аналитики и RAG)',u:'Сложные юридические шаги: анализ рисков с опорой на RAG (ФЗ-152, ГК РФ), моделирование конфликтных сценариев, генерация безопасных формулировок',w:'Высокая юридическая точность (верно определила ч. 2 ст. 13.11 КоАП и штраф 300–700 тыс. руб.); требует ретраев при 503'},
+ {m:'gemma-4-26b-a4b-it',k:'Открытая модель в облаке AI Studio (резерв)',u:'Вспомогательная генерация черновых вариантов текста и офлайн-эксперименты по промптингу',w:'Бесплатные широкие лимиты, хорошее текстовое объяснение рисков (37,94 с), но без JSON Schema загрязняет ответ рассуждениями и дублирует JSON'},
+ {m:'gemini-3.1-pro-preview',k:'Флагманская Pro-модель (отключена на MVP)',u:'Не используется на бесплатном ключе',w:'HTTP 429 на Free Tier (требуется платный Tier 1); её задачи успешно закрывает gemini-3.8-flash + RAG'}]});
+
+/* ---------- детали замеров ---------- */
+table($('#benTable'),{caption:'Все 12 запросов к API Google AI Studio (источник: results/models_test.json)',sort:null,cols:[
+ {key:'m',label:'Модель',sortable:true,render:r=>`<code>${esc(r.m)}</code>`},{key:'t',label:'Задача',sortable:true,render:r=>esc(TN[r.t])},
+ {key:'ok',label:'Статус вызова',sortable:true,sortVal:r=>r.ok,render:r=>r.ok?'<span class="badge ok">ответ получен</span>':'<span class="badge fail">ошибка API</span>'},
+ {key:'s',label:'Время, с',cls:'num',sortable:true,render:r=>String(r.s).replace('.',',')},
+ {key:'tok',label:'Токенов',cls:'num',sortable:true,sortVal:r=>r.tok||0,render:r=>r.tok||'—'},
+ {key:'n',label:'Результат и примечание',render:r=>esc(r.ok?(r.note||''):r.err)}],rows:RUNS});
+
+/* ---------- график: время успешных ответов ---------- */
+(function(){const ok=RUNS.filter(r=>r.ok),W=720,rowH=34,m={l:230,r:46,t:26,b:40},H=m.t+m.b+ok.length*rowH,iw=W-m.l-m.r,max=60,X=v=>m.l+iw*Math.min(v,max)/max;
+ const C={decompose:'#3D4B63',risk_152fz:'#E2A12B'};let g='';
+ for(let i=0;i<=6;i++){const x=m.l+iw*i/6;g+=`<line x1="${x}" x2="${x}" y1="${m.t}" y2="${H-m.b}" class="gl"/><text x="${x}" y="${H-m.b+16}" text-anchor="middle" class="ax">${i*10}</text>`}
+ let b='';ok.forEach((r,i)=>{const y=m.t+i*rowH+5,w=X(r.s)-m.l;
+  b+=`<text x="${m.l-8}" y="${y+14}" text-anchor="end" class="ax" style="font-size:11.5px">${esc(r.m)}</text><rect x="${m.l}" y="${y}" width="${w}" height="20" rx="3" fill="${C[r.t]}"><title>${esc(r.m)}, ${esc(TN[r.t])}: ${r.s} с</title></rect><text class="val" x="${m.l+w+6}" y="${y+14}">${String(r.s).replace('.',',')}${r.m==='gemma-4-31b-it'?'*':''}</text>`});
+ $('#chartFig').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Время успешных ответов моделей в секундах"><text x="${m.l}" y="14" class="ax">Время ответа, с (6 успешных запросов из 12)</text>${g}${b}<text x="${W-m.r}" y="${H-4}" text-anchor="end" class="ax">секунды</text></svg><div class="legend"><span class="lg"><i style="background:#3D4B63"></i>Декомпозиция (JSON)</span><span class="lg"><i style="background:#E2A12B"></i>Оценка риска по ФЗ-152</span></div><figcaption>Рис. 3. Задержка ответа моделей на успешных вызовах (в секундах, меньше — лучше). Источник: <code>results/models_test.json</code>, n = 1 прогон на пару «модель — задача». * У <code>gemma-4-31b-it</code> показано время второй (успешной) попытки после таймаута первой.</figcaption>`})();
+
+/* ---------- метрики ---------- */
+table($('#metricTable'),{caption:'Целевые метрики успеха проекта и методика их измерения',cols:[
+ {key:'m',label:'Метрика успеха',render:r=>`<b>${esc(r.m)}</b>`},{key:'w',label:'Почему выбрана и что отражает',render:r=>esc(r.w)},{key:'h',label:'Как измеряем и целевой ориентир MVP',render:r=>esc(r.h)}],rows:[
+ {m:'Точность декомпозиции договора на блоки',w:'Показывает, насколько корректно система выделяет смысловые разделы и не теряет условия при разборе документа',h:'Macro-F1 / доля совпавших блоков с эталонной разметкой юриста на тестовом корпусе (целевой ориентир MVP: ≥ 0,85)'},
+ {m:'Полнота выявления заложенных рисков (Risk Recall)',w:'Ключевая метрика безопасности: пропуск критического риска (например, по ст. 13.11 КоАП) грозит прямым штрафом',h:'Доля найденных системой искусственно заложенных уязвимостей в стресс-корпусе sample_contracts_ru.json (ориентир: ≥ 0,80)'},
+ {m:'Доля формулировок, принятых экспертом без правок (Acceptance Rate)',w:'Оценивает практическую пригодность ИИ-редакций и точность ссылок на статьи ФЗ-152 / ГК РФ из RAG',h:'Слепая оценка юристом-лидером проекта: доля предложенных блочных правок, принятых без ручного переписывания (ориентир: ≥ 0,70)'},
+ {m:'Сокращение времени сборки и вычитки договора',w:'Отражает прямую бизнес-ценность для МСБ и тендерного отдела по сравнению с ручной вычиткой (30–40 мин)',h:'Замер времени «от загрузки до готового DOCX» относительно ручного процесса (цель: сокращение времени в 3–4 раза, до ≤ 5–8 мин)'}]});
+
+/* ---------- рынок: переключатель схем + таблица ---------- */
+const MFLOWS=[
+ {title:'1. Ручной процесс (юрист + папка старых шаблонов Word)',steps:[['i','1 · Поиск шаблона','копирование старого DOCX из папки'],['c','2 · Ручная правка','замена реквизитов и отдельных пунктов'],['c','3 · Сверка с законом','ручной поиск статей в КонсультантПлюс'],['m','4 · Риск ошибок','рассинхрон разделов, пропуск новых норм ФЗ-152']],note:'Высокие трудозатраты (до 40% времени уходит на вычитку), качество целиком зависит от внимания и опыта конкретного юриста.'},
+ {title:'2. Spellbook (плагин внутри Microsoft Word, Канада/США)',steps:[['i','1 · Документ в Word','открытие контракта в MS Word Add-In'],['m','2 · Вызов GPT / Playbooks','проверка текста по правилам компании'],['c','3 · Точечный Redline','подсветка рисков и автодополнение абзацев'],['i','4 · Сохранение DOCX','правки принимаются прямо в полотне Word']],note:'Удобен для потоковой правки текста в Word, но работает с плоским документом без графа связей блоков и не знает специфики права РФ (ФЗ-152, ГК РФ).'},
+ {title:'3. Harvey AI (закрытая Enterprise-платформа для глобальных юрфирм)',steps:[['i','1 · Корпоративный запрос','загрузка пакета документов в Vault'],['m','2 · Доменные модели + RAG','поиск по глобальным базам права и прецедентам'],['c','3 · Мультиагентный анализ','due diligence, меморандум, таблица рисков'],['i','4 · Отчёт для партнёра','результат для команды юристов корпорации']],note:'Мощная B2B-система (2400+ корпоративных клиентов), но закрыта для малого и среднего бизнеса (высокий порог входа, продажа через демо и контракты на большие команды).'},
+ {title:'4. Российские ИИ-чекеры договоров (Контур.Фокус / Law2You)',steps:[['i','1 · Загрузка файла','готовый PDF/DOCX договора контрагента'],['m','2 · Скоринг рисков ИИ','поиск кабальных условий и штрафов (3–5 мин)'],['c','3 · Категоризация','риски: высокий / средний / низкий + подсветка'],['h','4 · Протокол разногласий','выгрузка отчёта или redline-документа']],note:'Адаптированы под РФ и быстро проверяют чужой договор перед подписанием, но не являются модульным конструктором со связями блоков и стресс-симуляцией сценариев.'},
+ {title:'5. Наш проект: Модульный конструктор со стресс-тестированием рисков',steps:[['i','1 · Вход или описание','загрузка образца или описание сделки'],['m','2 · Блочная декомпозиция','разбиение на модули + граф связей (Flash-Lite)'],['c','3 · Редактирование с RAG','правки по блокам со ссылками на ФЗ-152 / ГК РФ'],['m','4 · Стресс-тест споров','моделирование конфликтов сторон (Flash 3.8)'],['h','5 · Сборка DOCX/PDF','проверка непротиворечивости и экспорт']],note:'Наше УТП: работа на уровне связанных смысловых блоков + активная симуляция конфликтных сценариев («просрочка оплаты», «утечка ПДн») доступно для МСБ.'}];
+function renderMktFlow(idx){const f=MFLOWS[idx];
+ $('#mktFlowPanel').innerHTML=`<h4>${esc(f.title)}</h4><div class="flow">${f.steps.map(s=>`<div class="${s[0]}"><b>${esc(s[1])}</b>${esc(s[2])}</div>`).join('')}</div><p class="small muted" style="margin:0">${esc(f.note)}</p>`}
+$$('#mktTabs [role=tab]').forEach((b,i)=>{b.onclick=()=>{$$('#mktTabs [role=tab]').forEach((x,j)=>x.setAttribute('aria-selected',String(i===j)));renderMktFlow(i)}});
+renderMktFlow(0);
+
+table($('#marketTable'),{caption:'Сравнение существующих решений и позиционирование проекта (блок 2)',cols:[
+ {key:'n',label:'Решение / сегмент',render:r=>`<b>${esc(r.n)}</b>`},{key:'f',label:'Ключевые функции (фичи)',render:r=>esc(r.f)},{key:'e',label:'Эффективность и ограничения',render:r=>esc(r.e)},{key:'d',label:'Отличие нашего конструктора',render:r=>esc(r.d)}],rows:[
+ {n:'Ручной процесс (юрист + шаблоны Word)',f:'Копирование прошлых договоров, ручная вычитка, поиск норм в СПС КонсультантПлюс',e:'Высокая точность при дорогом юристе, но долго (30–60 мин на документ) и высокий риск пропустить рассинхрон разделов',d:'Автоматическая декомпозиция на блоки, проверка межблочных противоречий и мгновенная подстановка норм ФЗ-152 из RAG'},
+ {n:'Spellbook (spellbook.legal, США/Канада)',f:'Плагин в MS Word: Review (redline), Draft из библиотек, Playbooks, мультидокументный агент Associate',e:'Ускоряет правку текста в Word (5000+ юр. команд), но анализирует текст линейно, без стресс-сценариев и без базы права РФ',d:'Полноценная веб-платформа с графом связей между блоками, базой НПА РФ и модулем симуляции конфликтных ситуаций'},
+ {n:'Harvey AI (harvey.ai, США)',f:'Enterprise-платформа: анализ тысяч документов в Vault, правовой ресёрч по глобальным базам, кастомные воркфлоу',e:'Эталон глубины для крупных корпораций и юрфирм (Fortune 500), но закрытая продажа, высокая стоимость и отсутствие фокуса на МСБ РФ',d:'Доступный для российского МСБ и тендерных отделов модульный инструмент с фокусом на ФЗ-152, оферты и договоры услуг/поставки'},
+ {n:'Контур.Фокус «ИИ-анализ договоров» / Law2You (РФ)',f:'Загрузка PDF/DOCX, выявление рисков за 3–5 мин с делением на высокий/средний/низкий, формирование протокола разногласий',e:'Отлично подходят для быстрой проверки чужого договора перед подписанием и проверки контрагента по ЕГРЮЛ',d:'Мы строим не только постфактум-чекер, а блочный конструктор с генерацией по описанию сделки и интерактивным стресс-тестом каждого модуля'}]});
+
+/* ---------- модули ---------- */
+table($('#modTable'),{caption:'Модульная архитектура системы и ожидаемый результат каждого модуля (блок 3)',cols:[
+ {key:'n',label:'Модуль системы',render:r=>`<b>${esc(r.n)}</b>`},{key:'w',label:'Почему выделен в отдельный модуль (принцип разделения ответственности)',render:r=>esc(r.w)},{key:'r',label:'Ожидаемый результат на выходе модуля',render:r=>esc(r.r)}],rows:[
+ {n:'1. Модуль ввода и парсинга документов',w:'Изолирует синхронную работу с файлами (DOCX/PDF) в отдельном потоке, чтобы не блокировать event loop FastAPI',r:'Очищенный структурированный текст с сохранённой нумерацией разделов и пунктов'},
+ {n:'2. Пайплайн модульной декомпозиции (Первая фича)',w:'Отвечает строго за разбиение договора на смысловые блоки и построение графа логических связей между ними',r:'Валидированный по JSON Schema список блоков, матрица связей и перечень пропущенных обязательных разделов'},
+ {n:'3. Контур RAG по нормативным актам и шаблонам',w:'Отделяет поиск точных правовых норм (ФЗ-152, ГК РФ, КоАП РФ) в Pinecone от генерации текста моделью',r:'Релевантные статьи закона и эталонные формулировки блоков с точными реквизитами для промпта'},
+ {n:'4. Модуль блочного редактирования с ИИ',w:'Работает в контексте одного выбранного блока, предлагая улучшения без поломки остальных частей документа',r:'Альтернативные безопасные формулировки блока с обоснованием и ссылками на статьи НПА'},
+ {n:'5. Движок стресс-тестирования рисков',w:'Моделирует конфликтные сценарии («задержка оплаты», «отзыв согласия ПДн») с позиций обеих сторон сделки',r:'Карта уязвимых формулировок, ранжированная по критичности (critical / high / medium) с расчётом последствий'},
+ {n:'6. Сборка, проверка непротиворечивости и экспорт',w:'Выполняет финальную сверку связей между блоками и детерминированную генерацию файла без участия LLM',r:'Готовый к подписанию файл DOCX / PDF и сохранённая версия документа в SQLite / PostgreSQL'}]});
+
+/* ---------- таблица примеров симуляции (блок 5) ---------- */
+const SIM=[
+ {id:'pdn_01',doc:'Согласие на обработку ПДн',blk:'Сроки хранения и передача третьим лицам',vuln:'«…обрабатывать ПДн без ограничения срока и передавать их любым третьим лицам по своему усмотрению»',norm:'ч. 1 ст. 9, ч. 7 ст. 5, ч. 3 ст. 6 ФЗ-152; ч. 2 ст. 13.11 КоАП РФ (штраф 300–700 тыс. руб.)',sev:'critical'},
+ {id:'tou_02',doc:'Пользовательское соглашение (Terms of Use)',blk:'Цели обработки и объём данных',vuln:'«…согласие на сбор и обработку любых данных о себе и устройстве для любых коммерческих и маркетинговых целей»',norm:'ч. 2–5 ст. 5, ст. 15 ФЗ-152; ч. 1 ст. 13.11 КоАП РФ',sev:'high'},
+ {id:'priv_03',doc:'Политика конфиденциальности',blk:'Трансграничная передача и локализация',vuln:'«…персональные данные граждан РФ сохраняются напрямую на облачных серверах партнёров в ЕС и США»',norm:'ч. 5 ст. 18, ст. 12 ФЗ-152; ч. 8 ст. 13.11 КоАП РФ (штраф 1–6 млн руб.)',sev:'critical'},
+ {id:'pdn_04',doc:'Политика обработки ПДн',blk:'Отзыв согласия и прекращение обработки',vuln:'«…прекращает обработку в течение 90 дней с момента получения нотариально заверенного заявления»',norm:'ч. 5 ст. 21, ч. 2 ст. 9 ФЗ-152 (императивный срок — до 30 дней)',sev:'high'},
+ {id:'srv_05',doc:'Договор возмездного оказания услуг',blk:'Цена, порядок расчётов и ответственность',vuln:'«…оплата в течение 30 рабочих дней. При задержке оплаты Исполнитель не вправе приостанавливать оказание услуг»',norm:'ст. 328, ст. 330, ст. 781 ГК РФ (дисбаланс при стресс-сценарии неплатежа)',sev:'medium'}];
+table($('#simTable'),{caption:'Сгенерированный стартовый набор стресс-примеров (файл results/sample_contracts_ru.json)',cols:[
+ {key:'id',label:'ID',cls:'num'},{key:'doc',label:'Тип документа и блок',render:r=>`<b>${esc(r.doc)}</b><br><span class="small muted">${esc(r.blk)}</span>`},
+ {key:'vuln',label:'Уязвимая формулировка (заложенный риск)',render:r=>esc(r.vuln)},
+ {key:'norm',label:'Нарушенная норма и санкция (эталон для RAG)',render:r=>esc(r.norm)},
+ {key:'sev',label:'Критичность',render:r=>r.sev==='critical'?'<span class="badge fail">критический</span>':r.sev==='high'?'<span class="badge part">высокий</span>':'<span class="badge ok">средний</span>'}],rows:SIM});
+
+/* ---------- RAG ---------- */
+table($('#ragTable'),{caption:'Классификация документов и устройство хранилища знаний для RAG (блок 6)',cols:[
+ {key:'t',label:'Класс документов',render:r=>`<b>${esc(r.t)}</b>`},{key:'e',label:'Конкретный состав источников',render:r=>esc(r.e)},{key:'w',label:'Как нарезается и зачем нужен в RAG',render:r=>esc(r.w)},{key:'s',label:'Хранилище и статус',render:r=>esc(r.s)}],rows:[
+ {t:'1. Нормативно-правовые акты РФ (НПА)',e:'ФЗ-152 «О персональных данных», ГК РФ (ч. 1 и 2: возмездное оказание услуг, поставка), ст. 13.11 КоАП РФ',w:'Постатейный чанкинг с метаданными (закон, статья, часть, редакция) для точного цитирования норм и штрафов без галлюцинаций',s:'Векторный индекс Pinecone + метаданные в SQLite (структура спроектирована)'},
+ {t:'2. Библиотека эталонных блоков и оферт РФ',e:'Публичные политики ПДн и Terms of Use (Яндекс, VK, Сбер), проверенные шаблоны согласий и договоров услуг',w:'Чанкинг по смысловым блокам договора; подаётся в промпт как безопасный образец (safe_alternative) при редактировании',s:'Pinecone + JSON-репозиторий (стартовые 5 эталонов в sample_contracts_ru.json)'},
+ {t:'3. Размеченные корпуса и стресс-сценарии',e:'Методология категорий CUAD / LegalBench + синтетический набор уязвимых пунктов по проверкам Роскомнадзора',w:'Используется для автоматического прогона стресс-тестов и расчёта метрик Precision / Recall при валидации',s:'Локальный JSON-корпус в проекте (results/sample_contracts_ru.json, расширяется до 30+ кейсов)'}]});
+
+/* ---------- чек-лист ---------- */
+const TODO=['Провести экспертное интервью с юристом-лидером проекта: валидировать 4 метрики и 5 стресс-примеров из sample_contracts_ru.json','Настроить в репозитории GitHub автоматическую проверку схемы JSON и базовые unit-тесты для пайплайна декомпозиции','Расширить русскоязычный корпус до 15–20 реальных документов (политики ПДн, Terms of Use) и прогнать 5 серий замеров со схемой Pydantic','Развернуть индекс Pinecone и загрузить постатейно текст ФЗ-152 и ст. 13.11 КоАП РФ для RAG-проверки','Реализовать бэкенд-модуль Первой фичи на FastAPI + SQLite: эндпоинт /api/decompose с возвратом блоков и графа связей'];
+$('#todo').innerHTML=TODO.map((t,i)=>`<li><input type="checkbox" id="td${i}"><span><label for="td${i}">${esc(t)}</label></span></li>`).join('');
+
+/* ---------- копирование кода ---------- */
+$$('.codewrap').forEach(w=>{const b=$('.copy',w),pre=$('pre',w);b.onclick=async()=>{let ok=false;try{await navigator.clipboard.writeText(pre.textContent);ok=true}catch(_){try{const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);ok=document.execCommand('copy')}catch(__){}}
+  b.textContent=ok?'Скопировано':'Выделите и Ctrl+C';setTimeout(()=>{b.textContent='Копировать'},1600)}});
+
+/* ---------- навигация ---------- */
+const secs=$$('section.sec'),links=$$('.topnav a[href^="#"]');
+try{const spy=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.setAttribute('aria-current',String(a.getAttribute('href')==='#'+e.target.id)))})},{rootMargin:'-30% 0px -60% 0px'});secs.forEach(s=>spy.observe(s))}catch(_){}
+$('#printBtn').onclick=()=>{try{window.print()}catch(_){}};
+})();
+</script>
+</body>
+</html>
