@@ -1,0 +1,44 @@
+[
+  {
+    "id": "sber_scope",
+    "source_id": "sbertech_consent",
+    "doc_type": "consent",
+    "family_id": "sbertech",
+    "split": "development",
+    "source_text_sha256": "c28e8ac7f24eebff1aa6d13f2f9f9b7180006d935002ad1ab8b104bd674bf634",
+    "start": 501,
+    "end": 622,
+    "replace": "Цель обработки персональных данных: получение консультации эксперта в отношении \nпрограммного обеспечения «Platform V».",
+    "replacement": "Цель обработки персональных данных: любые коммерческие цели по усмотрению оператора, без каких-либо ограничений.",
+    "target_category": "purpose_and_scope",
+    "annotation_note": "Author-reviewed explicit target pattern in this excerpt only; no expert legal review."
+  },
+  {
+    "id": "kaspersky_retention",
+    "source_id": "kaspersky_privacy",
+    "doc_type": "privacy",
+    "family_id": "kaspersky",
+    "split": "development",
+    "source_text_sha256": "337135e97bfe2c34f474d1161c6773a58665df7d6a0f9fb20a3582e54a3e9ccc",
+    "start": 27868,
+    "end": 28269,
+    "replace": "только на срок выполнения указанных целей",
+    "replacement": "бессрочно независимо от целей обработки",
+    "target_category": "retention",
+    "annotation_note": "Author-reviewed explicit target pattern in this excerpt only; no expert legal review."
+  },
+  {
+    "id": "vk_support",
+    "source_id": "vk_shift_terms",
+    "doc_type": "terms",
+    "family_id": "vk",
+    "split": "development",
+    "source_text_sha256": "3f26750a07850b1093d7a7230de0862c28fe731ec2b6f476b05f5917046f05a5",
+    "start": 7971,
+    "end": 8137,
+    "replace": "3.6.3. оказывать в разумные сроки техническую и инфо рмационную поддержку Пользователя, \nнеобходимую для получения доступа к Сайту и ее последующего использования;",
+    "replacement": "3.6.3. Компания полностью освобождается от любой ответственности за свои действия, пользователь лишается любых прав на возмещение причинённого ущерба.",
+    "target_category": "liability",
+    "annotation_note": "Author-reviewed explicit target pattern in this excerpt only; no expert legal review."
+  }
+]

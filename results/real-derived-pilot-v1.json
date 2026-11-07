@@ -1,0 +1,428 @@
+{
+  "created_at": "2026-11-07T14:04:51.612563+00:00",
+  "dataset": "real-derived-target-pilot-v1",
+  "scope": "Presence of a labelled drafting-risk pattern in excerpts; not full legal accuracy. Development pilot, no significance claims.",
+  "independent_families": [
+    "kaspersky",
+    "sbertech",
+    "vk"
+  ],
+  "model": "gemini-3.1-flash-lite",
+  "provider": "router",
+  "segmentation": "paragraphs-v1 (identical for both risk prompts, to isolate prompt differences)",
+  "timeout_seconds": 120.0,
+  "code_sha256": {
+    "pipeline.py": "9b93e090fc5a70ddcd320967ad0e4ad56dec6d8f36fd3b205e56d77caba646fe",
+    "model_client.py": "b66e84d6bfd759c55c1a6ae238508b28d505bfbe8af2dc2bc7c1be9b51fc96cc",
+    "evaluate.py": "d801de0601ccd99325e7733b22df371a996e12b87c6fcb5c456fc3247d258764",
+    "evaluate_pairs.py": "6a9bad27d44f030f10a978738ade40250502e1862f1c4b7ba27243ff1ba8eaa0",
+    "data/evaluation/pair_specs.json": "928e8e09720c6d0356d0628374a011cab00acba8a5dfaddb6f420ff730ad78e4",
+    "requirements.lock.txt": "3a53f5ae4d1c7577d58ba793b5af11dcd1b5ecfcf476a14b4009b1aec1a4f910"
+  },
+  "python": "3.10.11 (v3.10.11:7d4cc5aa85, Apr  4 2023, 19:05:19) [Clang 13.0.0 (clang-1300.0.29.30)]",
+  "checklist_sha256": "a3ba3b85d9b13c90923bab55724d94023f2070d78d78a2f5b3ed122cea1ba3db",
+  "cases_sha256": "da25dc8a216b3a4632d73e4afcacbfc99a26f04d21645d250f3e39db6e43ae35",
+  "records": [
+    {
+      "id": "sber_scope_original",
+      "pair_id": "sber_scope",
+      "source_id": "sbertech_consent",
+      "family_id": "sbertech",
+      "doc_type": "consent",
+      "split": "development",
+      "text_sha256": "b4372e4d78bdd2a5effd2b70130541bd07d767c3c874e8c261385dc62aa8a39d",
+      "target_category": "purpose_and_scope",
+      "expected_target_present": false,
+      "variant": "baseline",
+      "order": 1,
+      "ok": true,
+      "predicted": [],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.986,
+          "usage": {
+            "input": 254,
+            "output": 58,
+            "thoughts": 0,
+            "total": 312
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "sber_scope_original",
+      "pair_id": "sber_scope",
+      "source_id": "sbertech_consent",
+      "family_id": "sbertech",
+      "doc_type": "consent",
+      "split": "development",
+      "text_sha256": "b4372e4d78bdd2a5effd2b70130541bd07d767c3c874e8c261385dc62aa8a39d",
+      "target_category": "purpose_and_scope",
+      "expected_target_present": false,
+      "variant": "checklist",
+      "order": 2,
+      "ok": true,
+      "predicted": [],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.64,
+          "usage": {
+            "input": 449,
+            "output": 75,
+            "thoughts": 0,
+            "total": 524
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "sber_scope_mutation",
+      "pair_id": "sber_scope",
+      "source_id": "sbertech_consent",
+      "family_id": "sbertech",
+      "doc_type": "consent",
+      "split": "development",
+      "text_sha256": "22edd16c9a7690647656b17b79b42fcda30445252917f4442cf28dc89a82d986",
+      "target_category": "purpose_and_scope",
+      "expected_target_present": true,
+      "variant": "checklist",
+      "order": 3,
+      "ok": true,
+      "predicted": [
+        "purpose_and_scope"
+      ],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.867,
+          "usage": {
+            "input": 449,
+            "output": 213,
+            "thoughts": 0,
+            "total": 662
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "sber_scope_mutation",
+      "pair_id": "sber_scope",
+      "source_id": "sbertech_consent",
+      "family_id": "sbertech",
+      "doc_type": "consent",
+      "split": "development",
+      "text_sha256": "22edd16c9a7690647656b17b79b42fcda30445252917f4442cf28dc89a82d986",
+      "target_category": "purpose_and_scope",
+      "expected_target_present": true,
+      "variant": "baseline",
+      "order": 4,
+      "ok": true,
+      "predicted": [
+        "purpose_and_scope"
+      ],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.634,
+          "usage": {
+            "input": 254,
+            "output": 153,
+            "thoughts": 0,
+            "total": 407
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "kaspersky_retention_original",
+      "pair_id": "kaspersky_retention",
+      "source_id": "kaspersky_privacy",
+      "family_id": "kaspersky",
+      "doc_type": "privacy",
+      "split": "development",
+      "text_sha256": "7da6a509471d09342be05d9bc0671c0a8e5aa7cfc3a74df265b08b90ac1b6d7c",
+      "target_category": "retention",
+      "expected_target_present": false,
+      "variant": "baseline",
+      "order": 5,
+      "ok": true,
+      "predicted": [
+        "retention"
+      ],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.641,
+          "usage": {
+            "input": 320,
+            "output": 214,
+            "thoughts": 0,
+            "total": 534
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "kaspersky_retention_original",
+      "pair_id": "kaspersky_retention",
+      "source_id": "kaspersky_privacy",
+      "family_id": "kaspersky",
+      "doc_type": "privacy",
+      "split": "development",
+      "text_sha256": "7da6a509471d09342be05d9bc0671c0a8e5aa7cfc3a74df265b08b90ac1b6d7c",
+      "target_category": "retention",
+      "expected_target_present": false,
+      "variant": "checklist",
+      "order": 6,
+      "ok": true,
+      "predicted": [],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.939,
+          "usage": {
+            "input": 515,
+            "output": 54,
+            "thoughts": 0,
+            "total": 569
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "kaspersky_retention_mutation",
+      "pair_id": "kaspersky_retention",
+      "source_id": "kaspersky_privacy",
+      "family_id": "kaspersky",
+      "doc_type": "privacy",
+      "split": "development",
+      "text_sha256": "d459373afc338fd2ddb6a8069d690f041b9f3a77e71bd48194191829e9cb980b",
+      "target_category": "retention",
+      "expected_target_present": true,
+      "variant": "checklist",
+      "order": 7,
+      "ok": true,
+      "predicted": [
+        "retention"
+      ],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.628,
+          "usage": {
+            "input": 516,
+            "output": 156,
+            "thoughts": 0,
+            "total": 672
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "kaspersky_retention_mutation",
+      "pair_id": "kaspersky_retention",
+      "source_id": "kaspersky_privacy",
+      "family_id": "kaspersky",
+      "doc_type": "privacy",
+      "split": "development",
+      "text_sha256": "d459373afc338fd2ddb6a8069d690f041b9f3a77e71bd48194191829e9cb980b",
+      "target_category": "retention",
+      "expected_target_present": true,
+      "variant": "baseline",
+      "order": 8,
+      "ok": true,
+      "predicted": [
+        "retention"
+      ],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.647,
+          "usage": {
+            "input": 321,
+            "output": 227,
+            "thoughts": 0,
+            "total": 548
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "vk_support_original",
+      "pair_id": "vk_support",
+      "source_id": "vk_shift_terms",
+      "family_id": "vk",
+      "doc_type": "terms",
+      "split": "development",
+      "text_sha256": "b97368a43cf7973e1d861e9aca25be2dabf49e6f455a98f77964f5f2fab7be68",
+      "target_category": "liability",
+      "expected_target_present": false,
+      "variant": "baseline",
+      "order": 9,
+      "ok": true,
+      "predicted": [
+        "other"
+      ],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.975,
+          "usage": {
+            "input": 271,
+            "output": 224,
+            "thoughts": 0,
+            "total": 495
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "vk_support_original",
+      "pair_id": "vk_support",
+      "source_id": "vk_shift_terms",
+      "family_id": "vk",
+      "doc_type": "terms",
+      "split": "development",
+      "text_sha256": "b97368a43cf7973e1d861e9aca25be2dabf49e6f455a98f77964f5f2fab7be68",
+      "target_category": "liability",
+      "expected_target_present": false,
+      "variant": "checklist",
+      "order": 10,
+      "ok": true,
+      "predicted": [],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.637,
+          "usage": {
+            "input": 466,
+            "output": 80,
+            "thoughts": 0,
+            "total": 546
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "vk_support_mutation",
+      "pair_id": "vk_support",
+      "source_id": "vk_shift_terms",
+      "family_id": "vk",
+      "doc_type": "terms",
+      "split": "development",
+      "text_sha256": "eae1ccbcde9db38843c558b7a74648e18ce3bb087ce1d8c95535458d52cec0ca",
+      "target_category": "liability",
+      "expected_target_present": true,
+      "variant": "checklist",
+      "order": 11,
+      "ok": true,
+      "predicted": [
+        "liability"
+      ],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.636,
+          "usage": {
+            "input": 455,
+            "output": 263,
+            "thoughts": 0,
+            "total": 718
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    },
+    {
+      "id": "vk_support_mutation",
+      "pair_id": "vk_support",
+      "source_id": "vk_shift_terms",
+      "family_id": "vk",
+      "doc_type": "terms",
+      "split": "development",
+      "text_sha256": "eae1ccbcde9db38843c558b7a74648e18ce3bb087ce1d8c95535458d52cec0ca",
+      "target_category": "liability",
+      "expected_target_present": true,
+      "variant": "baseline",
+      "order": 12,
+      "ok": true,
+      "predicted": [
+        "liability"
+      ],
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.1-flash-lite",
+          "latency_s": 10.952,
+          "usage": {
+            "input": 260,
+            "output": 246,
+            "thoughts": 0,
+            "total": 506
+          },
+          "served_by": "gemini-3.1-flash-lite",
+          "stage": "risk_analysis"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "baseline": {
+      "tp": 3,
+      "tn": 2,
+      "fp": 1,
+      "fn": 0,
+      "errors": 0,
+      "cases": 6,
+      "correct_over_all_cases": 0.8333333333333334
+    },
+    "checklist": {
+      "tp": 3,
+      "tn": 3,
+      "fp": 0,
+      "fn": 0,
+      "errors": 0,
+      "cases": 6,
+      "correct_over_all_cases": 1.0
+    }
+  },
+  "finished_at": "2026-11-07T14:07:00.849696+00:00",
+  "public_redactions": [
+    "remote_job_ids",
+    "local_analysis_ids"
+  ]
+}

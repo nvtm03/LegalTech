@@ -1,3 +1,15 @@
 .env
 __pycache__/
 .venv/
+
+# Local downloads from the project portal (includes signed NDA)
+site-materials/
+node_modules/
+frontend/dist/
+data/runtime/
+data/corpus/raw/
+data/corpus/derived/
+results/private/
+.DS_Store
+/sites/
+/reports/
