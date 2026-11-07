@@ -4,8 +4,8 @@
   "findings": [
     {
       "id": "К1",
-      "status": "code_clean_copy_verified; publication_pending",
-      "evidence": "44 Python tests, 2 JS tests, fresh install and frontend build; source publication follows"
+      "status": "clean_copy_verified_and_source_published",
+      "evidence": "44 Python tests, 2 JS tests, fresh install/build; GitHub branch codex/stage2-audit-fixes"
     },
     {
       "id": "С1",

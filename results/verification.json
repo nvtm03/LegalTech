@@ -44,5 +44,9 @@
     "frontend/src/analysis-state.js": "073bdf470521bb9e78db1c1bd5ceb631b9564e14ffc498c78352ad456e563065",
     "frontend/src/main.js": "376d6b79d3eb52d0193d316f5b32e23251fc6d54ff0fa84094a3552e28e1286b",
     "frontend/src/style.css": "06142709b16f1d4858ef54a33f9db5956302c291187aa5897551b119c7086b30"
-  }
+  },
+  "github_clone_verified": true,
+  "github_source_commit": "196a86709e9ec401dc3cb6814409cffd0a50bc2b",
+  "github_branch": "codex/stage2-audit-fixes",
+  "github_files_match_tested_copy": true
 }
