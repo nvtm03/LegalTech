@@ -1,0 +1,9 @@
+{
+  "name":"legaltech-fixed-demo",
+  "private":true,
+  "version":"0.1.0",
+  "type":"module",
+  "scripts":{"dev":"vite --host 127.0.0.1 --port 8002","build":"vite build"},
+  "dependencies":{"vue":"3.5.45"},
+  "devDependencies":{"vite":"7.3.7","@vitejs/plugin-vue":"6.0.10"}
+}

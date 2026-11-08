@@ -1,0 +1,41 @@
+{
+  "created_at": "2026-11-08T00:17:38.275987+00:00",
+  "python_tests": 60,
+  "frontend_tests": 3,
+  "frontend_build": "passed",
+  "demo_build": "passed",
+  "clean_source_copy": {
+    "path": "/private/tmp/legaltech-final-clean-hxjg09cm",
+    "python_environment": "Reused independently installed locked environment from prior clean-copy verification; not a new installation today. pip check passed.",
+    "npm": "fresh offline npm ci for frontend and demo; tests and builds passed",
+    "private_data_excluded": true
+  },
+  "offline_recorded_response_replay": {
+    "accepted": 9,
+    "target_correct": 9,
+    "new_api_calls": 0
+  },
+  "ui": {
+    "live_blocks": 3,
+    "live_risks": 2,
+    "downloaded_json_valid": true,
+    "highlighted_source_contexts": 2,
+    "mobile_report_width": 390,
+    "body_width": 390,
+    "tables_scroll_inside_wrappers": true
+  },
+  "warnings": [
+    "Starlette test-client deprecation warning remains.",
+    "pip cache directory warning in clean-copy check; pip check reported no broken requirements."
+  ],
+  "code_sha256": {
+    "app.py": "e436b07b0efd830f3a4753a70538e57f1edf37b6d01705ab676cff60bb1bf533",
+    "pipeline.py": "4aa24a5aa455b79faa5d0dbc16bf4520c8eec547f6a054a9dc51a77e06801121",
+    "model_client.py": "145587b1caf8fb398b4404aa75ce3bb64e9dd8c0f6face6b1d87a791da8fef4a",
+    "evaluate.py": "717befb57b11cf47ba21fa8103607c458c574ee4538da7a68acb4e23a10ad9af",
+    "evaluate_e2e.py": "9c96d1e2e672a459a361aae6519bc0e05586964c5c44a53e7e3b5362a8b01099",
+    "frontend/src/App.vue": "2bd4c32eb21e316fe1f6ea3340dd1099d1173ce5876e9bc4475ef5a4d305945b",
+    "frontend/src/analysis-state.js": "e38b5de463e9afcc509ee42e2321d4bc2d62e587e4c0aef1bbfb81e7639b2d33",
+    "requirements.lock.txt": "3a53f5ae4d1c7577d58ba793b5af11dcd1b5ecfcf476a14b4009b1aec1a4f910"
+  }
+}

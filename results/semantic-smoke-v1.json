@@ -1,0 +1,66 @@
+{
+  "source_id": "sbertech_consent",
+  "document_sha256": "c28e8ac7f24eebff1aa6d13f2f9f9b7180006d935002ad1ab8b104bd674bf634",
+  "segmentation_version": "semantic-contiguous-v1",
+  "source_spans": 10,
+  "blocks": 7,
+  "calls": 2,
+  "coverage_verified": true,
+  "titles": [
+    "Предмет согласия",
+    "Цель обработки",
+    "Состав данных",
+    "Способы обработки",
+    "Срок действия",
+    "Порядок отзыва согласия",
+    "Форма подписания"
+  ],
+  "calls_metadata": [
+    {
+      "provider": "router",
+      "model": "gemini-3.1-flash-lite",
+      "latency_s": 10.747,
+      "usage": {
+        "input": 1088,
+        "output": 312,
+        "thoughts": 0,
+        "total": 1400
+      },
+      "served_by": "gemini-3.1-flash-lite",
+      "stage": "segmentation"
+    },
+    {
+      "provider": "router",
+      "model": "gemini-3.1-flash-lite",
+      "latency_s": 10.777,
+      "usage": {
+        "input": 1391,
+        "output": 539,
+        "thoughts": 0,
+        "total": 1930
+      },
+      "served_by": "gemini-3.1-flash-lite",
+      "stage": "risk_analysis"
+    }
+  ],
+  "risks_count": 1,
+  "whitespace_restored": 1,
+  "pipeline_sha256": "4e215b2aea5cf52ed23897af1e3a4174bc034e99976cfbd17860d49e658517bc",
+  "repeat_runs": [
+    {
+      "channel": "CLI",
+      "blocks": 7,
+      "risks_count": 1
+    },
+    {
+      "channel": "UI",
+      "blocks": 7,
+      "risks_count": 0
+    }
+  ],
+  "repeatability_note": "Two runs on the same full document returned different risk counts; no reliability or legal accuracy claim.",
+  "public_redactions": [
+    "remote_job_ids",
+    "local_analysis_ids"
+  ]
+}

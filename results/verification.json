@@ -1,0 +1,52 @@
+{
+  "verified_at": "2026-11-07T15:24:00.615718+00:00",
+  "clean_copy": true,
+  "contains_env": false,
+  "source_files_match": true,
+  "python": {
+    "command": ".venv/bin/python -m unittest discover -s tests -v",
+    "tests": 44,
+    "failures": 0,
+    "exit_code": 0,
+    "note": "One existing Starlette test-client deprecation warning."
+  },
+  "frontend": {
+    "install": "npm ci --offline --ignore-scripts",
+    "tests": "npm test",
+    "test_count": 2,
+    "build": "npm run build",
+    "exit_code": 0
+  },
+  "sensitive_files_excluded": [
+    ".env",
+    "site-materials/",
+    "data/runtime/",
+    "data/corpus/raw/",
+    "data/corpus/derived/",
+    "results/private/"
+  ],
+  "source_sha256": {
+    "evaluate_e2e.py": "3eca996a04a8c75c62d7f8d7f4cba1ccf5e8b660adc4d3942b6a12c2dcde7171",
+    "build_benchmark.py": "0bca6f09846a5591cb0a3dbca916d5c3d484737bff4dbfd6126cba59da23c140",
+    "collect_corpus.py": "fe5dc8970930a5b64526fdc8cfb4a4b89d726cbfb5996655aa87ead5da970b38",
+    "model_client.py": "b5d209713bf2f81d40b1430501a60462682e897076d9e3b53cdf4c7cc6915a7b",
+    "run_models_test.py": "e31e55d3f07521c518bec3ef18100c11cc807238da3c1ebbdd24ece20f55501d",
+    "prepare_e2e_cases.py": "d1f8f5f49f23e28545b3410ba698eb659387d565bba0c857db76692b9b841a5b",
+    "generate_report.py": "bbe207bc63db9d3ee3cb9103252d88a491bc7360ee0233164db3f1b3b2f382ad",
+    "build_demo_data.py": "5c11e81a1ee99e5558e4e79728eb738b224f6118a02bdc6ac200dd0eb55887b9",
+    "pipeline.py": "aed72e1b94340a512b1aaa37c3a649a24264e0b95912d396517e0f56e64e38bb",
+    "llm_layer.py": "2fbe1d8a4699d31a9ed3ba8163d1040d691c09a1698c962530b0f7987809a25b",
+    "app.py": "1e9bf40dd7920caee7cbb843ad50f1618c4491e5b364a864b0ead62fda8e30e2",
+    "evaluate.py": "18960efd31823774d0e4404d66498687f24a0c0e1dbc29fd6a7ddcd82c923300",
+    "evaluate_pairs.py": "6a9bad27d44f030f10a978738ade40250502e1862f1c4b7ba27243ff1ba8eaa0",
+    "analyze_file.py": "ca6d61bfaaef7c3c473ecc459fcfc1bfa247aa8e6c4bd0a0acb9329df6436467",
+    "frontend/src/App.vue": "c097db359eafc749403ecc30b35192928a04209904015680635ed48900ef0223",
+    "frontend/src/analysis-state.js": "073bdf470521bb9e78db1c1bd5ceb631b9564e14ffc498c78352ad456e563065",
+    "frontend/src/main.js": "376d6b79d3eb52d0193d316f5b32e23251fc6d54ff0fa84094a3552e28e1286b",
+    "frontend/src/style.css": "06142709b16f1d4858ef54a33f9db5956302c291187aa5897551b119c7086b30"
+  },
+  "github_clone_verified": true,
+  "github_source_commit": "196a86709e9ec401dc3cb6814409cffd0a50bc2b",
+  "github_branch": "codex/stage2-audit-fixes",
+  "github_files_match_tested_copy": true
+}

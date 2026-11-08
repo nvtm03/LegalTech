@@ -1,0 +1,80 @@
+{
+  "review_source": "Провести аудит Legal Tech проекта",
+  "reviewed_at": "2026-11-07T15:24:00.615718+00:00",
+  "findings": [
+    {
+      "id": "К1",
+      "status": "clean_copy_verified_and_source_published",
+      "evidence": "44 Python tests, 2 JS tests, fresh install/build; GitHub branch codex/stage2-audit-fixes"
+    },
+    {
+      "id": "С1",
+      "status": "fixed",
+      "evidence": "tests/test_collector.py: missing/corrupt snapshots restored; drift preserved separately"
+    },
+    {
+      "id": "С2",
+      "status": "fixed",
+      "evidence": "tests/test_evidence.py: ambiguous quotes, partial numbers, empty fields, PDF origin controls"
+    },
+    {
+      "id": "С3",
+      "status": "implemented_with_limits",
+      "evidence": "tests/test_relations.py; live authored example with an exception",
+      "limit": "For long documents only up to four candidate pairs; no completeness claim."
+    },
+    {
+      "id": "С4",
+      "status": "heldout_pilot_added; validation_incomplete",
+      "evidence": "results/e2e-heldout-v1.json",
+      "limit": "Two held-out source families, author labels, no expert legal assessment; no measured risk-detection advantage over paragraphs."
+    },
+    {
+      "id": "С5",
+      "status": "fixed",
+      "evidence": "tests/test_transport_security.py: no authenticated redirects"
+    },
+    {
+      "id": "С6",
+      "status": "fixed",
+      "evidence": "tests/test_app.py: actual streamed bytes limited, extra fields forbidden"
+    },
+    {
+      "id": "С7",
+      "status": "local_scope_hardened",
+      "evidence": "session ownership, database 0600/directory 0700, DELETE API; fixed-fixture hosted demo",
+      "limit": "No automatic retention; no multiuser live public service."
+    },
+    {
+      "id": "С8",
+      "status": "fixed",
+      "evidence": "snapshot returned by API; frontend hides stale results; tests/analysis-state.test.js"
+    },
+    {
+      "id": "С9",
+      "status": "recovery_implemented",
+      "evidence": "persisted Router jobs and replay cache; restart/resume test; GET retry",
+      "limit": "Provider acceptance before durable local ID save remains a narrow window; direct Google has no resumable job."
+    },
+    {
+      "id": "Н1",
+      "status": "fixed",
+      "evidence": "README safe .env creation; blank placeholders"
+    },
+    {
+      "id": "Н2",
+      "status": "fixed",
+      "evidence": "strict UTF-8 decoder test"
+    },
+    {
+      "id": "Н3",
+      "status": "fixed",
+      "evidence": "common authenticated transport, redacted errors, truncation rejected"
+    },
+    {
+      "id": "Н4",
+      "status": "fixed",
+      "evidence": "stage-aware progress and semantic progress test"
+    }
+  ]
+}

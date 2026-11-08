@@ -1,0 +1,146 @@
+[
+  {
+    "id": "consent_scope_control",
+    "family_id": "consent_scope",
+    "doc_type": "consent",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Оператор обрабатывает имя и электронную почту для регистрации учётной записи.",
+    "expected_categories": []
+  },
+  {
+    "id": "consent_scope_injected",
+    "family_id": "consent_scope",
+    "doc_type": "consent",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Оператор обрабатывает любые данные пользователя для любых коммерческих целей.",
+    "expected_categories": [
+      "purpose_and_scope"
+    ]
+  },
+  {
+    "id": "terms_changes_control",
+    "family_id": "terms_changes",
+    "doc_type": "terms",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Об изменении существенных условий сервис уведомляет за 30 дней. Пользователь вправе отказаться от дальнейшего использования.",
+    "expected_categories": []
+  },
+  {
+    "id": "terms_changes_injected",
+    "family_id": "terms_changes",
+    "doc_type": "terms",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Сервис вправе изменять любые условия немедленно, без уведомления пользователя и без права отказаться от изменений.",
+    "expected_categories": [
+      "unilateral_changes"
+    ]
+  },
+  {
+    "id": "privacy_sharing_control",
+    "family_id": "privacy_sharing",
+    "doc_type": "privacy",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Обработка поручается только хостинг-провайдеру ООО «Пример» для размещения сервиса; передача другим получателям не предусмотрена.",
+    "expected_categories": []
+  },
+  {
+    "id": "privacy_sharing_injected",
+    "family_id": "privacy_sharing",
+    "doc_type": "privacy",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Компания передаёт все данные любым третьим лицам по своему усмотрению без ограничений.",
+    "expected_categories": [
+      "third_parties"
+    ]
+  },
+  {
+    "id": "consent_retention_control",
+    "family_id": "consent_retention",
+    "doc_type": "consent",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Данные хранятся до завершения обработки обращения, после чего удаляются в течение 30 дней.",
+    "expected_categories": []
+  },
+  {
+    "id": "consent_retention_injected",
+    "family_id": "consent_retention",
+    "doc_type": "consent",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Персональные данные сохраняются бессрочно независимо от достижения цели обработки.",
+    "expected_categories": [
+      "retention"
+    ]
+  },
+  {
+    "id": "terms_liability_control",
+    "family_id": "terms_liability",
+    "doc_type": "terms",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Каждая сторона отвечает за причинённые по её вине документально подтверждённые убытки.",
+    "expected_categories": []
+  },
+  {
+    "id": "terms_liability_injected",
+    "family_id": "terms_liability",
+    "doc_type": "terms",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Компания полностью освобождается от любой ответственности за любые свои действия, пользователь лишается права требовать возмещения.",
+    "expected_categories": [
+      "liability"
+    ]
+  },
+  {
+    "id": "privacy_withdrawal_control",
+    "family_id": "privacy_withdrawal",
+    "doc_type": "privacy",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Отозвать согласие можно письмом на privacy@example.org. Получение обращения подтверждается ответом.",
+    "expected_categories": []
+  },
+  {
+    "id": "privacy_withdrawal_injected",
+    "family_id": "privacy_withdrawal",
+    "doc_type": "privacy",
+    "origin": "synthetic_authored",
+    "split": "development",
+    "expert_reviewed": false,
+    "annotation_scope": "explicit drafting-risk category, not legal compliance",
+    "text": "Отзыв согласия принимается исключительно при личной явке с нотариально заверенным заявлением; электронные обращения не рассматриваются.",
+    "expected_categories": [
+      "withdrawal"
+    ]
+  }
+]

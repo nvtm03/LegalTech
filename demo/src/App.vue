@@ -1,0 +1,22 @@
+<script setup>
+import { computed, ref } from 'vue'
+import examples from './data.json'
+const active=ref(examples[0].id)
+const sample=computed(()=>examples.find(e=>e.id===active.value))
+const result=computed(()=>sample.value.result)
+const categories={retention:'Срок хранения',third_parties:'Третьи лица',purpose_and_scope:'Цель и объём обработки',withdrawal:'Отзыв согласия',unilateral_changes:'Изменение условий',liability:'Ответственность',cross_border:'Трансграничная передача',other:'Другая формулировка'}
+const kinds={exception:'Оговорка или исключение',contradiction:'Возможное противоречие',dependency:'Связанные условия'}
+function download(){const url=URL.createObjectURL(new Blob([JSON.stringify(sample.value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='legaltech-'+sample.value.id+'.json';a.click();URL.revokeObjectURL(url)}
+</script>
+<template><main>
+  <header><a class="brand" href="/">LegalTech<span> / лаборатория договоров</span></a><span class="status">Демонстрация</span></header>
+  <section class="intro"><p class="eyebrow">ОТ ФОРМУЛИРОВКИ К ПРОВЕРЯЕМОМУ ЗАМЕЧАНИЮ</p><h1>Документ.<br>Смысл. Связи.</h1><p>Посмотрите, как анализатор разбирает текст на темы, находит возможные риски и сопоставляет оговорки разных разделов.</p></section>
+  <p class="notice">Здесь показаны сохранённые ответы модели на трёх авторских примерах. Это не действующие документы компаний. Страница не принимает ваши документы и не вызывает модели. Живой анализ реализован отдельно в приложении Python + Vue.</p>
+  <div class="workspace"><section class="input-panel"><div class="section-heading"><h2>01 / Исходный пример</h2></div><label>Выберите документ<select v-model="active"><option v-for="example in examples" :key="example.id" :value="example.id">{{example.title}}</option></select></label><pre>{{sample.text}}</pre><p class="privacy">Примеры специально содержат спорные формулировки. Найденное моделью замечание — гипотеза для проверки юристом.</p><button class="primary" @click="download">Скачать текст и результат JSON <span>↓</span></button></section>
+  <section class="output-panel"><div class="section-heading"><h2>02 / Сохранённый разбор</h2></div><div class="metrics"><div><strong>{{result.blocks.length}}</strong><span>смысловых блоков</span></div><div><strong>{{result.risks.length}}</strong><span>замечаний модели</span></div><div><strong>{{result.relations.length}}</strong><span>связей и оговорок</span></div></div>
+  <h3>Смысловые блоки</h3><details v-for="block in result.blocks" :key="block.id" class="block"><summary>{{block.title}}</summary><p>{{block.summary}}</p><pre>{{block.text}}</pre></details>
+  <h3>Возможные риски</h3><p v-if="!result.risks.length" class="muted">Модель не отметила рисков. Это не подтверждает безопасность документа.</p><article v-for="(risk,i) in result.risks" :key="i" class="risk"><div class="risk-heading">{{categories[risk.category]}}</div><blockquote>{{risk.quote}}</blockquote><p>{{risk.reason}}</p><div class="suggestion"><span>Что проверить или уточнить</span><p>{{risk.suggestion}}</p></div><p v-if="risk.context_status==='review_with_related_clause'" class="notice">В другом пункте найдена оговорка. Замечание следует рассматривать вместе с ней.</p><small>Блок {{risk.block_id}} · проверка юристом не выполнена</small></article>
+  <h3>Связи между разделами</h3><p v-if="!result.relations.length" class="muted">В этом ответе модель не указала подтверждённых связей.</p><article v-for="(edge,i) in result.relations" :key="'r'+i" class="risk"><strong>{{kinds[edge.kind]}}</strong><blockquote>{{edge.left_quote}}</blockquote><small>{{edge.left_id}}</small><blockquote>{{edge.right_quote}}</blockquote><small>{{edge.right_id}}</small><p>{{edge.explanation}}</p></article>
+  <details class="limitations"><summary>Метод и ограничения</summary><ol><li>Отдельный вызов модели группирует исходные фрагменты по смыслу.</li><li>Далее выполняются анализ формулировок и проверка связей.</li><li>Код проверяет полноту текста, идентификаторы блоков и обе цитаты каждой связи.</li></ol><p>Модель: {{result.calls[0].model}}. {{sample.created_at.slice(0,10)}}. Один сохранённый прогон; нормативная база не подключена, экспертная валидация не проведена.</p><ul><li v-for="item in result.limitations" :key="item">{{item}}</li></ul></details>
+  </section></div><footer>LegalTech · учебный исследовательский прототип<span>Фиксированные примеры / без пользовательских данных</span></footer>
+</main></template>

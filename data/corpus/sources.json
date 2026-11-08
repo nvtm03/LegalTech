@@ -1,0 +1,100 @@
+[
+  {
+    "id": "yandex_privacy",
+    "doc_type": "privacy",
+    "company": "Яндекс",
+    "url": "https://yandex.ru/legal/confidential/",
+    "format": "html"
+  },
+  {
+    "id": "tbank_privacy",
+    "doc_type": "privacy",
+    "company": "Т-Банк",
+    "url": "https://www.tbank.ru/apps/privacy/",
+    "format": "html"
+  },
+  {
+    "id": "yandex_terms",
+    "doc_type": "terms",
+    "company": "Яндекс",
+    "url": "https://yandex.ru/legal/rules/",
+    "format": "html"
+  },
+  {
+    "id": "ozon_terms",
+    "doc_type": "terms",
+    "company": "Ozon for dev",
+    "url": "https://dev.ozon.ru/docs/legal/terms-of-use/",
+    "format": "html"
+  },
+  {
+    "id": "sbertech_consent",
+    "doc_type": "consent",
+    "company": "СберТех",
+    "url": "https://sbertech.ru/docs/soglasie-form.pdf",
+    "format": "pdf"
+  },
+  {
+    "id": "sberins_consent",
+    "doc_type": "consent",
+    "company": "СберСтрахование",
+    "url": "https://sberbankins.ru/lp-files/customer-experience/Soglasiye-personalniye-dannyie.pdf",
+    "format": "pdf"
+  },
+  {
+    "id": "kaspersky_privacy",
+    "doc_type": "privacy",
+    "company": "Лаборатория Касперского",
+    "url": "https://www.kaspersky.ru/products-and-services-privacy-policy",
+    "format": "html"
+  },
+  {
+    "id": "kaspersky_web_privacy",
+    "doc_type": "privacy",
+    "company": "Лаборатория Касперского",
+    "url": "https://www.kaspersky.ru/web-privacy-policy",
+    "format": "html"
+  },
+  {
+    "id": "vkplay_terms",
+    "doc_type": "terms",
+    "company": "VK Play",
+    "url": "https://documentation.vkplay.ru/hotbox/devdocs/pdfcopy/ru/1010.pdf",
+    "format": "pdf"
+  },
+  {
+    "id": "vk_shift_terms",
+    "doc_type": "terms",
+    "company": "VK ШИФТ",
+    "url": "https://shift.vkteam.ru/static/documents/shift_agreement_reg.pdf",
+    "format": "pdf"
+  },
+  {
+    "id": "selectel_consent",
+    "doc_type": "consent",
+    "company": "Selectel",
+    "url": "https://files.selectel.ru/docs/ru/Personal_data_processing_policy_hackathon.pdf",
+    "format": "pdf"
+  },
+  {
+    "id": "twogis_privacy",
+    "doc_type": "privacy",
+    "company": "2ГИС",
+    "url": "https://law.2gis.ru/privacy",
+    "format": "html"
+  },
+  {
+    "id": "twogis_terms",
+    "doc_type": "terms",
+    "company": "2ГИС",
+    "url": "https://law.2gis.ru/rules",
+    "format": "html"
+  },
+  {
+    "id": "selectel_terms",
+    "doc_type": "terms",
+    "company": "Selectel",
+    "url": "https://files.selectel.ru/docs/ru/user-agreement.pdf",
+    "format": "pdf"
+  }
+]

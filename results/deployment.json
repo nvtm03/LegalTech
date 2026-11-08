@@ -1,0 +1,11 @@
+{
+  "provider": "Sites",
+  "status": "succeeded",
+  "url": "https://legaltech-contract-lab.bestmaxim1.chatgpt.site",
+  "audience": "public",
+  "site_source_commit": "58fc29538e9b970134fd3800316c66f4527c43d5",
+  "mode": "fixed_authored_examples",
+  "live_model_calls": false,
+  "contains_user_documents": false,
+  "public_access_verified_at": "2026-11-07T18:42:56.530188+00:00"
+}
