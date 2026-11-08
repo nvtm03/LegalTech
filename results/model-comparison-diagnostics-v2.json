@@ -1,0 +1,13 @@
+{
+  "created_at": "2026-11-08T00:17:38.275482+00:00",
+  "source": "results/model-comparison-v2.json",
+  "gemma_cases": 6,
+  "accepted_complete_risk_analyses": 0,
+  "failure_breakdown": {
+    "provider_blocked_RECITATION": 2,
+    "incomplete_MAX_TOKENS_2048": 3,
+    "invalid_JSON_extra_data": 1
+  },
+  "interpretation": "Compatibility failure of this model and harness under the recorded settings. Not six wrong legal answers; risk quality cannot be measured. JSON was not repaired or silently accepted.",
+  "action": "Preserve failures and exact output budget. Do not tune on this reused diagnostic set or claim Gemini is universally superior."
+}

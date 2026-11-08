@@ -1,7 +1,8 @@
 <script setup>
 import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
-import { sameInput, decodeText } from './analysis-state.js'
+import { sameInput, decodeText, request } from './analysis-state.js'
 const text = ref(''), docType = ref('consent'), model = ref('gemini-3.1-flash-lite'), provider = ref('router')
+const historyItems = ref([])
 const health = ref(null), error = ref(''), job = ref(null), busy = ref(false), selected = ref(null)
 let timer, disposed = false
 const labels = { purpose_and_scope:'Цели и объём данных', retention:'Срок хранения', third_parties:'Третьи лица', cross_border:'Трансграничная передача', withdrawal:'Отзыв согласия', unilateral_changes:'Изменение условий', liability:'Ответственность', other:'Другой риск' }
@@ -12,12 +13,6 @@ const result = computed(() => stale.value ? null : job.value?.result)
 const visibleRisks = computed(() => (result.value?.risks || []).filter(r => !selected.value || r.block_id === selected.value))
 const configured = computed(() => health.value?.[provider.value + '_configured'])
 const example = '1. Цель обработки\nОператор использует имя и электронную почту для регистрации и поддержки пользователя.\n\n2. Хранение и передача\nОператор вправе хранить персональные данные без ограничения срока и передавать их любым третьим лицам по своему усмотрению.\n\n3. Обращения\nВопросы о данных можно направить на privacy@example.org.'
-async function request(url, options) {
-  const response = await fetch(url, options)
-  const data = await response.json()
-  if (!response.ok) {const e=new Error(typeof data.detail === 'string' ? data.detail : 'Проверьте текст и настройки запроса.'); e.status=response.status; throw e}
-  return data
-}
 onMounted(async () => {
   try {
     health.value = await request('/api/health')
@@ -56,11 +51,22 @@ async function analyze() {
     if (!disposed) {job.value=started; localStorage.setItem('legaltech-last-analysis', started.id); history.replaceState(null,'','?analysis='+encodeURIComponent(started.id)); await poll(started.id)}
   } catch (e) {error.value=e.message; busy.value=false}
 }
-async function resume() {
+async function resume(action="resume") {
   if (!job.value?.id || busy.value) return
+  if (action==='retry' && !window.confirm('Повторить неуспешный шаг новым запросом? Он расходует лимит модели. Успешные предыдущие шаги будут использованы повторно.')) return
   busy.value=true;error.value=''
-  try {await request('/api/analyses/'+job.value.id+'/resume',{method:'POST'});await poll(job.value.id)}
+  try {await request('/api/analyses/'+job.value.id+'/'+action,{method:'POST'});await poll(job.value.id)}
   catch(e){error.value=e.message;busy.value=false}
+}
+async function loadHistory() {
+  try {historyItems.value=(await request('/api/analyses')).analyses}
+  catch(e){error.value=e.message}
+}
+async function openHistory(id) {
+  if (busy.value) return
+  localStorage.setItem('legaltech-last-analysis',id)
+  history.replaceState(null,'','?analysis='+encodeURIComponent(id))
+  await poll(id,true)
 }
 async function loadFile(event) {
   const file=event.target.files?.[0]
@@ -81,6 +87,7 @@ async function removeAnalysis() {
     await request('/api/analyses/'+job.value.id,{method:'DELETE'})
     job.value=null;text.value='';selected.value=null;error.value=''
     localStorage.removeItem('legaltech-last-analysis');history.replaceState(null,'',window.location.pathname)
+    await loadHistory()
   } catch(e){error.value=e.message}
 }
 </script>
@@ -102,7 +109,8 @@ async function removeAnalysis() {
         <button class="primary" :disabled="busy || text.trim().length<20 || !configured" @click="analyze">{{busy ? 'Анализируем документ…' : 'Проанализировать документ'}}<span aria-hidden="true">↗</span></button>
         <p v-if="busy" class="muted" role="status">{{({segmentation:'Выделяем смысловые блоки.',risk_analysis:'Проверяем формулировки.',relations:'Проверяем связи разделов.'})[job?.progress?.stage] || 'Задача в работе.'}} {{job?.progress?.total ? `${job.progress.done} из ${job.progress.total}.` : ''}} Очередь моделей может занять несколько минут.</p>
         <p v-if="error" class="error" role="alert">{{error}}</p>
-        <button v-if="job?.status==='failed' && !busy" class="text-button" @click="resume">Возобновить тот же анализ</button>
+        <button v-if="['failed','partial'].includes(job?.status) && !busy" class="text-button" @click="resume(job.retry_action)">{{job.retry_action==='retry' ? 'Повторить неуспешный шаг (новый запрос)' : 'Возобновить ожидание прежней задачи'}}</button>
+        <details v-if="!busy" @toggle="loadHistory"><summary>История этой сессии (до 7 дней)</summary><p v-for="item in historyItems" :key="item.id"><button class="text-button" @click="openHistory(item.id)">{{new Date(item.created_at).toLocaleString('ru-RU')}} · {{item.status}}</button></p><p class="muted">Неактивные анализы удаляются при первом обращении после 7 дней. История доступна только в этой сессии браузера.</p></details>
         <p v-if="job && !busy"><button class="text-button" @click="removeAnalysis">Удалить локальный анализ</button></p>
       </section>
       <section class="output-panel" aria-live="polite">
@@ -112,15 +120,17 @@ async function removeAnalysis() {
         <template v-else>
           <div class="metrics"><div><strong>{{result.blocks.length}}</strong><span>блоков</span></div><div><strong>{{result.risks.length}}</strong><span>возможных рисков</span></div><div><strong>{{result.calls.reduce((s,c)=>s+c.latency_s,0).toFixed(1)}} с</strong><span>вызовы моделей</span></div></div>
           <p class="notice">Это исследовательский разбор, требующий проверки юристом. Отсутствие найденных рисков не подтверждает безопасность документа.</p>
+          <p v-if="result.partial" class="notice">Анализ блоков сохранён, но проверка связей не завершена: {{result.relation_review?.error}}. Связи требуют отдельной проверки.</p>
+          <p v-if="result.relation_review?.status==='no_candidates'" class="notice">Модель не выбрала пары для проверки связей. Отсутствие противоречий не установлено.</p>
           <h3>Блоки документа</h3><div class="block-tabs"><button :class="{active:!selected}" @click="selected=null">Все риски</button><button v-for="b in result.blocks" :key="b.id" :class="{active:selected===b.id}" @click="selected=selected===b.id?null:b.id">{{b.id}} · {{b.title}}</button></div>
           <details v-for="b in result.blocks.filter(b=>!selected || b.id===selected)" :key="b.id" class="block"><summary>{{b.title}}</summary><p>{{b.summary}}</p><pre>{{b.text}}</pre></details>
           <h3>Что стоит проверить</h3><p v-if="!visibleRisks.length" class="muted">В выбранных блоках модель не отметила рисков.</p>
-          <article v-for="(r,i) in visibleRisks" :key="i" class="risk"><div class="risk-heading"><span>{{labels[r.category]}}</span><span class="badge" :class="r.severity">{{severity[r.severity]}}</span></div><blockquote>{{r.quote}}</blockquote><p>{{r.reason}}</p><p v-if="r.context_status==='review_with_related_clause'" class="notice">В другом пункте есть оговорка. Рассмотрите замечание вместе со связанной формулировкой ниже.</p><div class="suggestion"><span>Рекомендация для проверки</span><p>{{r.suggestion}}</p></div><small>Источник: {{r.block_id}}<template v-if="r.related_block_ids.length"> · Связи: {{r.related_block_ids.join(', ')}}</template></small></article>
+          <article v-for="(r,i) in visibleRisks" :key="i" class="risk"><div class="risk-heading"><span>{{labels[r.category]}}</span><span class="badge" :class="r.severity">{{severity[r.severity]}}</span></div><blockquote v-if="r.context">{{r.context.slice(0,r.quote_start-r.context_start)}}<mark>{{r.quote}}</mark>{{r.context.slice(r.quote_end-r.context_start)}}</blockquote><blockquote v-else>{{r.quote}}</blockquote><p>{{r.reason}}</p><p v-if="r.context_status==='review_with_related_clause'" class="notice">К процитированному условию найдена оговорка. Рассмотрите замечание вместе со связанной формулировкой ниже.</p><div class="suggestion"><span>Рекомендация для проверки</span><p>{{r.suggestion}}</p></div><small>Источник: {{r.block_id}}<template v-if="r.related_block_ids.length"> · Связи: {{r.related_block_ids.join(', ')}}</template><template v-if="r.related_relation_ids?.length"> · Подтверждённые связи: {{r.related_relation_ids.join(', ')}}</template></small></article>
           <h3 v-if="result.relation_review?.status==='completed'">Связи и оговорки между разделами</h3>
-          <p v-if="result.relation_review?.status==='completed'" class="muted">Это сопоставление условий для проверки человеком. Оговорка может уточнять общий пункт и сама по себе не является риском. Для длинного документа проверяются до четырёх выбранных пар.</p>
+          <p v-if="result.relation_review?.status==='completed'" class="muted">Это сопоставление условий для проверки человеком. Оговорка может уточнять общий пункт и сама по себе не является риском. Для длинного документа проверяются до четырёх выбранных пар.<template v-if="result.relation_review.review_groups_completed!=null"> Завершено групп проверки: {{result.relation_review.review_groups_completed}}. Блоков в индексе: {{result.relation_review.index_blocks}} из {{result.relation_review.total_blocks}}.</template></p>
           <p v-if="result.relation_review?.status==='completed' && !result.relations?.length" class="muted">Модель не указала подтверждённых связей в проверенных парах. Это не доказывает отсутствие противоречий.</p>
           <article v-for="(edge,i) in result.relations || []" :key="'edge'+i" class="risk">
-            <strong>{{({exception:'Оговорка или исключение',contradiction:'Возможное противоречие',dependency:'Связанные условия'})[edge.kind]}}</strong>
+            <strong>{{edge.id ? edge.id+' · ' : ''}}{{({exception:'Оговорка или исключение',contradiction:'Возможное противоречие',dependency:'Связанные условия'})[edge.kind]}}</strong>
             <blockquote>{{edge.left_quote}}</blockquote><small>{{edge.left_id}}</small>
             <blockquote>{{edge.right_quote}}</blockquote><small>{{edge.right_id}}</small><p>{{edge.explanation}}</p>
           </article>

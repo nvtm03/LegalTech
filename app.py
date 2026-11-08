@@ -93,7 +93,7 @@ def create_app(db_path=None):
         app.state.db.row_factory = sqlite3.Row
         app.state.db.execute("CREATE TABLE IF NOT EXISTS jobs (id TEXT PRIMARY KEY, status TEXT, created_at TEXT, progress TEXT, result TEXT, error TEXT)")
         columns={row[1] for row in app.state.db.execute('PRAGMA table_info(jobs)')}
-        for column in ('owner','input'):
+        for column in ('owner','input','retry_action','failed_call_key'):
             if column not in columns:
                 app.state.db.execute(f'ALTER TABLE jobs ADD COLUMN {column} TEXT')
         app.state.db.execute('CREATE TABLE IF NOT EXISTS model_calls (analysis_id TEXT, call_key TEXT, job_json TEXT, PRIMARY KEY(analysis_id,call_key))')
@@ -104,12 +104,20 @@ def create_app(db_path=None):
         app.state.pool.shutdown(wait=True, cancel_futures=True)
         app.state.db.close()
 
+    def purge_expired():
+        # Seven days matches the session lifetime. Cleanup also removes orphaned traces.
+        with lock:
+            app.state.db.execute("DELETE FROM jobs WHERE status NOT IN ('queued','running') AND julianday(created_at) < julianday('now','-7 days')")
+            app.state.db.execute('DELETE FROM model_calls WHERE analysis_id NOT IN (SELECT id FROM jobs)')
+            app.state.db.commit()
+
     app = FastAPI(title="LegalTech Workbench", lifespan=lifespan)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "[::1]"])
     app.add_middleware(BodyLimitMiddleware)
 
     @app.middleware("http")
     async def same_origin(request: Request, call_next):
+        purge_expired()
         session=request.cookies.get('legaltech-session','')
         if not re.fullmatch('[0-9a-f]{64}',session):
             session=secrets.token_hex(32)
@@ -140,7 +148,10 @@ def create_app(db_path=None):
 
     def work(job_id, payload):
         update(job_id, status="running")
+        last_call_key = None
         def checkpoint(key,value=None):
+            nonlocal last_call_key
+            last_call_key = key
             with lock:
                 if value is not None:
                     app.state.db.execute('INSERT INTO model_calls VALUES (?,?,?) ON CONFLICT(analysis_id,call_key) DO UPDATE SET job_json=excluded.job_json',
@@ -153,9 +164,13 @@ def create_app(db_path=None):
                                       check_relations=True,
                                       client=partial(generate_json,checkpoint=checkpoint),
                                       stage_progress=lambda stage,done,total:update(job_id,progress=json.dumps({'stage':stage,'done':done,'total':total})))
-            update(job_id, status="done", result=json.dumps(result, ensure_ascii=False))
+            is_partial = result.get('partial', False)
+            review = result.get('relation_review', {})
+            update(job_id, status='partial' if is_partial else 'done', result=json.dumps(result, ensure_ascii=False),
+                   retry_action=review.get('retry_action', 'retry') if is_partial else None,
+                   failed_call_key=last_call_key if is_partial else None)
         except (ModelError, ValueError) as exc:
-            update(job_id, status="failed", error=str(exc))
+            update(job_id, status="failed", error=str(exc), retry_action=getattr(exc,"retry_action","retry"), failed_call_key=last_call_key)
         except Exception:
             log.exception("Analysis failed: %s", job_id)
             update(job_id, status="failed", error="Не удалось обработать документ. Повторите анализ или проверьте журнал приложения.")
@@ -181,6 +196,12 @@ def create_app(db_path=None):
         app.state.pool.submit(work, job_id, payload)
         return {"id": job_id, "status": "queued"}
 
+    @app.get('/api/analyses')
+    def list_analyses(request: Request):
+        with lock:
+            rows = app.state.db.execute('SELECT id,status,created_at FROM jobs WHERE owner=? ORDER BY created_at DESC LIMIT 100', (request.state.owner,)).fetchall()
+        return {'analyses':[dict(row) for row in rows], 'retention_days':7}
+
     @app.get("/api/analyses/{job_id}")
     def get_analysis(job_id: str, request: Request):
         with lock:
@@ -189,7 +210,7 @@ def create_app(db_path=None):
             raise HTTPException(404, "Анализ не найден. Запустите новый.")
         return {"id": row["id"], "status": row["status"], "created_at": row["created_at"],
                 "progress": json.loads(row["progress"]), "input":json.loads(row['input']) if row['input'] else None,
-                "result": json.loads(row["result"]) if row["result"] else None, "error": row["error"]}
+                "result": json.loads(row["result"]) if row["result"] else None, "error": row["error"], "retry_action":row["retry_action"] or "resume"}
 
     @app.delete('/api/analyses/{job_id}',status_code=204)
     def delete_analysis(job_id: str, request: Request):
@@ -201,20 +222,33 @@ def create_app(db_path=None):
             app.state.db.execute('DELETE FROM model_calls WHERE analysis_id=?',(job_id,))
             app.state.db.commit()
 
-    @app.post('/api/analyses/{job_id}/resume',status_code=202)
-    def resume_analysis(job_id: str, request: Request):
+    def restart_analysis(job_id, request, action):
         with lock:
             row=app.state.db.execute('SELECT * FROM jobs WHERE id=? AND owner=?',(job_id,request.state.owner)).fetchone()
             if not row:raise HTTPException(404,'Анализ не найден.')
             if row['status'] in ('queued','running','done'):
                 return {'id':job_id,'status':row['status']}
+            if action=='resume' and row['retry_action']=='retry':
+                raise HTTPException(409,'Этот шаг завершился отказом. Нужен явный повтор с новым запросом к модели.')
+            if action=='retry' and row['retry_action']!='retry':
+                raise HTTPException(409,'Сначала возобновите существующую задачу без нового запроса.')
             active=app.state.db.execute("SELECT COUNT(*) FROM jobs WHERE status IN ('queued','running')").fetchone()[0]
             if active>=2:raise HTTPException(429,'Дождитесь завершения текущих анализов.')
             payload=AnalysisRequest.model_validate_json(row['input'])
-            app.state.db.execute("UPDATE jobs SET status='queued',error=NULL WHERE id=?",(job_id,))
+            if action=='retry' and row['failed_call_key']:
+                app.state.db.execute('DELETE FROM model_calls WHERE analysis_id=? AND call_key=?',(job_id,row['failed_call_key']))
+            app.state.db.execute("UPDATE jobs SET status='queued',error=NULL,retry_action=NULL,failed_call_key=NULL WHERE id=?",(job_id,))
             app.state.db.commit()
         app.state.pool.submit(work,job_id,payload)
         return {'id':job_id,'status':'queued'}
+
+    @app.post('/api/analyses/{job_id}/resume', status_code=202)
+    def resume_analysis(job_id: str, request: Request):
+        return restart_analysis(job_id, request, 'resume')
+
+    @app.post('/api/analyses/{job_id}/retry', status_code=202)
+    def retry_analysis(job_id: str, request: Request):
+        return restart_analysis(job_id, request, 'retry')
 
     dist = ROOT / "frontend/dist"
     if (dist / "assets").exists():

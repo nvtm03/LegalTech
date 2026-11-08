@@ -1,0 +1,663 @@
+{
+  "created_at": "2026-11-08T00:07:45.838811+00:00",
+  "dataset": "composite-v1-reused-diagnostic",
+  "families": [
+    "selectel",
+    "twogis"
+  ],
+  "limitations": [
+    "Six composite excerpts from two source families; author labels, no expert legal validation.",
+    "This set was previously inspected; this is a diagnostic rerun, not a new untouched held-out test.",
+    "Same cases, segmentation, risk prompt and timeout for both models. Alternating model order by case.",
+    "One run per model and case. No significance or model superiority claim. Partial relations are reported separately."
+  ],
+  "dataset_sha256": "c5d24bf9f6d3dcc539f45e19a9d70c398b3be3d61d64d7a36283ee47bbbab433",
+  "code_sha256": {
+    "pipeline.py": "c2f087bd369afa302842accda8bcd54266c4a8da762909b0df3e435604b8fdec",
+    "model_client.py": "145587b1caf8fb398b4404aa75ce3bb64e9dd8c0f6face6b1d87a791da8fef4a",
+    "evaluate.py": "716a2e0e1b87f0eaad7dae14d614358c09cb9073476ba3a500a31a3f21981c6a",
+    "evaluate_e2e.py": "42229a0fad6495c26cfc9abe8897acee6362d6262555490be87634824b2a0e9f",
+    "requirements.lock.txt": "3a53f5ae4d1c7577d58ba793b5af11dcd1b5ecfcf476a14b4009b1aec1a4f910"
+  },
+  "records": [
+    {
+      "id": "selectel_retention_original",
+      "pair_id": "selectel_retention",
+      "family_id": "selectel",
+      "source_id": "selectel_consent",
+      "doc_type": "consent",
+      "text_sha256": "6e17ef963fd5d6043f719d1e220ce4da98dc535d42e2d3054d053626e72eef13",
+      "target_category": "retention",
+      "expected_target_present": false,
+      "target_start": 118,
+      "target_end": 374,
+      "segmentation": "semantic",
+      "model": "gemini-3.5-flash-lite",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": true,
+      "matches_expected": true,
+      "target_found": false,
+      "outcome": "clean_control",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 11.328,
+          "usage": {
+            "input": 460,
+            "output": 141,
+            "thoughts": 0,
+            "total": 601
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "segmentation"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.65,
+          "usage": {
+            "input": 744,
+            "output": 176,
+            "thoughts": 0,
+            "total": 920
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "risk_analysis"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.658,
+          "usage": {
+            "input": 590,
+            "output": 5,
+            "thoughts": 0,
+            "total": 595
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "relations"
+        }
+      ],
+      "blocks": 3,
+      "relations_found": 0,
+      "partial": false,
+      "relation_review": {
+        "status": "completed",
+        "scope": "all_blocks_in_one_call",
+        "pairs_reviewed": 1,
+        "index_blocks": 3,
+        "total_blocks": 3,
+        "exhaustive": false
+      }
+    },
+    {
+      "id": "selectel_retention_original",
+      "pair_id": "selectel_retention",
+      "family_id": "selectel",
+      "source_id": "selectel_consent",
+      "doc_type": "consent",
+      "text_sha256": "6e17ef963fd5d6043f719d1e220ce4da98dc535d42e2d3054d053626e72eef13",
+      "target_category": "retention",
+      "expected_target_present": false,
+      "target_start": 118,
+      "target_end": 374,
+      "segmentation": "semantic",
+      "model": "gemma-4-26b-a4b-it",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": false,
+      "matches_expected": false,
+      "target_found": false,
+      "mislocalized": 0,
+      "outcome": "technical_error",
+      "error": "Router не выполнил задачу. Проверьте её статус в Monitoring."
+    },
+    {
+      "id": "selectel_retention_mutation",
+      "pair_id": "selectel_retention",
+      "family_id": "selectel",
+      "source_id": "selectel_consent",
+      "doc_type": "consent",
+      "text_sha256": "ee210082fbe22934f13c4d61bccc62ec42e0754ff476211295342a0c767cbe35",
+      "target_category": "retention",
+      "expected_target_present": true,
+      "target_start": 118,
+      "target_end": 227,
+      "segmentation": "semantic",
+      "model": "gemma-4-26b-a4b-it",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": false,
+      "matches_expected": false,
+      "target_found": false,
+      "mislocalized": 0,
+      "outcome": "technical_error",
+      "error": "Модель вернула незавершённый ответ. Уменьшите размер документа."
+    },
+    {
+      "id": "selectel_retention_mutation",
+      "pair_id": "selectel_retention",
+      "family_id": "selectel",
+      "source_id": "selectel_consent",
+      "doc_type": "consent",
+      "text_sha256": "ee210082fbe22934f13c4d61bccc62ec42e0754ff476211295342a0c767cbe35",
+      "target_category": "retention",
+      "expected_target_present": true,
+      "target_start": 118,
+      "target_end": 227,
+      "segmentation": "semantic",
+      "model": "gemini-3.5-flash-lite",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": true,
+      "matches_expected": true,
+      "target_found": true,
+      "outcome": "hit",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.656,
+          "usage": {
+            "input": 338,
+            "output": 97,
+            "thoughts": 0,
+            "total": 435
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "segmentation"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.661,
+          "usage": {
+            "input": 621,
+            "output": 288,
+            "thoughts": 0,
+            "total": 909
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "risk_analysis"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.697,
+          "usage": {
+            "input": 448,
+            "output": 9,
+            "thoughts": 0,
+            "total": 457
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "relations"
+        }
+      ],
+      "blocks": 3,
+      "relations_found": 0,
+      "partial": false,
+      "relation_review": {
+        "status": "completed",
+        "scope": "all_blocks_in_one_call",
+        "pairs_reviewed": 1,
+        "index_blocks": 3,
+        "total_blocks": 3,
+        "exhaustive": false
+      }
+    },
+    {
+      "id": "twogis_purpose_original",
+      "pair_id": "twogis_purpose",
+      "family_id": "twogis",
+      "source_id": "twogis_privacy",
+      "doc_type": "privacy",
+      "text_sha256": "3f70d9797b07cb71749adc5c22fa2e20309c303f2b8e42a2a82ed7be4b569da7",
+      "target_category": "purpose_and_scope",
+      "expected_target_present": false,
+      "target_start": 118,
+      "target_end": 266,
+      "segmentation": "semantic",
+      "model": "gemini-3.5-flash-lite",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": true,
+      "matches_expected": true,
+      "target_found": false,
+      "outcome": "clean_control",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.664,
+          "usage": {
+            "input": 392,
+            "output": 98,
+            "thoughts": 0,
+            "total": 490
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "segmentation"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.629,
+          "usage": {
+            "input": 655,
+            "output": 170,
+            "thoughts": 0,
+            "total": 825
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "risk_analysis"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.655,
+          "usage": {
+            "input": 495,
+            "output": 9,
+            "thoughts": 0,
+            "total": 504
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "relations"
+        }
+      ],
+      "blocks": 3,
+      "relations_found": 0,
+      "partial": false,
+      "relation_review": {
+        "status": "completed",
+        "scope": "all_blocks_in_one_call",
+        "pairs_reviewed": 1,
+        "index_blocks": 3,
+        "total_blocks": 3,
+        "exhaustive": false
+      }
+    },
+    {
+      "id": "twogis_purpose_original",
+      "pair_id": "twogis_purpose",
+      "family_id": "twogis",
+      "source_id": "twogis_privacy",
+      "doc_type": "privacy",
+      "text_sha256": "3f70d9797b07cb71749adc5c22fa2e20309c303f2b8e42a2a82ed7be4b569da7",
+      "target_category": "purpose_and_scope",
+      "expected_target_present": false,
+      "target_start": 118,
+      "target_end": 266,
+      "segmentation": "semantic",
+      "model": "gemma-4-26b-a4b-it",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": false,
+      "matches_expected": false,
+      "target_found": false,
+      "mislocalized": 0,
+      "outcome": "technical_error",
+      "error": "Router не выполнил задачу. Проверьте её статус в Monitoring."
+    },
+    {
+      "id": "twogis_purpose_mutation",
+      "pair_id": "twogis_purpose",
+      "family_id": "twogis",
+      "source_id": "twogis_privacy",
+      "doc_type": "privacy",
+      "text_sha256": "1c1d16d98d442278ab3462afa58173bb870d9a3bdd52c3c57a3ccfcd6d7ec84a",
+      "target_category": "purpose_and_scope",
+      "expected_target_present": true,
+      "target_start": 118,
+      "target_end": 232,
+      "segmentation": "semantic",
+      "model": "gemma-4-26b-a4b-it",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": false,
+      "matches_expected": false,
+      "target_found": false,
+      "mislocalized": 0,
+      "outcome": "technical_error",
+      "error": "Модель вернула незавершённый ответ. Уменьшите размер документа."
+    },
+    {
+      "id": "twogis_purpose_mutation",
+      "pair_id": "twogis_purpose",
+      "family_id": "twogis",
+      "source_id": "twogis_privacy",
+      "doc_type": "privacy",
+      "text_sha256": "1c1d16d98d442278ab3462afa58173bb870d9a3bdd52c3c57a3ccfcd6d7ec84a",
+      "target_category": "purpose_and_scope",
+      "expected_target_present": true,
+      "target_start": 118,
+      "target_end": 232,
+      "segmentation": "semantic",
+      "model": "gemini-3.5-flash-lite",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": true,
+      "matches_expected": true,
+      "target_found": true,
+      "outcome": "hit",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.699,
+          "usage": {
+            "input": 372,
+            "output": 97,
+            "thoughts": 0,
+            "total": 469
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "segmentation"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.736,
+          "usage": {
+            "input": 633,
+            "output": 303,
+            "thoughts": 0,
+            "total": 936
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "risk_analysis"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.863,
+          "usage": {
+            "input": 473,
+            "output": 5,
+            "thoughts": 0,
+            "total": 478
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "relations"
+        }
+      ],
+      "blocks": 3,
+      "relations_found": 0,
+      "partial": false,
+      "relation_review": {
+        "status": "completed",
+        "scope": "all_blocks_in_one_call",
+        "pairs_reviewed": 1,
+        "index_blocks": 3,
+        "total_blocks": 3,
+        "exhaustive": false
+      }
+    },
+    {
+      "id": "twogis_liability_original",
+      "pair_id": "twogis_liability",
+      "family_id": "twogis",
+      "source_id": "twogis_terms",
+      "doc_type": "terms",
+      "text_sha256": "ab9b6ac0824b0092cde0671d0577b734a04955bdbad2abe8e31b2f13053c90ff",
+      "target_category": "liability",
+      "expected_target_present": false,
+      "target_start": 118,
+      "target_end": 227,
+      "segmentation": "semantic",
+      "model": "gemini-3.5-flash-lite",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": true,
+      "matches_expected": true,
+      "target_found": false,
+      "outcome": "clean_control",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.644,
+          "usage": {
+            "input": 353,
+            "output": 140,
+            "thoughts": 0,
+            "total": 493
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "segmentation"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.642,
+          "usage": {
+            "input": 636,
+            "output": 162,
+            "thoughts": 0,
+            "total": 798
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "risk_analysis"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.648,
+          "usage": {
+            "input": 468,
+            "output": 9,
+            "thoughts": 0,
+            "total": 477
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "relations"
+        }
+      ],
+      "blocks": 3,
+      "relations_found": 0,
+      "partial": false,
+      "relation_review": {
+        "status": "completed",
+        "scope": "all_blocks_in_one_call",
+        "pairs_reviewed": 1,
+        "index_blocks": 3,
+        "total_blocks": 3,
+        "exhaustive": false
+      }
+    },
+    {
+      "id": "twogis_liability_original",
+      "pair_id": "twogis_liability",
+      "family_id": "twogis",
+      "source_id": "twogis_terms",
+      "doc_type": "terms",
+      "text_sha256": "ab9b6ac0824b0092cde0671d0577b734a04955bdbad2abe8e31b2f13053c90ff",
+      "target_category": "liability",
+      "expected_target_present": false,
+      "target_start": 118,
+      "target_end": 227,
+      "segmentation": "semantic",
+      "model": "gemma-4-26b-a4b-it",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": false,
+      "matches_expected": false,
+      "target_found": false,
+      "mislocalized": 0,
+      "outcome": "technical_error",
+      "error": "Модель вернула незавершённый ответ. Уменьшите размер документа."
+    },
+    {
+      "id": "twogis_liability_mutation",
+      "pair_id": "twogis_liability",
+      "family_id": "twogis",
+      "source_id": "twogis_terms",
+      "doc_type": "terms",
+      "text_sha256": "c7a5badcacc332979ade26b750e10f89994ea1283392830ed1a8b4fad63d88f9",
+      "target_category": "liability",
+      "expected_target_present": true,
+      "target_start": 118,
+      "target_end": 252,
+      "segmentation": "semantic",
+      "model": "gemma-4-26b-a4b-it",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": false,
+      "matches_expected": false,
+      "target_found": false,
+      "mislocalized": 0,
+      "outcome": "technical_error",
+      "error": "Модель вернула ответ вне формата JSON."
+    },
+    {
+      "id": "twogis_liability_mutation",
+      "pair_id": "twogis_liability",
+      "family_id": "twogis",
+      "source_id": "twogis_terms",
+      "doc_type": "terms",
+      "text_sha256": "c7a5badcacc332979ade26b750e10f89994ea1283392830ed1a8b4fad63d88f9",
+      "target_category": "liability",
+      "expected_target_present": true,
+      "target_start": 118,
+      "target_end": 252,
+      "segmentation": "semantic",
+      "model": "gemini-3.5-flash-lite",
+      "timeout_seconds": 180,
+      "relations": true,
+      "ok": true,
+      "matches_expected": true,
+      "target_found": true,
+      "outcome": "hit",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "calls": [
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.664,
+          "usage": {
+            "input": 340,
+            "output": 97,
+            "thoughts": 0,
+            "total": 437
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "segmentation"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.665,
+          "usage": {
+            "input": 623,
+            "output": 1932,
+            "thoughts": 0,
+            "total": 2555
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "risk_analysis"
+        },
+        {
+          "provider": "router",
+          "model": "gemini-3.5-flash-lite",
+          "latency_s": 10.644,
+          "usage": {
+            "input": 440,
+            "output": 9,
+            "thoughts": 0,
+            "total": 449
+          },
+          "served_by": "gemini-3.5-flash-lite",
+          "resumed": false,
+          "stage": "relations"
+        }
+      ],
+      "blocks": 3,
+      "relations_found": 0,
+      "partial": false,
+      "relation_review": {
+        "status": "completed",
+        "scope": "all_blocks_in_one_call",
+        "pairs_reviewed": 1,
+        "index_blocks": 3,
+        "total_blocks": 3,
+        "exhaustive": false
+      }
+    }
+  ],
+  "summary": {
+    "gemini-3.5-flash-lite/semantic": {
+      "cases": 6,
+      "successful": 6,
+      "technical_errors": 0,
+      "localized_correct": 6,
+      "missed_injections": 0,
+      "flagged_controls": 0,
+      "mislocalized_findings": 0,
+      "partial_results": 0,
+      "positive_cases": 3,
+      "control_cases": 3,
+      "boundary_tp": 12,
+      "boundary_fp": 0,
+      "boundary_fn": 0
+    },
+    "gemma-4-26b-a4b-it/semantic": {
+      "cases": 6,
+      "successful": 0,
+      "technical_errors": 6,
+      "localized_correct": 0,
+      "missed_injections": 0,
+      "flagged_controls": 0,
+      "mislocalized_findings": 0,
+      "partial_results": 0,
+      "positive_cases": 3,
+      "control_cases": 3,
+      "boundary_tp": 0,
+      "boundary_fp": 0,
+      "boundary_fn": 0
+    }
+  },
+  "finished_at": "2026-11-08T00:16:24.511233+00:00"
+}

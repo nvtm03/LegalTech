@@ -94,3 +94,57 @@ class AppTests(unittest.TestCase):
 
 
 if __name__ == '__main__': unittest.main()
+
+class RetryActionTests(unittest.TestCase):
+    def test_explicit_retry_replaces_only_failed_call_and_keeps_successful_steps(self):
+        from model_client import ModelError
+        attempts=[]
+        def analyze(*args,**kwargs):
+            client=kwargs['client']
+            client('first',{'type':'object'},provider='router')
+            data,_=client('second',{'type':'object'},provider='router')
+            if not data.get('valid'):
+                raise ModelError('Неверная схема результата')
+            return {'blocks':[],'risks':[]}
+        def remote(url,key,body=None,**kwargs):
+            prompt=body['contents'][0]['parts'][0]['text']
+            attempts.append(prompt)
+            valid=prompt=='first' or attempts.count('second')>1
+            return {'id':'job_'+str(len(attempts)),'status':'done','result':{'text':json.dumps({'valid':valid})}}
+        with tempfile.TemporaryDirectory() as directory,patch.dict(os.environ,{'ROUTER_API_KEY':'synthetic'}),patch('app.analyze_document',side_effect=analyze),patch('model_client._request',side_effect=remote):
+            with TestClient(create_app(Path(directory)/'retry.db'),base_url='http://localhost') as client:
+                url='/api/analyses/'+client.post('/api/analyses',json={'text':'Документ для проверки явного повторного запроса'}).json()['id']
+                for _ in range(100):
+                    state=client.get(url).json()
+                    if state['status']=='failed':break
+                    time.sleep(.01)
+                self.assertEqual(state.get('retry_action'),'retry')
+                self.assertEqual(client.post(url+'/resume').status_code,409)
+                self.assertEqual(client.post(url+'/retry').status_code,202)
+                for _ in range(100):
+                    state=client.get(url).json()
+                    if state['status']=='done':break
+                    time.sleep(.01)
+                self.assertEqual(state['status'],'done')
+                self.assertEqual(attempts,['first','second','second'])
+
+class RetentionTests(unittest.TestCase):
+    def test_expired_inactive_jobs_and_model_traces_are_purged_and_history_is_owned(self):
+        with tempfile.TemporaryDirectory() as directory,patch.dict(os.environ,{'ROUTER_API_KEY':'synthetic'}),patch('app.analyze_document',return_value={'blocks':[],'risks':[]}):
+            app=create_app(Path(directory)/'expiry.db')
+            with TestClient(app,base_url='http://localhost') as client:
+                job_id=client.post('/api/analyses',json={'text':'Публичный документ для проверки срока хранения'}).json()['id']
+                for _ in range(100):
+                    if client.get('/api/analyses/'+job_id).json()['status']=='done':break
+                    time.sleep(.01)
+                history=client.get('/api/analyses')
+                self.assertEqual(history.status_code,200)
+                self.assertEqual(history.json()['analyses'][0]['id'],job_id)
+                outsider=TestClient(app,base_url='http://localhost')
+                self.assertEqual(outsider.get('/api/analyses').json()['analyses'],[])
+                app.state.db.execute("UPDATE jobs SET created_at='2000-01-01T00:00:00+00:00' WHERE id=?",(job_id,))
+                app.state.db.execute('INSERT INTO model_calls VALUES (?,?,?)',(job_id,'trace','{}'))
+                app.state.db.commit()
+                self.assertEqual(client.get('/api/analyses/'+job_id).status_code,404)
+                self.assertEqual(app.state.db.execute('SELECT COUNT(*) FROM model_calls').fetchone()[0],0)
+                outsider.close()

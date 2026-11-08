@@ -49,3 +49,14 @@ class CollectorTests(unittest.TestCase):
 
 
 if __name__=='__main__':unittest.main()
+
+class PageMapTests(unittest.TestCase):
+    def test_pdf_coordinates_select_exact_original_page_text(self):
+        from types import SimpleNamespace
+        pages=[SimpleNamespace(extract_text=lambda:'Первая страница'),SimpleNamespace(extract_text=lambda:'Вторая страница')]
+        with patch('collect_corpus.PdfReader',return_value=SimpleNamespace(pages=pages)):
+            helper=getattr(collect_corpus,'extract_pdf_snapshot',lambda data:('',[]))
+            text,mapping=helper(b'fixture')
+        self.assertEqual(text,'Первая страница\n\nВторая страница')
+        self.assertEqual(mapping[1],{'page':2,'start':17,'end':32})
+        self.assertEqual(text[mapping[1]['start']:mapping[1]['end']],'Вторая страница')

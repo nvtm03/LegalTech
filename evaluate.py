@@ -13,6 +13,16 @@ def score(expected, predicted):
     return {"tp": len(expected & predicted), "fp": len(predicted - expected), "fn": len(expected - predicted)}
 
 
+def summarize_category_records(records):
+    successful = [r for r in records if r['ok']]
+    counts = [score(r['expected'], r['predicted']) for r in successful]
+    tp, fp, fn = (sum(r[k] for r in counts) for k in ('tp','fp','fn'))
+    return {'cases':len(records), 'successes':len(successful), 'technical_errors':len(records)-len(successful),
+            'tp':tp,'fp':fp,'fn':fn, 'precision':tp/(tp+fp) if tp+fp else None,
+            'recall':tp/(tp+fn) if tp+fn else None,
+            'exact_category_matches':sum(set(r['expected'])==set(r['predicted']) for r in successful)}
+
+
 def summarize_target_records(records):
     """Only the labelled target pattern is scored; missing responses remain errors."""
     counts = dict(tp=0, tn=0, fp=0, fn=0, errors=0)
@@ -30,7 +40,7 @@ def summarize_target_records(records):
 
 
 def score_end_to_end(case,result):
-    if result is None:return {'ok':False,'matches_expected':False,'target_found':False,'mislocalized':0}
+    if result is None:return {'ok':False,'matches_expected':False,'target_found':False,'mislocalized':0,'outcome':'technical_error'}
     same_category=[r for r in result['risks'] if r['category']==case['target_category']]
     localized=[r for r in same_category if r['quote_start']<case['target_end'] and r['quote_end']>case['target_start']]
     expected=set(case.get('reference_starts',[]))-{0}
@@ -41,7 +51,9 @@ def score_end_to_end(case,result):
         candidates=sorted(s for s in unmatched if abs(s-start)<=2)
         if candidates:unmatched.remove(candidates[0]);tp+=1
     found=bool(localized)
-    return {'ok':True,'matches_expected':found==case['expected_target_present'],'target_found':found,
+    correct = found if case['expected_target_present'] else not same_category
+    outcome = ('hit' if found else 'mislocalized' if same_category else 'miss') if case['expected_target_present'] else ('false_alarm' if found else 'mislocalized' if same_category else 'clean_control')
+    return {'ok':True,'matches_expected':correct,'target_found':found,'outcome':outcome,
             'mislocalized':len(same_category)-len(localized),'boundary_tp':tp,'boundary_fp':len(predicted)-tp,'boundary_fn':len(unmatched)}
 
 
@@ -64,10 +76,7 @@ def evaluate(cases, *, model="gemini-3.1-flash-lite", provider="router", out=Pat
             records.append(record)
             for name in ("baseline", "checklist"):
                 rows = [r for r in records if r["variant"] == name]
-                tp, fp, fn = (sum(r[k] for r in rows) for k in ("tp", "fp", "fn"))
-                result["summary"][name] = {"cases": len(rows), "successes": sum(r["ok"] for r in rows), "tp": tp, "fp": fp, "fn": fn,
-                                          "precision": tp/(tp+fp) if tp+fp else None, "recall": tp/(tp+fn) if tp+fn else None,
-                                          "exact_category_matches": sum(r["ok"] and set(r["expected"]) == set(r["predicted"]) for r in rows)}
+                result["summary"][name] = summarize_category_records(rows)
             out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
             print(case["id"], variant, "ok=" + str(record["ok"]), "predicted=" + str(record["predicted"]), flush=True)
     return result

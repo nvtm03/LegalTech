@@ -14,6 +14,16 @@ from llm_layer import CTX
 ROOT = Path(__file__).resolve().parent / "data/corpus"
 
 
+def extract_pdf_snapshot(content):
+    parts, mapping, cursor = [], [], 0
+    for page_number, page in enumerate(PdfReader(io.BytesIO(content)).pages, 1):
+        text = page.extract_text() or ''
+        mapping.append({'page':page_number, 'start':cursor, 'end':cursor+len(text)})
+        parts.append(text)
+        cursor += len(text)+2
+    return '\n\n'.join(parts), mapping
+
+
 def collect(*, retry_failed=False):
     raw = ROOT / "raw"
     raw.mkdir(parents=True, exist_ok=True)
@@ -29,6 +39,11 @@ def collect(*, retry_failed=False):
                 continue
             if old['status']=='downloaded' and binary_path.exists() and text_path.exists():
                 if hashlib.sha256(binary_path.read_bytes()).hexdigest()==old.get('sha256') and hashlib.sha256(text_path.read_bytes()).hexdigest()==old.get('text_sha256'):
+                    if source['format']=='pdf' and 'page_map' not in old:
+                        extracted, mapping = extract_pdf_snapshot(binary_path.read_bytes())
+                        if extracted == text_path.read_text():
+                            records[source['id']] = {**old, 'page_map':mapping}
+                            manifest.write_text(json.dumps(list(records.values()),ensure_ascii=False,indent=2))
                     continue
         record = {**source, "retrieved_at": datetime.now(timezone.utc).isoformat(),
                   "label": "reference_candidate", "expert_reviewed": False,
@@ -44,7 +59,8 @@ def collect(*, retry_failed=False):
             if source["format"] == "pdf":
                 if not content.startswith(b"%PDF"):
                     raise ValueError("not_pdf")
-                text = "\n\n".join(page.extract_text() or "" for page in PdfReader(io.BytesIO(content)).pages)
+                text, page_map = extract_pdf_snapshot(content)
+                record['page_map'] = page_map
                 record["extraction"] = "pypdf; no OCR; visual review pending"
             else:
                 soup = BeautifulSoup(content, "html.parser")

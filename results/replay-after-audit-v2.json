@@ -1,0 +1,122 @@
+{
+  "mode": "offline replay of saved successful provider responses; zero new API calls",
+  "records": [
+    {
+      "id": "selectel_retention_original",
+      "segmentation": "semantic",
+      "ok": true,
+      "matches_expected": true,
+      "target_found": false,
+      "outcome": "clean_control",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "partial": false
+    },
+    {
+      "id": "selectel_retention_mutation",
+      "segmentation": "semantic",
+      "ok": true,
+      "matches_expected": true,
+      "target_found": true,
+      "outcome": "hit",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "partial": false
+    },
+    {
+      "id": "twogis_purpose_original",
+      "segmentation": "semantic",
+      "ok": true,
+      "matches_expected": true,
+      "target_found": false,
+      "outcome": "clean_control",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "partial": false
+    },
+    {
+      "id": "twogis_purpose_mutation",
+      "segmentation": "semantic",
+      "ok": true,
+      "matches_expected": true,
+      "target_found": true,
+      "outcome": "hit",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "partial": false
+    },
+    {
+      "id": "twogis_liability_original",
+      "segmentation": "semantic",
+      "ok": true,
+      "matches_expected": true,
+      "target_found": false,
+      "outcome": "clean_control",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "partial": false
+    },
+    {
+      "id": "twogis_liability_mutation",
+      "segmentation": "semantic",
+      "ok": true,
+      "matches_expected": true,
+      "target_found": true,
+      "outcome": "hit",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "partial": false
+    },
+    {
+      "id": "selectel_retention_mutation",
+      "segmentation": "paragraphs",
+      "ok": true,
+      "matches_expected": true,
+      "target_found": true,
+      "outcome": "hit",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "partial": false
+    },
+    {
+      "id": "twogis_purpose_mutation",
+      "segmentation": "paragraphs",
+      "ok": true,
+      "matches_expected": true,
+      "target_found": true,
+      "outcome": "hit",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 1,
+      "boundary_fn": 0,
+      "partial": false
+    },
+    {
+      "id": "twogis_liability_mutation",
+      "segmentation": "paragraphs",
+      "ok": true,
+      "matches_expected": true,
+      "target_found": true,
+      "outcome": "hit",
+      "mislocalized": 0,
+      "boundary_tp": 2,
+      "boundary_fp": 0,
+      "boundary_fn": 0,
+      "partial": false
+    }
+  ]
+}

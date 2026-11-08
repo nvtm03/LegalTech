@@ -13,7 +13,10 @@ from llm_layer import authenticated_urlopen, load_env
 
 
 class ModelError(RuntimeError):
-    """Safe, credential-free error for callers."""
+    """Safe error with an explicit, quota-aware recovery action."""
+    def __init__(self, message, *, retry_action='retry'):
+        super().__init__(message)
+        self.retry_action = retry_action
 
 
 def _request(url, key, body=None, timeout=30, google=False):
@@ -28,7 +31,7 @@ def _request(url, key, body=None, timeout=30, google=False):
         codes = {401: "ключ не принят", 403: "модель недоступна", 413: "запрос слишком большой", 429: "достигнут лимит запросов"}
         raise ModelError(f"API: {codes.get(exc.code, 'ошибка сервиса')} (HTTP {exc.code})") from None
     except (urllib.error.URLError, TimeoutError, OSError, ValueError):
-        raise ModelError("API не ответил корректно. Проверьте соединение и повторите позже.") from None
+        raise ModelError("API не ответил корректно. Проверьте соединение и повторите позже.", retry_action="resume") from None
 
 
 def generate_json(prompt, schema, *, provider=None, model=None, timeout=None, system="", checkpoint=None):
@@ -39,9 +42,14 @@ def generate_json(prompt, schema, *, provider=None, model=None, timeout=None, sy
     if timeout <= 0:
         raise ModelError("Время ожидания должно быть положительным.")
     started = time.monotonic()
-    config = {"responseMimeType": "application/json", "responseSchema": schema, "maxOutputTokens": 8192}
+    config = {"responseMimeType": "application/json", "responseSchema": schema, "maxOutputTokens": 2048 if model.startswith("gemma") else 8192}
     contents = [{"role": "user", "parts": [{"text": prompt}]}]
     instruction = {"parts": [{"text": system}]} if system else None
+    # UTF-8 byte count is a conservative tokenizer-independent input upper bound.
+    request_bytes = len(json.dumps([contents, instruction, config], ensure_ascii=False).encode())
+    input_limit = 12000 if model.startswith('gemma') else 48000
+    if request_bytes > input_limit:
+        raise ModelError('Запрос превышает консервативный бюджет выбранной модели. Сократите документ или размер блоков.')
     if provider == "router":
         key = os.getenv("ROUTER_API_KEY")
         if not key:
@@ -63,7 +71,7 @@ def generate_json(prompt, schema, *, provider=None, model=None, timeout=None, sy
         while job.get("status") in ("queued", "running"):
             remaining = timeout - (time.monotonic() - started)
             if remaining <= 10:
-                raise ModelError("Истекло время ожидания Router. Возобновите тот же анализ." if checkpoint else "Истекло время ожидания Router. Повторный запуск создаст новый запрос.")
+                raise ModelError("Истекло время ожидания Router. Возобновите тот же анализ." if checkpoint else "Истекло время ожидания Router. Повторный запуск создаст новый запрос.", retry_action="resume")
             time.sleep(10)
             job = _request(f"{base}/{quote(job_id, safe='')}", key, timeout=min(30, remaining - 10))
             if checkpoint:checkpoint(cache_key,job)

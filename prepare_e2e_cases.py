@@ -4,10 +4,14 @@ import json
 from pathlib import Path
 from build_benchmark import build_pairs
 
+def validate_families(specs, development):
+    if {s['family_id'] for s in specs} & {s['family_id'] for s in development}:
+        raise ValueError('Source family leakage')
+
+
 if __name__=='__main__':
     specs=json.loads(Path('data/evaluation/heldout_specs.json').read_text())
-    dev={s['family_id'] for s in json.loads(Path('data/evaluation/pair_specs.json').read_text())}
-    assert not dev & {s['family_id'] for s in specs}, 'Source family leakage'
+    validate_families(specs, json.loads(Path('data/evaluation/pair_specs.json').read_text()))
     rows=build_pairs(specs,Path('data/corpus/raw'))
     prefix='1. Назначение сервиса\nСервис предоставляет пользователю информационные материалы по его запросу.\n\n2. Основное условие\n'
     suffix='\n\n3. Контакты\nВопросы о работе сервиса принимаются по адресу help@example.org.'

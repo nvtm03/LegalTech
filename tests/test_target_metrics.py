@@ -22,3 +22,15 @@ class TargetMetricsTests(unittest.TestCase):
 
 
 if __name__ == '__main__': unittest.main()
+
+class CategoryMetricTests(unittest.TestCase):
+    def test_category_errors_are_not_model_false_negatives(self):
+        helper=getattr(evaluate,'summarize_category_records',lambda records:{})
+        summary=helper([
+            {'ok':False,'expected':['retention'],'predicted':[]},
+            {'ok':True,'expected':['retention'],'predicted':[]},
+            {'ok':True,'expected':[],'predicted':[]}])
+        self.assertEqual(summary.get('fn'),1)
+        self.assertEqual(summary.get('technical_errors'),1)
+        self.assertEqual(summary.get('exact_category_matches'),1)
+        self.assertEqual(summary.get('cases'),3)

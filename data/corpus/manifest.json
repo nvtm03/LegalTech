@@ -72,7 +72,14 @@
       "scope": "full one-page PDF visually checked",
       "notes": "Text extraction inserts spaces inside several words. Original retained; evidence matching restores exact original text.",
       "expert_legal_review": false
-    }
+    },
+    "page_map": [
+      {
+        "page": 1,
+        "start": 0,
+        "end": 2085
+      }
+    ]
   },
   {
     "id": "sberins_consent",
@@ -142,7 +149,219 @@
     "status": "downloaded",
     "sha256": "19236002889b5d7ef2fd69adcbd5cd3fe1d6d9dbd9a3605398b995cf73047d12",
     "text_sha256": "3b359cd7baee1b71449db5d5261ef08a651d153766e774da7268014f54c69f18",
-    "characters": 100435
+    "characters": 100435,
+    "page_map": [
+      {
+        "page": 1,
+        "start": 0,
+        "end": 2104
+      },
+      {
+        "page": 2,
+        "start": 2106,
+        "end": 4363
+      },
+      {
+        "page": 3,
+        "start": 4365,
+        "end": 6516
+      },
+      {
+        "page": 4,
+        "start": 6518,
+        "end": 8977
+      },
+      {
+        "page": 5,
+        "start": 8979,
+        "end": 11158
+      },
+      {
+        "page": 6,
+        "start": 11160,
+        "end": 13575
+      },
+      {
+        "page": 7,
+        "start": 13577,
+        "end": 16161
+      },
+      {
+        "page": 8,
+        "start": 16163,
+        "end": 18624
+      },
+      {
+        "page": 9,
+        "start": 18626,
+        "end": 21248
+      },
+      {
+        "page": 10,
+        "start": 21250,
+        "end": 23727
+      },
+      {
+        "page": 11,
+        "start": 23729,
+        "end": 26281
+      },
+      {
+        "page": 12,
+        "start": 26283,
+        "end": 28915
+      },
+      {
+        "page": 13,
+        "start": 28917,
+        "end": 31284
+      },
+      {
+        "page": 14,
+        "start": 31286,
+        "end": 33935
+      },
+      {
+        "page": 15,
+        "start": 33937,
+        "end": 36528
+      },
+      {
+        "page": 16,
+        "start": 36530,
+        "end": 39406
+      },
+      {
+        "page": 17,
+        "start": 39408,
+        "end": 41672
+      },
+      {
+        "page": 18,
+        "start": 41674,
+        "end": 44157
+      },
+      {
+        "page": 19,
+        "start": 44159,
+        "end": 46432
+      },
+      {
+        "page": 20,
+        "start": 46434,
+        "end": 48805
+      },
+      {
+        "page": 21,
+        "start": 48807,
+        "end": 50889
+      },
+      {
+        "page": 22,
+        "start": 50891,
+        "end": 52887
+      },
+      {
+        "page": 23,
+        "start": 52889,
+        "end": 55248
+      },
+      {
+        "page": 24,
+        "start": 55250,
+        "end": 57431
+      },
+      {
+        "page": 25,
+        "start": 57433,
+        "end": 60114
+      },
+      {
+        "page": 26,
+        "start": 60116,
+        "end": 62709
+      },
+      {
+        "page": 27,
+        "start": 62711,
+        "end": 64402
+      },
+      {
+        "page": 28,
+        "start": 64404,
+        "end": 66848
+      },
+      {
+        "page": 29,
+        "start": 66850,
+        "end": 69352
+      },
+      {
+        "page": 30,
+        "start": 69354,
+        "end": 71749
+      },
+      {
+        "page": 31,
+        "start": 71751,
+        "end": 74135
+      },
+      {
+        "page": 32,
+        "start": 74137,
+        "end": 76766
+      },
+      {
+        "page": 33,
+        "start": 76768,
+        "end": 79282
+      },
+      {
+        "page": 34,
+        "start": 79284,
+        "end": 81365
+      },
+      {
+        "page": 35,
+        "start": 81367,
+        "end": 83706
+      },
+      {
+        "page": 36,
+        "start": 83708,
+        "end": 85870
+      },
+      {
+        "page": 37,
+        "start": 85872,
+        "end": 88230
+      },
+      {
+        "page": 38,
+        "start": 88232,
+        "end": 90753
+      },
+      {
+        "page": 39,
+        "start": 90755,
+        "end": 92990
+      },
+      {
+        "page": 40,
+        "start": 92992,
+        "end": 95895
+      },
+      {
+        "page": 41,
+        "start": 95897,
+        "end": 98604
+      },
+      {
+        "page": 42,
+        "start": 98606,
+        "end": 100435
+      }
+    ]
   },
   {
     "id": "vk_shift_terms",
@@ -165,7 +384,39 @@
       "scope": "page 3, excerpt 3.6.3 visually checked",
       "notes": "Only benchmark excerpt checked; full six-page document not reviewed.",
       "expert_legal_review": false
-    }
+    },
+    "page_map": [
+      {
+        "page": 1,
+        "start": 0,
+        "end": 3959
+      },
+      {
+        "page": 2,
+        "start": 3961,
+        "end": 7858
+      },
+      {
+        "page": 3,
+        "start": 7860,
+        "end": 11611
+      },
+      {
+        "page": 4,
+        "start": 11613,
+        "end": 15338
+      },
+      {
+        "page": 5,
+        "start": 15340,
+        "end": 19805
+      },
+      {
+        "page": 6,
+        "start": 19807,
+        "end": 19852
+      }
+    ]
   },
   {
     "id": "selectel_consent",
@@ -183,7 +434,19 @@
     "status": "downloaded",
     "sha256": "2bcf5602fa3744cb3b8527a06e7d461e0200892a746d418aa87dfe766842277c",
     "text_sha256": "2f88814f6e91f056a2881689b60c4d63825a35655d7989b8c57d78f90663d201",
-    "characters": 3526
+    "characters": 3526,
+    "page_map": [
+      {
+        "page": 1,
+        "start": 0,
+        "end": 2901
+      },
+      {
+        "page": 2,
+        "start": 2903,
+        "end": 3526
+      }
+    ]
   },
   {
     "id": "twogis_privacy",
@@ -237,6 +500,73 @@
     "status": "downloaded",
     "sha256": "29dc790f8a37d24c65d1b80eb776630caf9ac7b8d5683d20de28759cce208760",
     "text_sha256": "e603058e49f54ca17b7c52f7eb158f4bba68f6b4a9a618c0d83527e3ed9ecc22",
-    "characters": 53734
+    "characters": 53734,
+    "page_map": [
+      {
+        "page": 1,
+        "start": 0,
+        "end": 4815
+      },
+      {
+        "page": 2,
+        "start": 4817,
+        "end": 8786
+      },
+      {
+        "page": 3,
+        "start": 8788,
+        "end": 13134
+      },
+      {
+        "page": 4,
+        "start": 13136,
+        "end": 17193
+      },
+      {
+        "page": 5,
+        "start": 17195,
+        "end": 21572
+      },
+      {
+        "page": 6,
+        "start": 21574,
+        "end": 26023
+      },
+      {
+        "page": 7,
+        "start": 26025,
+        "end": 30501
+      },
+      {
+        "page": 8,
+        "start": 30503,
+        "end": 34848
+      },
+      {
+        "page": 9,
+        "start": 34850,
+        "end": 38902
+      },
+      {
+        "page": 10,
+        "start": 38904,
+        "end": 43614
+      },
+      {
+        "page": 11,
+        "start": 43616,
+        "end": 47952
+      },
+      {
+        "page": 12,
+        "start": 47954,
+        "end": 52259
+      },
+      {
+        "page": 13,
+        "start": 52261,
+        "end": 53734
+      }
+    ]
   }
 ]

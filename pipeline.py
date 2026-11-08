@@ -89,14 +89,17 @@ def split_blocks(text, max_chars=3500, *, sentences=False):
     return blocks
 
 
-def _batches(blocks, max_chars=11000):
-    batch, size = [], 0
+def _batches(blocks, max_chars=11000, max_items=60):
+    # Include coordinates, IDs and JSON escaping, not just document text.
+    batch = []
     for block in blocks:
-        if batch and size + len(block["text"]) > max_chars:
+        if len(json.dumps([block], ensure_ascii=False).encode()) > max_chars:
+            raise ModelError('Смысловой блок превышает бюджет запроса. Используйте более короткий документ или абзацный режим.')
+        candidate = batch + [block]
+        if batch and (len(candidate) > max_items or len(json.dumps(candidate, ensure_ascii=False).encode()) > max_chars):
             yield batch
-            batch, size = [], 0
+            batch = []
         batch.append(block)
-        size += len(block["text"])
     if batch:
         yield batch
 
@@ -127,8 +130,23 @@ def locate_evidence(block, quote, *, allow_pdf_whitespace=False):
         end=start+len(quote)
     if (source[start].isalnum() and start and source[start-1].isalnum()) or (source[end-1].isalnum() and end<len(source) and source[end].isalnum()):
         raise ModelError('Цитата обрывает слово или число.')
-    return dict(quote_original=original_quote,quote=quote,quote_start=block.get('start',0)+start,
-                quote_end=block.get('start',0)+end,quote_match=match_type)
+    # A decimal comma, point or thousands separator belongs to the same amount.
+    for amount in re.finditer(r'(?<!\w)\d+(?:(?:[.,]|[ \u00a0\u202f](?=\d{3}(?!\d)))\d+)*', source):
+        if amount.start() < start < amount.end() or amount.start() < end < amount.end():
+            raise ModelError('Цитата обрывает числовую величину.')
+    if re.search(r'\b(?:не|ни|без)\s+$', source[:start], re.IGNORECASE):
+        raise ModelError('Цитата теряет предшествующее отрицание. Включите контекст.')
+    sentence_starts = [0] + [m.end() for m in re.finditer(r'[.!?](?:[ \t]+|\n+)|\n\s*\n', source)]
+    context_start = max(x for x in sentence_starts if x <= start)
+    tail = re.search(r'[.!?](?=\s|$)|\n\s*\n', source[end:])
+    context_end = end + tail.end() if tail else len(source)
+    if end and source[end-1] in '.!?':
+        context_end = end
+    offset = block.get('start', 0)
+    return dict(quote_original=original_quote, quote=quote, quote_start=offset+start,
+                quote_end=offset+end, quote_match=match_type,
+                context=source[context_start:context_end], context_start=offset+context_start,
+                context_end=offset+context_end)
 
 
 def validate_answer(answer, blocks, *, allow_pdf_whitespace=False):
@@ -155,7 +173,7 @@ def validate_answer(answer, blocks, *, allow_pdf_whitespace=False):
 
 def semantic_blocks(text, source_blocks, *, provider=None, model=None, client=generate_json, progress=None):
     groups, calls = [], []
-    batches = list(_batches(source_blocks))
+    batches = list(_batches(source_blocks, max_chars=3500 if (model or '').startswith('gemma') else 11000, max_items=20 if (model or '').startswith('gemma') else 60))
     for batch_index, batch in enumerate(batches):
         prompt = "Group consecutive source spans by meaning.\n<document_blocks>\n" + json.dumps(batch, ensure_ascii=False) + "\n</document_blocks>"
         answer, metadata = client(prompt, GROUP_SCHEMA, provider=provider, model=model, system=GROUP_SYSTEM)
@@ -196,12 +214,15 @@ Use enough context to distinguish repeated phrases. Never treat an AI-generated 
 def review_relations(blocks, *, client, provider=None, model=None, allow_pdf_whitespace=False, stage_progress=None):
     calls, relations = [], []
     lookup={b['id']:b for b in blocks}
-    if sum(len(b['text']) for b in blocks)<=11000:
+    if len(json.dumps(blocks,ensure_ascii=False).encode()) <= (3500 if (model or '').startswith('gemma') else 11000):
         reviews=[blocks] if blocks else []
         scope='all_blocks_in_one_call'
     else:
         index=[{'id':b['id'],'title':b['title'],'summary':b['summary'][:200],
                 'opening':b['text'][:120],'references':re.findall(r'\b\d+(?:\.\d+)+\b',b['text'])[:12]} for b in blocks]
+        index_limit=4 if (model or '').startswith('gemma') else 12
+        if len(index)>index_limit:
+            index=[index[round(i*(len(index)-1)/(index_limit-1))] for i in range(index_limit)]
         prompt='Select up to four most important pairs to verify across the whole document, especially exceptions and cross-references.\n<block_index>\n'+json.dumps(index,ensure_ascii=False)+'\n</block_index>'
         candidates,meta=client(prompt,PAIR_SCHEMA,provider=provider,model=model,system=RELATION_SYSTEM)
         if list(Draft202012Validator(PAIR_SCHEMA).iter_errors(candidates)):raise ModelError('Неверная схема отбора связей.')
@@ -227,11 +248,12 @@ def review_relations(blocks, *, client, provider=None, model=None, allow_pdf_whi
                 edge.update({side+'_quote':evidence['quote'],side+'_start':evidence['quote_start'],side+'_end':evidence['quote_end']})
             if edge['left_id']==edge['right_id'] and max(edge['left_start'],edge['right_start'])<min(edge['left_end'],edge['right_end']):
                 raise ModelError('Одна и та же цитата не может подтверждать обе стороны связи.')
+            edge['id']=f'relation-{len(relations)+1}'
             edge['review_status']='unreviewed'
             relations.append(edge)
         calls.append({**meta,'stage':'relations'})
         if stage_progress:stage_progress('relations',i+1,len(reviews))
-    return relations,calls,{'status':'completed','scope':scope,'pairs_reviewed':len(reviews),'exhaustive':False}
+    return relations,calls,{'status':'completed' if reviews else 'no_candidates','scope':scope,'review_groups_completed':len(reviews),'candidate_pairs_reviewed':len(reviews) if scope=='up_to_4_candidate_pairs' else None,'index_blocks':len(index) if scope=='up_to_4_candidate_pairs' else len(blocks),'total_blocks':len(blocks),'exhaustive':False}
 
 
 def analyze_document(text, doc_type="unknown", *, provider=None, model=None, variant="checklist", segmentation="semantic", input_origin="text", client=generate_json, progress=None, stage_progress=None, check_relations=False):
@@ -239,14 +261,15 @@ def analyze_document(text, doc_type="unknown", *, provider=None, model=None, var
         raise ValueError("Неизвестный вариант промпта.")
     if segmentation not in ("paragraphs", "semantic"):
         raise ValueError("Неизвестный способ разбиения.")
-    blocks = split_blocks(text, sentences=segmentation == "semantic")
+    budget = 3500 if (model or '').startswith('gemma') else 11000
+    blocks = split_blocks(text, max_chars=1000 if budget==3500 else 3500, sentences=segmentation == "semantic")
     segmentation_calls = []
     if segmentation == "semantic":
         # Keep the public progress callback's two-argument contract.
-        if stage_progress:stage_progress('segmentation',0,len(list(_batches(blocks))))
+        if stage_progress:stage_progress('segmentation',0,len(list(_batches(blocks,max_chars=budget,max_items=20 if budget==3500 else 60))))
         blocks, segmentation_calls = semantic_blocks(text, blocks, provider=provider, model=model, client=client,
             progress=(lambda done,total,stage:stage_progress(stage,done,total)) if stage_progress else None)
-    batches = list(_batches(blocks))
+    batches = list(_batches(blocks,max_chars=budget,max_items=20 if budget==3500 else 60))
     result = {"blocks": [], "risks": [], "calls": segmentation_calls, "document_sha256": hashlib.sha256(text.encode()).hexdigest(),
               "doc_type": doc_type, "input_origin": input_origin, "prompt_version": PROMPT_VERSION if variant == "checklist" else "baseline-v1",
               "segmentation_version": "semantic-contiguous-v1" if segmentation == "semantic" else "paragraphs-v1",
@@ -270,11 +293,21 @@ def analyze_document(text, doc_type="unknown", *, provider=None, model=None, var
     result['relations']=[]
     result['relation_review']={'status':'skipped'}
     if check_relations:
-        result['relations'],relation_calls,result['relation_review']=review_relations(result['blocks'],client=client,provider=provider,model=model,
-            allow_pdf_whitespace=input_origin=='pdf_extracted',stage_progress=stage_progress)
-        result['calls'].extend(relation_calls)
+        try:
+            result['relations'], relation_calls, result['relation_review'] = review_relations(
+                result['blocks'], client=client, provider=provider, model=model,
+                allow_pdf_whitespace=input_origin=='pdf_extracted', stage_progress=stage_progress)
+            result['calls'].extend(relation_calls)
+        except ModelError as exc:
+            result['partial'] = True
+            result['relation_review'] = {'status':'failed', 'error':str(exc), 'retry_action':exc.retry_action, 'exhaustive':False}
         result['limitations'][-1]='Связи проверяются отдельным проходом; на длинных документах проверяются до четырёх выбранных пар. Полнота не доказана; нормативная база не подключена.'
         for risk in result['risks']:
-            if any(e['kind']=='exception' and risk['block_id'] in (e['left_id'],e['right_id']) for e in result['relations']):
+            related = [edge['id'] for edge in result['relations'] if edge['kind']=='exception' and any(
+                edge[side+'_id']==risk['block_id'] and
+                max(edge[side+'_start'], risk['quote_start']) < min(edge[side+'_end'], risk['quote_end'])
+                for side in ('left','right'))]
+            risk['related_relation_ids'] = related
+            if related:
                 risk['context_status']='review_with_related_clause'
     return result

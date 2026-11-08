@@ -7,7 +7,8 @@ from model_client import generate_json
 from pipeline import analyze_document
 
 if __name__=='__main__':
-    output=Path('sites/legaltech-demo/src/data.json');output.parent.mkdir(parents=True,exist_ok=True)
+    output=Path('demo/src/data.json');output.parent.mkdir(parents=True,exist_ok=True)
+    if output.exists():raise SystemExit('Existing demonstration preserved. Choose a new output snapshot explicitly before regenerating paid examples.')
     rows=[]
     for case in json.loads(Path('data/demo_cases.json').read_text()):
         result=analyze_document(case['text'],case['doc_type'],model='gemini-3.5-flash-lite',provider='router',check_relations=True,

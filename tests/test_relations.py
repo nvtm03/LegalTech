@@ -47,8 +47,10 @@ class RelationTests(unittest.TestCase):
             data,meta=self.client(prompt,schema,**kwargs)
             if 'relations' in data:data['relations'][0]['right_quote']='Вымышленная оговорка'
             return data,meta
-        with self.assertRaises(ModelError):
-            analyze_document(TEXT,client=invalid,segmentation='paragraphs',check_relations=True)
+        result=analyze_document(TEXT,client=invalid,segmentation='paragraphs',check_relations=True)
+        self.assertEqual(result['relations'],[])
+        self.assertEqual(result['relation_review']['status'],'failed')
+        self.assertTrue(result['partial'])
 
     def test_control_document_does_not_require_a_relation(self):
         def no_relations(prompt,schema,**kwargs):
